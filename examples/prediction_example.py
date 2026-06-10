@@ -40,13 +40,13 @@ def plot_prediction(kline_df, pred_df):
 
 # 1. Load Model and Tokenizer
 tokenizer = KronosTokenizer.from_pretrained("NeoQuasar/Kronos-Tokenizer-base")
-model = Kronos.from_pretrained("NeoQuasar/Kronos-small")
+model = Kronos.from_pretrained("NeoQuasar/Kronos-base")
 
 # 2. Instantiate Predictor
 predictor = KronosPredictor(model, tokenizer, max_context=512)
 
 # 3. Prepare Data
-df = pd.read_csv("./data/XSHG_5min_600977.csv")
+df = pd.read_csv("./finetune_csv/data/HK_ali_09988_kline_5min_all.csv")
 df['timestamps'] = pd.to_datetime(df['timestamps'])
 
 lookback = 400

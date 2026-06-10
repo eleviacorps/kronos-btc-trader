@@ -74,3 +74,13 @@ venv.bak/
 temp/
 tmp/
 .python-version
+
+# Data files
+paper_trades*.json
+backtest_*_results.json
+.next/
+figures/
+prediction_results/
+*.csv
+*.feather
+*.parquet

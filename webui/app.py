@@ -9,7 +9,49 @@ from flask_cors import CORS
 import sys
 import warnings
 import datetime
+import ccxt
 warnings.filterwarnings('ignore')
+
+#Helper Function
+def load_live_btc():
+    exchange = ccxt.binance()
+
+    ohlcv = exchange.fetch_ohlcv(
+        "BTC/USDT",
+        timeframe="5m",
+        limit=1000
+    )
+
+    df = pd.DataFrame(
+        ohlcv,
+        columns=[
+            "timestamp",
+            "open",
+            "high",
+            "low",
+            "close",
+            "volume"
+        ]
+    )
+
+    df["timestamps"] = pd.to_datetime(
+        df["timestamp"],
+        unit="ms"
+    )
+
+    df["amount"] = 0
+
+    return df[
+        [
+            "timestamps",
+            "open",
+            "high",
+            "low",
+            "close",
+            "volume",
+            "amount"
+        ]
+    ]
 
 # Add project root directory to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -334,9 +376,12 @@ def index():
 
 @app.route('/api/data-files')
 def get_data_files():
-    """Get available data file list"""
-    data_files = load_data_files()
-    return jsonify(data_files)
+    return jsonify([
+        {
+            "name": "Live BTC/USDT",
+            "path": "LIVE_BTC"
+        }
+    ])
 
 @app.route('/api/load-data', methods=['POST'])
 def load_data():
@@ -348,7 +393,8 @@ def load_data():
         if not file_path:
             return jsonify({'error': 'File path cannot be empty'}), 400
         
-        df, error = load_data_file(file_path)
+        df = load_live_btc()
+        error = None
         if error:
             return jsonify({'error': error}), 400
         
@@ -419,7 +465,8 @@ def predict():
             return jsonify({'error': 'File path cannot be empty'}), 400
         
         # Load data
-        df, error = load_data_file(file_path)
+        df = load_live_btc()
+        error = None
         if error:
             return jsonify({'error': error}), 400
         
@@ -465,9 +512,18 @@ def predict():
                     prediction_type = f"Kronos model prediction (within selected window: first {lookback} data points for prediction, last {pred_len} data points for comparison, time span: {time_span})"
                 else:
                     # Use latest data
-                    x_df = df.iloc[:lookback][required_cols]
-                    x_timestamp = df.iloc[:lookback]['timestamps']
-                    y_timestamp = df.iloc[lookback:lookback+pred_len]['timestamps']
+                    x_df = df.iloc[-lookback:][required_cols]
+                    x_timestamp = df.iloc[-lookback:]['timestamps']
+
+                    time_diff = df['timestamps'].iloc[1] - df['timestamps'].iloc[0]
+
+                    y_timestamp = pd.Series(
+                        pd.date_range(
+                            start=x_timestamp.iloc[-1] + time_diff,
+                            periods=pred_len,
+                            freq=time_diff
+                        )
+                    )
                     prediction_type = "Kronos model prediction (latest data)"
                 
                 # Ensure timestamps are Series format, not DatetimeIndex, to avoid .dt attribute error in Kronos model
