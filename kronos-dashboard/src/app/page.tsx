@@ -310,7 +310,7 @@ export default function Dashboard() {
         </button>
       </div>
 
-      <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-5">
+      <div className="grid grid-cols-2 gap-5">
         {data ? (
           <>
             <AccountCard key={`bot-${key}`} data={data.bot} />
