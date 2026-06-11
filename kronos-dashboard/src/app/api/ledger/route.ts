@@ -84,6 +84,7 @@ export async function GET() {
 
   const bot = enrich(readLedger('paper_trades.json'), 'Bot-Only', btcPrice);
   const agent = enrich(readLedger('paper_trades_agent.json'), 'Agent-Assisted', btcPrice);
-  const hc = enrich(readLedger('paper_trades_hc.json'), 'High-Conviction', btcPrice);
-  return NextResponse.json({ bot, agent, hc });
+  const hc = enrich(readLedger('paper_trades_hc.json'), 'HC Bot', btcPrice);
+  const hc_agent = enrich(readLedger('paper_trades_hc_agent.json'), 'HC Agent', btcPrice);
+  return NextResponse.json({ bot, agent, hc, hc_agent });
 }

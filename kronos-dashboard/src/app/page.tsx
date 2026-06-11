@@ -25,7 +25,7 @@ interface AccountData {
   largestWin: number; largestLoss: number; timestamp: number;
 }
 
-interface LedgerResponse { bot: AccountData; agent: AccountData; }
+interface LedgerResponse { bot: AccountData; agent: AccountData; hc: AccountData; hc_agent: AccountData; }
 
 function fmt(v: number | null | undefined): string {
   if (v == null || isNaN(v as number)) return "0.00";
@@ -72,7 +72,7 @@ function FinBox({ label, value, cls }: { label: string; value: string; cls?: str
   );
 }
 
-function AccountCard({ data }: { data: AccountData }) {
+function AccountCard({ data, onClose }: { data: AccountData; onClose?: () => void }) {
   const [showTrades, setShowTrades] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const refresh = useCallback(() => setRefreshKey(k => k + 1), []);
@@ -309,16 +309,17 @@ export default function Dashboard() {
         </button>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-5">
+      <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-5">
         {data ? (
           <>
             <AccountCard key={`bot-${key}`} data={data.bot} />
             <AccountCard key={`agent-${key}`} data={data.agent} />
+            <AccountCard key={`hc-${key}`} data={data.hc} />
+            <AccountCard key={`hc-agent-${key}`} data={data.hc_agent} />
           </>
         ) : (
           <>
-            <SkeletonCard />
-            <SkeletonCard />
+            {[...Array(4)].map((_, i) => <SkeletonCard key={i} />)}
           </>
         )}
       </div>
