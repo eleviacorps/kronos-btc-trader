@@ -232,8 +232,9 @@ function CronBar({ jobs, now }: { jobs: Record<string, CronInfo>; now: number })
   const items = [
     { key: 'kronos-btc-hft-scalper', label: 'Bot Scalper' },
     { key: 'kronos-btc-hft-agent', label: 'Agent Judge' },
-    { key: 'kronos-tpsl-bot', label: 'TP/SL Bot' },
-    { key: 'kronos-tpsl-agent', label: 'TP/SL Agent' },
+    { key: 'kronos-btc-hft-hc', label: 'HC Bot' },
+    { key: 'kronos-btc-hft-hc-agent', label: 'HC Agent' },
+    { key: 'kronos-watchdog-health', label: 'Watchdog' },
   ];
   return (
     <div className="flex gap-2 mb-5 flex-wrap">
