@@ -52,33 +52,13 @@ def run(cmd, timeout=90):
 
 def parse_decision(output: str):
     """Extract decision and confidence from hermes-summary output.
-    Antitrend gets priority — if it says HOLD, the answer is HOLD."""
-
+    Uses ensemble consensus directly — primary strategies (range_extension,
+    trend_momentum) are already weighted 2x in the consensus calculation.
+    Applies a model accuracy filter: skip trades when Kronos prediction
+    strength falls in low-accuracy zones."""
     import re
 
-    # 1. Parse antitrend signal separately (priority)
-    antitrend_decision = "HOLD"
-    antitrend_conf = 0.0
-    for line in output.split("\n"):
-        if "antitrend" not in line:
-            continue
-        # Extract signal: after "antitrend" find BUY/SELL/HOLD
-        m = re.search(r'antitrend\s+(STRONG_BUY|BUY|SELL|STRONG_SELL|HOLD)', line)
-        if m:
-            sig = m.group(1)
-            if sig == "STRONG_BUY": sig = "BUY"
-            elif sig == "STRONG_SELL": sig = "SELL"
-            antitrend_decision = sig
-        # Extract confidence from (0.XX) pattern
-        m = re.search(r'\((\d+\.\d+)\)', line)
-        if m:
-            try:
-                c = float(m.group(1))
-                if c > antitrend_conf:
-                    antitrend_conf = c
-            except: pass
-
-    # 2. Parse consensus (secondary)
+    # 1. Parse consensus direction
     consensus = "HOLD"
     conf = 0.0
     if "Consensus: 🟢 BUY" in output or "Consensus: BUY" in output:
@@ -93,11 +73,30 @@ def parse_decision(output: str):
             try: conf = float(line.split("(conf=")[1].split(")")[0])
             except: pass
 
-    # 3. Antitrend priority rule
-    if antitrend_decision == "HOLD":
+    # 2. Check Kronos prediction strength (model accuracy filter)
+    # Kronos is 56% accurate on strong bearish, ~44% on neutral/bullish
+    # Extract net_change_pct from the signal output
+    net_change = 0.0
+    kronos_dir = "NEUTRAL"
+    for line in output.split("\n"):
+        m = re.search(r'Kronos:\s+(BULLISH|BEARISH|NEUTRAL)\s+\(([+-]?\d+\.\d+)%', line)
+        if m:
+            kronos_dir = m.group(1)
+            net_change = float(m.group(2))
+            break
+
+    # Low-accuracy zone filter: neutral predictions (< 0.05% magnitude) are only 44% accurate
+    # Also skip if Kronos is strongly bullish (>0.15%) — only 46% accurate
+    if consensus != "HOLD" and abs(net_change) < 0.05:
+        # Too close to neutral — model is only 44% accurate here
         return "HOLD", 0.0
-    # Antitrend has a signal — use it
-    return antitrend_decision, max(antitrend_conf, conf * 0.5)
+    if kronos_dir == "BULLISH" and net_change > 0.15:
+        # Strong bullish is unreliable (46% accuracy)
+        if conf < 0.50:
+            return "HOLD", 0.0
+
+    # 3. Return consensus directly (no antitrend override)
+    return consensus, conf
 
 
 def get_position_count(status_output: str) -> int:
@@ -139,6 +138,20 @@ def calc_position_size(conf: float) -> float:
     clamped = max(0.0, min(1.0, conf))
     size = MIN_POSITION_SIZE + clamped * (MAX_POSITION_SIZE - MIN_POSITION_SIZE)
     return round(size, 3)
+
+
+def consecutive_losses(ledger_file: str, side: str, count: int = 2) -> bool:
+    """Check if the last N closed trades of this side were all losses.
+    Returns True if streak >= count — caller should skip trade."""
+    try:
+        with open(Path(PROJECT_DIR) / ledger_file) as f:
+            ledger = json.load(f)
+        same_side = [t for t in reversed(ledger.get("trades", [])) if t.get("side") == side]
+        if len(same_side) < count:
+            return False
+        return all(t.get("pnl_usdt", 0) < 0 for t in same_side[:count])
+    except (FileNotFoundError, json.JSONDecodeError, KeyError):
+        return False
 
 
 def main():
@@ -213,10 +226,15 @@ def main():
         print(f"\n[5] Confidence {conf:.3f} < {MIN_CONFIDENCE}. HOLD.")
     else:
         side = "buy" if decision == "BUY" else "sell"
-        pos_size = calc_position_size(conf)
-        print(f"\n[5] Executing scalp {side.upper()} {pos_size} BTC (conf={conf:.3f})...")
-        exec_out = run(f"kronos_exec.py --scalp --paper {side} --size {pos_size}")
-        print(exec_out)
+        
+        # Check consecutive same-direction losses — prevents revenge trading
+        if consecutive_losses("paper_trades.json", side):
+            print(f"\n[5] Skipping {side.upper()} — last 2 {side.upper()}s were losses. HOLD.")
+        else:
+            pos_size = calc_position_size(conf)
+            print(f"\n[5] Executing scalp {side.upper()} {pos_size} BTC (conf={conf:.3f})...")
+            exec_out = run(f"kronos_exec.py --scalp --paper {side} --size {pos_size}")
+            print(exec_out)
 
     # ---------------------------------------------------------------
     # Cycle summary
