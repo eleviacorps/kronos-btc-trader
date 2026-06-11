@@ -78,6 +78,10 @@ tmp/
 # Data files
 paper_trades*.json
 backtest_*_results.json
+*_eval_results.json
+cron_hold_log.txt
+kronos_watchdog.pid
+kronos_watchdog.log
 .next/
 figures/
 prediction_results/
