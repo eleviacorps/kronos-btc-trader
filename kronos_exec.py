@@ -41,8 +41,8 @@ POSITION_PCT = 0.10  # 10% of buying power per trade
 # =========================================================================
 # SCALP / HFT CONFIG — ultra-tight for high-frequency trading
 # =========================================================================
-SCALP_TP_PCT = 0.002        # 0.2% take profit
-SCALP_SL_PCT = 0.0012       # 0.12% stop loss
+SCALP_TP_PCT = 0.003        # 0.3% take profit (was 0.2)
+SCALP_SL_PCT = 0.002        # 0.2% stop loss (was 0.12 — tighter stops were getting eaten by noise)
 SCALP_POSITION_PCT = 0.24   # 24% of buying power (~0.75 BTC at $63k/$1k)
 SCALP_TIMESTOP_MIN = 20     # Auto-close after 20 min (was 10 — gives TP room to hit)
 SCALP_COOLDOWN_MIN = 3      # Skip if last same-direction trade was < N min ago (was 2)
@@ -192,6 +192,7 @@ def check_tp_sl(ledger: dict):
         if pos.get("scalp") and pos.get("trailing_activated") is None and pnl_pct >= SCALP_TRAIL_ACTIVATE:
             pos["trailing_activated"] = True
             pos["trailing_peak"] = pnl_pct
+            save_ledger(ledger)  # persist trailing state
             print(f"  📈 Trailing activated for {pos['side'].upper()} at +{pnl_pct:.2f}%")
         if pos.get("trailing_activated"):
             if pnl_pct > pos.get("trailing_peak", 0):
@@ -213,21 +214,35 @@ def check_tp_sl(ledger: dict):
             reason = "SL"
         
         if hit:
-            if pos["side"] == "buy":
-                pnl_usdt = (price - pos["entry_price"]) * pos["size"]
+            # Simulate real stop/limit fill at trigger price — not live market
+            if reason == "SL":
+                if pos["side"] == "buy":
+                    close_price = pos["entry_price"] * (1 - pos["sl_pct"] / 100)
+                else:
+                    close_price = pos["entry_price"] * (1 + pos["sl_pct"] / 100)
+            elif reason == "TP":
+                if pos["side"] == "buy":
+                    close_price = pos["entry_price"] * (1 + pos["tp_pct"] / 100)
+                else:
+                    close_price = pos["entry_price"] * (1 - pos["tp_pct"] / 100)
             else:
-                pnl_usdt = (pos["entry_price"] - price) * pos["size"]
+                close_price = price
+            close_ret = (close_price - pos["entry_price"]) / pos["entry_price"] if pos["side"] == "buy" else (pos["entry_price"] - close_price) / pos["entry_price"]
+            if pos["side"] == "buy":
+                pnl_usdt = (close_price - pos["entry_price"]) * pos["size"]
+            else:
+                pnl_usdt = (pos["entry_price"] - close_price) * pos["size"]
             ledger["balance"] += margin + pnl_usdt
             trade_record = {
                 "timestamp": datetime.now().isoformat(),
                 "side": pos["side"],
                 "close_reason": reason,
                 "entry_price": round(pos["entry_price"], 2),
-                "exit_price": round(price, 2),
+                "exit_price": round(close_price, 2),
                 "size_btc": pos["size"],
                 "leverage": LEVERAGE,
                 "pnl_usdt": round(pnl_usdt, 2),
-                "pnl_pct": round(ret * 100, 2),
+                "pnl_pct": round(close_ret * 100, 2),
                 "balance_after": round(ledger["balance"], 2),
             }
             ledger["trades"].append(trade_record)
