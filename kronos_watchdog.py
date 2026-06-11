@@ -42,6 +42,7 @@ LEDGERS = [
     {"file": "paper_trades.json",         "name": "BOT"},
     {"file": "paper_trades_agent.json",   "name": "AGENT"},
     {"file": "paper_trades_hc.json",      "name": "HC"},
+    {"file": "paper_trades_hc_agent.json","name": "HC_AGENT"},
 ]
 
 LOG_FILE = PROJECT_DIR / "kronos_watchdog.log"
