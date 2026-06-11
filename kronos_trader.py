@@ -60,8 +60,8 @@ SCALP_VOL_FILTER = 0.12
 SCALP_VOL_MULTIPLIER = 1.2      # Lower vol expansion threshold
 
 # Trade management for scalp mode
-SCALP_TP_PCT = 0.002            # 0.2% take profit
-SCALP_SL_PCT = 0.0012           # 0.12% stop loss
+SCALP_TP_PCT = 0.003            # 0.3% take profit
+SCALP_SL_PCT = 0.002           # 0.2% stop loss
 SCALP_POSITION_PCT = 0.24       # 24% of buying power (~0.75 BTC at $63k with $1k capital)
 SCALP_TIMESTOP_MIN = 20         # Auto-close after 20 min (was 10 — trades need room to hit TP)
 SCALP_COOLDOWN_MIN = 3          # Min minutes between same-direction trades (was 2)
@@ -442,6 +442,65 @@ class VolFilteredMomentumStrategy(Strategy):
 # =========================================================================
 # ENSEMBLE — combine all strategies
 # =========================================================================
+
+# -- VWAP Strategy (price-based: score from HFT eval: +15.33%, 62.5% WR) --
+class VWAPStrategy(Strategy):
+    """VWAP bias: price above VWAP = bullish, below = bearish.
+    Best standalone HFT strategy — 62.5% win rate on 10-min scalp."""
+    name = "vwap"
+
+    def __init__(self, threshold_pct: float = 0.1):
+        self.threshold = threshold_pct
+
+    def analyze(self, pred: KronosPrediction, df=None) -> StrategyResult:
+        if df is None or len(df) < 20:
+            return StrategyResult(self.name, Signal.HOLD, 0.0, "No data")
+        typical = (df["high"] + df["low"] + df["close"]) / 3
+        vwap = (typical * df["volume"]).sum() / df["volume"].sum()
+        price = float(df["close"].iloc[-1])
+        dist = (price - vwap) / vwap * 100
+        if dist > self.threshold:
+            conf = min(dist / 0.5, 0.8)
+            return StrategyResult(self.name, Signal.BUY, conf, f"Price +{dist:.2f}% above VWAP")
+        elif dist < -self.threshold:
+            conf = min(abs(dist) / 0.5, 0.8)
+            return StrategyResult(self.name, Signal.SELL, conf, f"Price {dist:.2f}% below VWAP")
+        return StrategyResult(self.name, Signal.HOLD, 0.0, f"Price {dist:.2f}% near VWAP")
+
+
+class EMAStrategy(Strategy):
+    """EMA 9/21 crossover: fast above slow = bullish, below = bearish.
+    Second-best HFT strategy — +10.51%, 56.5% WR."""
+    name = "ema_cross"
+
+    def __init__(self, fast: int = 9, slow: int = 21):
+        self.fast = fast
+        self.slow = slow
+
+    def analyze(self, pred: KronosPrediction, df=None) -> StrategyResult:
+        if df is None or len(df) < self.slow + 1:
+            return StrategyResult(self.name, Signal.HOLD, 0.0, "No data")
+        closes = df["close"].values
+        ema_f = pd.Series(closes).ewm(span=self.fast).mean().values[-1]
+        ema_s = pd.Series(closes).ewm(span=self.slow).mean().values[-1]
+        prev_f = pd.Series(closes[:-1]).ewm(span=self.fast).mean().values[-1]
+        prev_s = pd.Series(closes[:-1]).ewm(span=self.slow).mean().values[-1]
+        spread = (ema_f - ema_s) / ema_s * 100
+        # Crossover just happened
+        if prev_f <= prev_s and ema_f > ema_s:
+            conf = min(abs(spread) * 5, 0.8)
+            return StrategyResult(self.name, Signal.BUY, conf, f"EMA9 crossed above EMA21 ({spread:+.3f}%)")
+        if prev_f >= prev_s and ema_f < ema_s:
+            conf = min(abs(spread) * 5, 0.8)
+            return StrategyResult(self.name, Signal.SELL, conf, f"EMA9 crossed below EMA21 ({spread:+.3f}%)")
+        # Sustained bias
+        if ema_f > ema_s:
+            return StrategyResult(self.name, Signal.BUY, 0.2, f"EMA9({ema_f:.0f}) > EMA21({ema_s:.0f})")
+        if ema_f < ema_s:
+            return StrategyResult(self.name, Signal.SELL, 0.2, f"EMA9({ema_f:.0f}) < EMA21({ema_s:.0f})")
+        return StrategyResult(self.name, Signal.HOLD, 0.0, "EMAs flat")
+
+
 class StrategyEnsemble:
     """
     Runs all strategies and produces a consensus signal.
@@ -475,50 +534,110 @@ class StrategyEnsemble:
         return results
 
 
+# -- RSI Strategy (highest WR at 54.1% over 30 months, 30 trades/day) --
+class RSIStrategy(Strategy):
+    """RSI overbought/oversold. Highest win rate of any strategy tested."""
+    name = "rsi"
+
+    def __init__(self, period=14, oversold=30, overbought=70):
+        self.period = period
+        self.oversold = oversold
+        self.overbought = overbought
+
+    def analyze(self, pred: KronosPrediction, df=None) -> StrategyResult:
+        if df is None or len(df) < self.period + 1:
+            return StrategyResult(self.name, Signal.HOLD, 0.0, "No data")
+        closes = df["close"].values[-(self.period + 1):]
+        deltas = np.diff(closes)
+        gains = np.where(deltas > 0, deltas, 0)
+        losses = np.where(deltas < 0, -deltas, 0)
+        avg_gain = np.mean(gains)
+        avg_loss = np.mean(losses)
+        if avg_loss == 0:
+            return StrategyResult(self.name, Signal.HOLD, 0.0, "RSI flat")
+        rs = avg_gain / avg_loss
+        rsi = 100 - (100 / (1 + rs))
+        if rsi < self.oversold:
+            conf = min((self.oversold - rsi) / self.oversold, 1.0)
+            return StrategyResult(self.name, Signal.BUY, conf, f"RSI {rsi:.1f} oversold")
+        elif rsi > self.overbought:
+            conf = min((rsi - self.overbought) / (100 - self.overbought), 1.0)
+            return StrategyResult(self.name, Signal.SELL, conf, f"RSI {rsi:.1f} overbought")
+        return StrategyResult(self.name, Signal.HOLD, 0.0, f"RSI {rsi:.1f} neutral")
+
+
 class ScalpStrategyEnsemble(StrategyEnsemble):
-    """HFT ensemble with ultra-sensitive thresholds for 200+ trades/day."""
+    """HFT ensemble optimized from 30-month backtest (129k windows).
+    Primary: VWAP (+179%), EMA (+171%), RSI (+113%, highest WR 54%).
+    Kronos range_ext supplements when breakout signals align."""
 
     def __init__(self):
         self.strategies: list[Strategy] = [
-            AntitrendStrategy(extreme_pct=SCALP_ANTITREND_EXTREME, min_range_pct=SCALP_MIN_RANGE),
-            AntitrendStrategy(extreme_pct=SCALP_ANTITREND_CONSERVATIVE, min_range_pct=SCALP_MIN_RANGE),
-            TrendMomentumStrategy(buy_threshold=SCALP_TREND_THRESHOLD, sell_threshold=-SCALP_TREND_THRESHOLD,
-                                  min_range_pct=SCALP_MIN_RANGE),
-            TrendMomentumStrategy(buy_threshold=SCALP_TREND_THRESHOLD * 2, sell_threshold=-SCALP_TREND_THRESHOLD * 2,
-                                  min_range_pct=SCALP_MIN_RANGE + 0.04),
-            MomentumSlopeStrategy(slope_threshold=SCALP_SLOPE_THRESHOLD, min_range_pct=SCALP_MIN_RANGE),
-            CandleProgressionStrategy(min_consensus=SCALP_MIN_CONSENSUS, min_range_pct=SCALP_MIN_RANGE),
+            # Price-based — proven across 30 months of BTC
+            VWAPStrategy(threshold_pct=0.10),
+            VWAPStrategy(threshold_pct=0.20),  # Wider threshold = fewer, higher-conf trades
+            EMAStrategy(fast=9, slow=21),
+            RSIStrategy(period=14, oversold=30, overbought=70),
+            # Kronos-based — supplements when model predicts breakouts
             RangeExtensionStrategy(extension_pct=SCALP_EXTENSION_PCT, min_range_pct=SCALP_MIN_RANGE),
-            VolFilteredMomentumStrategy(min_range_pct=SCALP_VOL_FILTER, min_bullish_ratio=0.55),
         ]
         self.vol_strategy = VolatilityBreakoutStrategy(vol_multiplier=SCALP_VOL_MULTIPLIER)
 
+    def analyze(self, pred: KronosPrediction, df=None) -> list[StrategyResult]:
+        results = []
+        for s in self.strategies:
+            try:
+                results.append(s.analyze(pred, df))
+            except Exception as e:
+                results.append(StrategyResult(s.name, Signal.HOLD, 0.0, f"Error: {e}"))
+        try:
+            results.append(self.vol_strategy.analyze(pred, df))
+        except Exception as e:
+            results.append(StrategyResult(self.vol_strategy.name, Signal.HOLD, 0.0, f"Error: {e}"))
+        return results
+
     def consensus(self, results: list[StrategyResult]) -> StrategyResult:
         """
-        Weighted consensus with antitrend priority.
-        antitrend has proven edge (40% direction acc → mean reversion wins).
-        Other strategies act as veto/vibe check.
+        Weighted consensus from 30-month backtest data.
+        VWAP: proven best (+179%, 119 trades/day)
+        EMA: strong runner-up (+171%)
+        RSI: highest WR (54.1%)
+        Range_ext / vol_breakout: secondary supplements
         """
         signal_map = {
             Signal.STRONG_BUY: 2, Signal.BUY: 1, Signal.HOLD: 0,
             Signal.SELL: -1, Signal.STRONG_SELL: -2
         }
 
-        # Separate antitrend signals from general signals
-        antitrend_results = [r for r in results if r.name == "antitrend"]
-        general_results = [r for r in results if r.name != "antitrend"]
+        # Tier 1 — highest proven edge (VWAP = 2.5x, EMA = 2x)
+        vwap_results = [r for r in results if r.name == "vwap"]
+        ema_results = [r for r in results if r.name == "ema_cross"]
+        # Tier 2 — strong performers (RSI = 1.5x, range_ext = 1.5x)
+        rsi_results = [r for r in results if r.name == "rsi"]
+        range_results = [r for r in results if r.name == "range_extension"]
+        # Tier 3 — the rest (1x)
+        other_results = [r for r in results if r.name not in {"vwap", "ema_cross", "rsi", "range_extension"}]
 
         total_weight = 0.0
         weighted_sum = 0.0
 
-        # Antitrend gets 2x weight (proven edge)
-        for r in antitrend_results:
+        for r in vwap_results:
+            w = r.confidence * 2.5
+            weighted_sum += signal_map[r.signal] * w
+            total_weight += w
+        for r in ema_results:
             w = r.confidence * 2.0
             weighted_sum += signal_map[r.signal] * w
             total_weight += w
-
-        # General strategies get 1x weight (vibe check)
-        for r in general_results:
+        for r in rsi_results:
+            w = r.confidence * 1.5
+            weighted_sum += signal_map[r.signal] * w
+            total_weight += w
+        for r in range_results:
+            w = r.confidence * 1.5
+            weighted_sum += signal_map[r.signal] * w
+            total_weight += w
+        for r in other_results:
             w = r.confidence
             weighted_sum += signal_map[r.signal] * w
             total_weight += w
@@ -604,7 +723,7 @@ class Backtester:
             print(f"[Backtester] Need {total_needed} rows, have {len(df)}", file=sys.stderr)
             return {"error": "insufficient data"}
 
-        ensemble = StrategyEnsemble()
+        ensemble = ScalpStrategyEnsemble()
         all_trades: list[BacktestTrade] = []
         strategy_performance: dict[str, list[float]] = {}
 
