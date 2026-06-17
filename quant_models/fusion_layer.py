@@ -93,6 +93,10 @@ class QuantFusionEngine:
         except Exception:
             pass
 
+        # Save longer price history for Hurst computation
+        if prices is not None and len(prices) > 100:
+            self._hurst_prices = prices.copy()
+
         # Initialize Kalman with first price
         if prices is not None and len(prices) > 0:
             self.kalman = KalmanPriceSmoother(initial_price=float(prices[0]))
@@ -209,16 +213,20 @@ class QuantFusionEngine:
         H = 0.5
         hurst_mult = 1.0
         try:
-            if len(prices) > 100:
+            # Use stored longer history if available, otherwise df window
+            hurst_prices = getattr(self, '_hurst_prices', None)
+            if hurst_prices is not None and len(hurst_prices) >= 200:
+                H = self.hurst.compute(hurst_prices[-500:])  # ~2 days
+            elif len(prices) > 100:
                 H = self.hurst.compute(prices[-200:])
-                hurst_mult = self.hurst.antitrend_multiplier(H)
-                result["regime"]["hurst_H"] = round(H, 4)
-                result["regime"]["hurst_label"] = self.hurst.classify(H)
-                result["regime"]["hurst_mult"] = round(hurst_mult, 3)
-                # TP/SL from Hurst
-                hurst_tp_sl = self.hurst.tp_sl_adjustment(H)
-                result["tp_sl"]["hurst_tp_adj"] = hurst_tp_sl["tp"]
-                result["tp_sl"]["hurst_sl_adj"] = hurst_tp_sl["sl"]
+            hurst_mult = self.hurst.antitrend_multiplier(H)
+            result["regime"]["hurst_H"] = round(H, 4)
+            result["regime"]["hurst_label"] = self.hurst.classify(H)
+            result["regime"]["hurst_mult"] = round(hurst_mult, 3)
+            # TP/SL from Hurst
+            hurst_tp_sl = self.hurst.tp_sl_adjustment(H)
+            result["tp_sl"]["hurst_tp_adj"] = hurst_tp_sl["tp"]
+            result["tp_sl"]["hurst_sl_adj"] = hurst_tp_sl["sl"]
         except Exception as e:
             result["quant_details"]["hurst_error"] = str(e)
 
@@ -263,37 +271,70 @@ class QuantFusionEngine:
         # Combine antitrend multipliers from HMM + Hurst
         final_mult = hmm_mult * hurst_mult
 
-        # Apply Kalman divergence signal as adjustment to confidence
+        # Apply Kalman divergence signal as adjustment
         kalman_boost = 1.0 + abs(kalman_signal) * 0.5
-        if kalman_signal < 0:
-            kalman_boost = 1.0  # don't boost from negative kalman
+        trust_kalman = abs(kalman_signal) >= 0.5  # strong Kalman divergence
 
-        # Final confidence
-        if bma_vote != 0 and bma_conf > 0:
-            # BMA gives us a direction and confidence
-            final_confidence = bma_conf * final_mult * kalman_boost
+        # Determine hmm regime label
+        hmm_label = result["regime"].get("hmm_label", "unknown")
+        hurst_label = result["regime"].get("hurst_label", "random_walk")
+
+        # --- DECISION LOGIC ---
+        # Priority 1: BMA strong vote (data-driven from strategy track records)
+        if bma_vote != 0 and bma_conf > 0.3:
+            final_confidence = bma_conf * min(final_mult, 1.5) * kalman_boost
             if bma_vote > 0.1:
                 decision = "BUY"
             elif bma_vote < -0.1:
                 decision = "SELL"
             else:
                 decision = "HOLD"
-        else:
-            # Fall back to Kronos antitrend with multipliers
+
+        # Priority 2: Kalman strong divergence (price vs filtered estimate)
+        elif trust_kalman and abs(kalman_div) > 0.2:
+            # Kalman divergence provides its own signal direction
             final_confidence = kronos_confidence * final_mult * kalman_boost
-            decision = (
-                "BUY" if kronos_direction == "BULLISH" and final_mult >= 1.0
-                else "SELL" if kronos_direction == "BEARISH" and final_mult >= 1.0
-                else "HOLD"
-            )
-            # Override with antitrend signal if HMM+Hurst strongly suggests mean reversion
-            if hmm_mult >= 2.0 or H < 0.4:
-                # Mean-reverting regime — invert Kronos
-                if kronos_direction == "BULLISH":
-                    decision = "SELL"
-                elif kronos_direction == "BEARISH":
-                    decision = "BUY"
-                final_confidence = kronos_confidence * final_mult
+            if kalman_signal > 0.3:
+                decision = "BUY"
+            elif kalman_signal < -0.3:
+                decision = "SELL"
+            else:
+                decision = "HOLD"
+
+        # Priority 3: Regime-based trading
+        elif hmm_label == "mean_reverting" and (H < 0.4 or hurst_label == "mean_reverting"):
+            # Mean-reverting regime confirmed by BOTH HMM and Hurst → ANTITREND (invert Kronos)
+            if kronos_direction == "BULLISH":
+                decision = "SELL"
+                final_confidence = kronos_confidence * min(final_mult, 2.0)
+            elif kronos_direction == "BEARISH":
+                decision = "BUY"
+                final_confidence = kronos_confidence * min(final_mult, 2.0)
+            else:
+                decision = "HOLD"
+                final_confidence = 0.0
+
+        elif hmm_label == "trending" or H > 0.55:
+            # Trending regime → follow Kronos direction
+            if kronos_direction == "BULLISH":
+                decision = "BUY"
+                final_confidence = kronos_confidence * max(final_mult, 0.8)
+            elif kronos_direction == "BEARISH":
+                decision = "SELL"
+                final_confidence = kronos_confidence * max(final_mult, 0.8)
+            else:
+                decision = "HOLD"
+                final_confidence = 0.0
+
+        else:
+            # Mixed/uncertain regime → follow Kronos direction with mild filtering
+            final_confidence = kronos_confidence * final_mult * kalman_boost
+            if kronos_direction == "BULLISH" and final_confidence > 0.3:
+                decision = "BUY"
+            elif kronos_direction == "BEARISH" and final_confidence > 0.3:
+                decision = "SELL"
+            else:
+                decision = "HOLD"
 
         # GARCH vol override: skip if extreme vol
         if garch_skip and vol_ratio > 2.0:

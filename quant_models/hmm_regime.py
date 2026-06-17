@@ -68,12 +68,12 @@ class HMMRegimeDetector:
             mean_r = float(np.mean(state_returns))
             std_r = float(np.std(state_returns))
 
-            # Heuristic labeling
-            if abs(mean_r) > 0.001 and std_r > 0.002:
+            # Heuristic labeling — calibrated for 5m BTC (std ~0.0012)
+            if abs(mean_r) > 0.0003 and std_r > 0.0010:
                 label = "trending"
-            elif abs(mean_r) < 0.001 and std_r > 0.003:
+            elif abs(mean_r) < 0.0002 and std_r > 0.0020:
                 label = "high_vol"
-            elif abs(mean_r) < 0.0005 and std_r < 0.001:
+            elif abs(mean_r) < 0.0002 and std_r < 0.0006:
                 label = "low_vol"
             else:
                 label = "mean_reverting"
@@ -114,8 +114,8 @@ class HMMRegimeDetector:
         label = self.regime_label(regime_id)
         multipliers = {
             "mean_reverting": 2.0,   # antitrend thrives here
-            "trending":       0.3,   # trend-following better
-            "high_vol":       0.7,   # noisy — reduce conviction
+            "trending":       0.6,   # mild suppression — follow Kronos direction
+            "high_vol":       0.9,   # mild suppression — noisy but still tradeable
             "low_vol":        0.8,   # low edge — reduce conviction
             "unknown":        1.0,
         }
