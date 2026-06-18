@@ -1,0 +1,23 @@
+{
+  "windows": 200,
+  "samples_per_window": 20,
+  "total_samples": 4000,
+  "baseline_accuracy": 0.128,
+  "test_accuracy": 0.825,
+  "feature_importance": {
+    "is_bullish": 31.097,
+    "net_change_pct": 17.791,
+    "is_bearish": 14.757,
+    "max_drawdown": 3.904,
+    "linearity": 3.304,
+    "candle_2": 3.23,
+    "volatility": 3.077,
+    "range_pct": 2.9,
+    "first_candle_pct": 2.722,
+    "candle_1": 2.552,
+    "candle_0": 2.34,
+    "acceleration": 1.222
+  },
+  "avg_pred_time": 0.779,
+  "total_time": 156.0
+}

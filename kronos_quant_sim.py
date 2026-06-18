@@ -281,6 +281,18 @@ qf.set_htf_bias(
 print(f"  HTF bias set from resampled 1h EMA50=${df_1h_local['ema50'].iloc[-1]:.2f}")
 
 qf.initialize(btc_price=float(df['c'].iloc[-1]))
+
+# Load sample selector if model exists
+import os as _os
+selector_model_path = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'quant_models', 'models', 'kronos_selector.xgb')
+if _os.path.exists(selector_model_path):
+    try:
+        qf.load_selector(selector_model_path, predictor=predictor, samples=20)
+    except Exception as e:
+        print(f"  ⚠ Selector load failed: {e}")
+else:
+    print(f"  ⚠ Selector model not found at {selector_model_path}")
+
 print("  ✅ Fusion engine ready")
 
 # Init simulators
@@ -352,6 +364,9 @@ for batch, idx in enumerate(indices):
         sim_kronos_raw.open(kronos_dir, price, BASELINE_SIZE, idx)
 
     # ── QUANT FUSION ──
+    # Run sample selector if available (20 samples -> picks best)
+    selector_result = qf.run_selector(ctx) if qf.selector and qf.selector.is_trained else {}
+
     fusion_result = qf.analyze(
         df=ctx_eng,
         kronos_direction=direction,
@@ -362,6 +377,7 @@ for batch, idx in enumerate(indices):
             'antitrend': (1 if base_dir == 'BUY' else -1 if base_dir == 'SELL' else 0, base_conf),
             'kronos_raw': (1 if net > 0.04 else -1 if net < -0.04 else 0, kronos_conf),
         },
+        selector_result=selector_result,
     )
 
     # Execute quant fusion trade
