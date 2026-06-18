@@ -19,6 +19,13 @@ from .garch_vol import GARCHVolForecast
 from .bayesian_averaging import BayesianModelAveraging
 from .kelly_sizing import KellyPositionSizer
 
+try:
+    from .sample_selector import SampleSelector, predict_samples as _selector_predict
+    HAS_SELECTOR = True
+except ImportError:
+    HAS_SELECTOR = False
+    SampleSelector = None
+
 
 def _compute_rsi(prices: np.ndarray, period: int = 14) -> float:
     """Compute RSI for latest price point."""
@@ -88,6 +95,11 @@ class QuantFusionEngine:
         self._htf_bias = None     # "BULLISH" / "BEARISH" / None
         self._htf_ema = None      # latest EMA50 value
 
+        # Sample selector
+        self.selector = None
+        self._selector_samples = 50
+        self._predictor = None  # KronosPredictor instance for selector inference
+
         self.latest = {}
 
     def warmup(
@@ -136,6 +148,34 @@ class QuantFusionEngine:
         )
         self._kelly_initialized = True
 
+    def load_selector(self, model_path: str, predictor=None, samples: int = 50):
+        """Load trained XGBoost sample selector."""
+        if not HAS_SELECTOR:
+            raise ImportError("sample_selector module not available")
+        self.selector = SampleSelector(model_path)
+        self._selector_samples = samples
+        self._predictor = predictor
+        if self.selector.is_trained:
+            print(f"  ✅ Sample selector loaded ({samples} samples)")
+
+    def run_selector(self, df_5m: pd.DataFrame) -> dict:
+        """
+        Run sample selector on a 5m dataframe.
+
+        Returns dict with selector decision, or empty dict if not available.
+        """
+        if self.selector is None or not self.selector.is_trained or self._predictor is None:
+            return {}
+        try:
+            samples, price, avg = _selector_predict(
+                self._predictor, df_5m,
+                sample_count=self._selector_samples,
+            )
+            result = self.selector.select_best(samples)
+            return result
+        except Exception as e:
+            return {"error": str(e)}
+
     def set_htf_bias(self, ema50: float, current_price: float):
         """
         Set higher-timeframe bias from 1h EMA50.
@@ -157,6 +197,7 @@ class QuantFusionEngine:
         kronos_confidence: float,
         current_price: float = None,
         strategy_signals: dict = None,
+        selector_result: dict = None,
     ) -> dict:
         """
         Run full quant fusion pipeline with all 5 WR optimizations.
@@ -360,7 +401,19 @@ class QuantFusionEngine:
         trust_kalman = abs(kalman_signal) >= 0.5
 
         # --- DECISION LOGIC ---
-        if bma_vote != 0 and bma_conf > 0.3:
+        # Priority 0: Sample selector (if available and confident)
+        selector_override = False
+        if selector_result and selector_result.get('decision', 'HOLD') != 'HOLD' and selector_result.get('confidence_adjusted', 0) > 0.4:
+            decision = selector_result['decision']
+            final_confidence = selector_result['confidence_adjusted']
+            result['optimizations']['decision_source'] = 'selector'
+            result['optimizations']['selector_net'] = selector_result.get('net_change', 0)
+            result['optimizations']['selector_best_prob'] = selector_result.get('best_prob', 0)
+            result['optimizations']['selector_avg_prob'] = selector_result.get('avg_prob', 0)
+            selector_override = True
+
+        # Priority 1: BMA data-driven vote
+        if not selector_override and bma_vote != 0 and bma_conf > 0.3:
             # Priority 1: BMA data-driven vote
             final_confidence = bma_conf * min(final_mult, 1.5) * kalman_boost
             decision = "BUY" if bma_vote > 0.2 else "SELL" if bma_vote < -0.2 else "HOLD"
