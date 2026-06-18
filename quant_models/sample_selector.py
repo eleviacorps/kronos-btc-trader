@@ -284,25 +284,29 @@ FEATURE_NAMES = [
 ]
 
 
-def label_sample(sample: dict, future_high: float, future_low: float, future_close: float, entry_price: float) -> int:
+def label_sample(sample: dict, future_high: float, future_low: float, future_close: float,
+                 entry_price: float, tp_pct: float = 0.3, sl_pct: float = 0.2) -> int:
     """
-    Label whether a sample's direction would have been profitable using TP/SL logic.
+    PROFIT-BASED LABEL: Would this sample's direction have hit TP before SL?
 
-    1 = sample's direction was correct (market moved in predicted direction)
-    0 = sample's direction was wrong
+    Simulates a trade based on the sample's direction with configurable TP/SL.
+    1 = trade would have hit TP (profitable)
+    0 = trade would have hit SL or expired (loss/no-trade)
 
-    Market moved in predicted direction if:
-      BUY:  future_high >= entry * 1.001 (moved up 0.1%+)
-      SELL: future_low  <= entry * 0.999 (moved down 0.1%+)
-      NEUTRAL: 0 (never profitable — don't trade)
+    This is the ground truth for what actually matters — not whether the
+    direction was "correct" in theory, but whether it made money.
     """
     direction = sample['direction']
     if direction == 'BULLISH':
-        return 1 if future_high >= entry_price * 1.001 else 0
-    elif direction == 'BEARISH':
-        return 1 if future_low <= entry_price * 0.999 else 0
+        tp = entry_price * (1 + tp_pct / 100)
+        sl = entry_price * (1 - sl_pct / 100)
+        return 1 if future_high >= tp else 0
+    elif direction == 'SELL':
+        tp = entry_price * (1 - tp_pct / 100)
+        sl = entry_price * (1 + sl_pct / 100)
+        return 1 if future_low <= tp else 0
     else:
-        return 0
+        return 0  # NEUTRAL never profitable
 
 
 def label_sample_strict(sample: dict, future_high: float, future_low: float,

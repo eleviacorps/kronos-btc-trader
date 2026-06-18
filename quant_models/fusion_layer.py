@@ -462,52 +462,57 @@ class QuantFusionEngine:
 
         # ═══════════════════════════════════════════════
         # OPTIMIZATION 2: MULTI-CONDITION CONFIRMATION GATE
+        # (Skipped if selector confidence > 0.5 — it already learned to pick winners)
         # ═══════════════════════════════════════════════
         if decision != "HOLD" and result["optimizations"].get("decision_source") not in ("BMA", "Kalman"):
-            # Count agreements with the proposed direction
-            agreements = 0
-            total_checks = 0
+            # Check if selector overrides the gate
+            if selector_result and selector_result.get('confidence_adjusted', 0) > 0.5:
+                result["optimizations"]["gate_skipped"] = f"selector conf {selector_result['confidence_adjusted']:.2f} > 0.5"
+            else:
+                # Count agreements with the proposed direction
+                agreements = 0
+                total_checks = 0
 
-            # Check 1: HTF bias agrees
-            if self._htf_bias is not None:
+                # Check 1: HTF bias agrees
+                if self._htf_bias is not None:
+                    total_checks += 1
+                    if (decision == "BUY" and self._htf_bias == "BULLISH") or \
+                       (decision == "SELL" and self._htf_bias == "BEARISH"):
+                        agreements += 1
+
+                # Check 2: HMM regime agrees
                 total_checks += 1
-                if (decision == "BUY" and self._htf_bias == "BULLISH") or \
-                   (decision == "SELL" and self._htf_bias == "BEARISH"):
+                if hmm_label == "trending" and decision == kronos_direction:
                     agreements += 1
+                elif hmm_label == "mean_reverting" and decision != kronos_direction:
+                    agreements += 1
+                elif hmm_label in ("high_vol", "low_vol", "unknown"):
+                    agreements += 1  # neutral — don't penalize
 
-            # Check 2: HMM regime agrees
-            total_checks += 1
-            if hmm_label == "trending" and decision == kronos_direction:
-                agreements += 1
-            elif hmm_label == "mean_reverting" and decision != kronos_direction:
-                agreements += 1
-            elif hmm_label in ("high_vol", "low_vol", "unknown"):
-                agreements += 1  # neutral — don't penalize
+                # Check 3: Hurst agrees
+                total_checks += 1
+                if H > 0.55 and decision == kronos_direction:
+                    agreements += 1
+                elif H < 0.4 and decision != kronos_direction:
+                    agreements += 1
+                else:
+                    agreements += 1  # neutral Hurst — don't penalize
 
-            # Check 3: Hurst agrees
-            total_checks += 1
-            if H > 0.55 and decision == kronos_direction:
-                agreements += 1
-            elif H < 0.4 and decision != kronos_direction:
-                agreements += 1
-            else:
-                agreements += 1  # neutral Hurst — don't penalize
+                # Check 4: RSI confirms (not extreme against)
+                total_checks += 1
+                if decision == "BUY" and rsi < 50:
+                    agreements += 1
+                elif decision == "SELL" and rsi > 50:
+                    agreements += 1
+                else:
+                    agreements += 0  # RSI against = no agreement
 
-            # Check 4: RSI confirms (not extreme against)
-            total_checks += 1
-            if decision == "BUY" and rsi < 50:
-                agreements += 1
-            elif decision == "SELL" and rsi > 50:
-                agreements += 1
-            else:
-                agreements += 0  # RSI against = no agreement
-
-            # Require majority (ceil(total_checks/2)) but minimum 2 of 4
-            required = max(2, (total_checks + 1) // 2)
-            if agreements < required:
-                decision = "HOLD"
-                final_confidence *= 0.5
-                result["optimizations"]["gate_blocked"] = f"agreed {agreements}/{total_checks} < {required}"
+                # Require majority (ceil(total_checks/4)) but minimum 2 of 4
+                required = max(2, (total_checks + 1) // 2)
+                if agreements < required:
+                    decision = "HOLD"
+                    final_confidence *= 0.5
+                    result["optimizations"]["gate_blocked"] = f"agreed {agreements}/{total_checks} < {required}"
 
         # Apply high_vol penalty (halve confidence instead of skipping)
         if result.get("optimizations", {}).get("high_vol_penalty"):

@@ -3,15 +3,19 @@
 kronos_selector_train.py — Train XGBoost sample selector for Kronos.
 
 Pipeline:
-  1. Fetch 2500+ BTC 5m windows from Binance
+  1. Fetch 15000+ BTC 5m candles from Binance (~52 days)
   2. For each window, generate 50 Kronos samples
-  3. Extract features and label each sample (was direction correct?)
-  4. Train XGBoost classifier
+  3. Extract features and label each sample (PROFIT-BASED: would TP have hit before SL?)
+  4. Train XGBoost classifier on ~150k labeled samples
   5. Save trained model + feature importance report
 
+Labels use TP=0.3%, SL=0.2% to simulate actual trade profitability,
+not just directional accuracy. This trains the selector to pick samples
+that make money, not just samples that guess direction correctly.
+
 Usage:
-  python kronos_selector_train.py --windows 500 --samples 50 --quick
-  python kronos_selector_train.py --windows 2000 --samples 50 --save
+  python kronos_selector_train.py --windows 500 --samples 20 --quick
+  python kronos_selector_train.py --windows 3000 --samples 50 --save
 """
 
 import sys, os, time, argparse, json, warnings
@@ -37,10 +41,10 @@ from quant_models.sample_selector import (
 LOOKBACK = 200
 PRED_LEN = 4
 STRIDE = 5  # every 5th window to reduce overlap
-SAMPLE_COUNT = 50  # samples per window (higher = better training)
+SAMPLE_COUNT = 50  # samples per window (higher = training data quality)
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--windows', type=int, default=2000, help='Total windows to process')
+parser.add_argument('--windows', type=int, default=3000, help='Total windows to process')
 parser.add_argument('--samples', type=int, default=SAMPLE_COUNT, help='Samples per Kronos prediction')
 parser.add_argument('--quick', action='store_true', help='Run fewer windows')
 parser.add_argument('--save', action='store_true', help='Save model')
@@ -64,8 +68,8 @@ ex = ccxt.binance({'options': {'defaultType': 'spot'}, 'timeout': 30000})
 ex.load_markets()
 
 all_c = []
-since = ex.parse8601((datetime.utcnow() - timedelta(days=30)).isoformat())
-while len(all_c) < 8000:
+since = ex.parse8601((datetime.utcnow() - timedelta(days=60)).isoformat())
+while len(all_c) < 15000:
     o = ex.fetch_ohlcv('BTC/USDT', '5m', since=since, limit=1000)
     if not o: break
     all_c.extend(o)
@@ -184,8 +188,8 @@ y = np.array(all_labels, dtype=np.int32)
 # Stats
 n_correct = int(y.sum())
 n_total = len(y)
-print(f"  Dataset: {n_total} samples ({n_correct} correct, {n_total - n_correct} wrong)")
-print(f"  Baseline accuracy: {n_correct / max(n_total, 1) * 100:.1f}%")
+print(f"  Dataset: {n_total} samples ({n_correct} profitable, {n_total - n_correct} unprofitable)")
+print(f"  Baseline profitability: {n_correct / max(n_total, 1) * 100:.1f}% (TP=0.3% SL=0.2%)")
 
 for d, counts in correct_by_direction.items():
     wr = counts['correct'] / max(counts['total'], 1) * 100
