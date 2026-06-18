@@ -51,7 +51,7 @@ LEVERAGE = 200
 TP_PCT = 0.3   # base TP %
 SL_PCT = 0.2   # base SL %
 LOOKBACK = 200
-STRIDE = 2     # every 2nd candle (10 min)
+STRIDE = 10    # every 10th candle (50 min) — less overlap, more coverage
 
 print(f"{'='*60}")
 print(f"  KRONOS + QUANT FUSION — 10-DAY SIMULATION")
@@ -364,8 +364,12 @@ for batch, idx in enumerate(indices):
         sim_kronos_raw.open(kronos_dir, price, BASELINE_SIZE, idx)
 
     # ── QUANT FUSION ──
-    # Run sample selector if available (20 samples -> picks best)
+    # Run sample selector if available (50 samples -> picks best)
     selector_result = qf.run_selector(ctx) if qf.selector and qf.selector.is_trained else {}
+
+    # BUY-ONLY from selector: BULLISH accuracy 60.5% vs BEARISH 48.8%
+    if selector_result and selector_result.get('decision') == 'SELL':
+        selector_result['decision'] = 'HOLD'
 
     fusion_result = qf.analyze(
         df=ctx_eng,
