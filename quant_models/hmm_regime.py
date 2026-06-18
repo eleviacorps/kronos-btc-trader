@@ -35,7 +35,7 @@ class HMMRegimeDetector:
         3: "low_vol",
     }
 
-    def __init__(self, n_regimes: int = 4, n_iter: int = 200, random_state: int = 42):
+    def __init__(self, n_regimes: int = 2, n_iter: int = 200, random_state: int = 42):
         self.n_regimes = n_regimes
         self.model = hmm.GaussianHMM(
             n_components=n_regimes,
@@ -68,15 +68,16 @@ class HMMRegimeDetector:
             mean_r = float(np.mean(state_returns))
             std_r = float(np.std(state_returns))
 
-            # Heuristic labeling — calibrated for 5m BTC (std ~0.0012)
-            if abs(mean_r) > 0.0003 and std_r > 0.0010:
-                label = "trending"
-            elif abs(mean_r) < 0.0002 and std_r > 0.0020:
+            # Heuristic labeling — 2 regimes for 5m BTC (std ~0.12-0.17%)
+            # Regime with higher std → "high_vol", lower std → "normal"
+            if std_r > 0.0025:
                 label = "high_vol"
-            elif abs(mean_r) < 0.0002 and std_r < 0.0006:
-                label = "low_vol"
-            else:
+            elif std_r > 0.0008 and abs(mean_r) > 0.0003:
+                label = "trending"
+            elif std_r > 0.0008:
                 label = "mean_reverting"
+            else:
+                label = "low_vol"
 
             self._regime_profiles[s] = {"mean": mean_r, "std": std_r, "label": label}
 
