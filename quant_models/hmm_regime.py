@@ -96,8 +96,8 @@ class HMMRegimeDetector:
         return self.model.predict_proba(X)[-1]
 
     def regime_label(self, regime_id: int) -> str:
-        """Get human-readable label for a regime."""
-        return self.REGIME_NAMES.get(regime_id, "unknown")
+        """Get human-readable label for a regime from fitted profile."""
+        return self._regime_profiles.get(regime_id, {}).get("label", "unknown")
 
     def profile(self, regime_id: int) -> dict:
         """Get statistical profile of a regime."""

@@ -317,23 +317,18 @@ class QuantFusionEngine:
             result["optimizations"]["high_vol_penalty"] = 0.5
 
         # ═══════════════════════════════════════════════
-        # OPTIMIZATION 1: HTF BIAS FILTER (1h EMA50)
+        # OPTIMIZATION 1: HTF BIAS FILTER (1h EMA50) — SOFT PENALTY
         # ═══════════════════════════════════════════════
-        htf_block = False
+        htf_penalty = 1.0
         if self._htf_bias is not None:
             if self._htf_bias == "BULLISH" and kronos_direction == "BEARISH":
-                htf_block = True
-                result["optimizations"]["htf_block"] = "BULLISH bias blocks SELL"
+                htf_penalty = 0.6
+                result["optimizations"]["htf_penalty"] = "BULLISH bias penalizes SELL"
             elif self._htf_bias == "BEARISH" and kronos_direction == "BULLISH":
-                htf_block = True
-                result["optimizations"]["htf_block"] = "BEARISH bias blocks BUY"
+                htf_penalty = 0.6
+                result["optimizations"]["htf_penalty"] = "BEARISH bias penalizes BUY"
 
-        if htf_block:
-            result["decision"] = "HOLD"
-            result["confidence"] = 0.0
-            result["reason"] = result["optimizations"]["htf_block"]
-            self.latest = result
-            return result
+        # No hard HTF block — apply penalty later in confidence computation
 
         # ═══════════════════════════════════════════════
         # OPTIMIZATION 3: RSI EXTREME OVERRIDE
@@ -466,6 +461,11 @@ class QuantFusionEngine:
             final_confidence *= 0.5
             result["optimizations"]["high_vol_penalty_applied"] = True
 
+        # Apply HTF penalty (60% confidence instead of blocking)
+        if htf_penalty < 1.0 and decision != "HOLD":
+            final_confidence *= htf_penalty
+            result["optimizations"]["htf_applied"] = True
+
         # ═══════════════════════════════════════════════
         # APPLY TP/SL + KELLY
         # ═══════════════════════════════════════════════
@@ -555,9 +555,9 @@ class QuantFusionEngine:
             f"  Decision:     {l.get('decision', 'N/A')} ({l.get('optimizations', {}).get('decision_source', '?')})",
             f"  Confidence:   {l.get('confidence', 0):.3f}",
             "",
-            f"  TP:           {l['tp_sl']['final_tp_pct']:.2f}% (ATR {l['tp_sl'].get('atr_pct', 0.2):.2f}% × {l['tp_sl'].get('tp_atr_mult', 1.5):.1f}x)",
-            f"  SL:           {l['tp_sl']['final_sl_pct']:.2f}% (ATR × {l['tp_sl'].get('sl_atr_mult', 0.8):.1f}x)",
-            f"  R:R:          {l['tp_sl']['final_tp_pct']/max(l['tp_sl']['final_sl_pct'],0.01):.2f}:1",
+            f"  TP:           {l['tp_sl'].get('final_tp_pct', 0):.2f}% (ATR {l['tp_sl'].get('atr_pct', 0):.2f}% × {l['tp_sl'].get('tp_atr_mult', 0):.1f}x)",
+            f"  SL:           {l['tp_sl'].get('final_sl_pct', 0):.2f}% (ATR × {l['tp_sl'].get('sl_atr_mult', 0):.1f}x)",
+            f"  R:R:          {l['tp_sl'].get('final_tp_pct', 0)/max(l['tp_sl'].get('final_sl_pct', 0.01),0.01):.2f}:1",
             f"  Size:         {l['size']['size_btc']:.4f} BTC",
             "",
             "  ── Regime ──",

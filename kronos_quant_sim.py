@@ -85,24 +85,6 @@ df['t'] = pd.to_datetime(df['ts'], unit='ms')
 df = df.drop_duplicates('ts').sort_values('ts').reset_index(drop=True)
 print(f"  Loaded {len(df)} candles ({df['t'].iloc[0].strftime('%b %d')} → {df['t'].iloc[-1].strftime('%b %d')})")
 
-# ── Fetch 1h data for HTF bias ──
-print("\n  Fetching 1h BTC data for HTF bias...")
-since_1h = ex.parse8601((datetime.utcnow() - timedelta(days=60)).isoformat())
-all_1h = []
-while len(all_1h) < 500:
-    o = ex.fetch_ohlcv('BTC/USDT', '1h', since=since_1h, limit=500)
-    if not o:
-        break
-    all_1h.extend(o)
-    since_1h = o[-1][0] + 1
-    time.sleep(0.1)
-df_1h = pd.DataFrame(all_1h, columns=['ts', 'o', 'h', 'l', 'c', 'v'])
-df_1h['t'] = pd.to_datetime(df_1h['ts'], unit='ms')
-df_1h = df_1h.drop_duplicates('ts').sort_values('ts').reset_index(drop=True)
-# Compute EMA50 on 1h closes
-df_1h['ema50'] = df_1h['c'].ewm(span=50, adjust=False).mean()
-print(f"  Loaded {len(df_1h)} 1h candles, latest EMA50=${df_1h['ema50'].iloc[-1]:.2f}")
-
 # Rename for fusion engine
 df_engine = df.rename(columns={'o': 'open', 'h': 'high', 'l': 'low', 'c': 'close', 'v': 'volume'})
 
@@ -286,6 +268,18 @@ qf = QuantFusionEngine(
     base_tp_pct=TP_PCT, base_sl_pct=SL_PCT,
 )
 qf.warmup(df_engine)
+
+# Compute 1h EMA50 from 5m data by resampling (matches sim period exactly)
+df_1h_local = df[['t', 'c']].copy()
+df_1h_local = df_1h_local.set_index('t').resample('1h').last().dropna().reset_index()
+df_1h_local['ema50'] = df_1h_local['c'].ewm(span=50, adjust=False).mean()
+# Set initial HTF bias
+qf.set_htf_bias(
+    ema50=float(df_1h_local['ema50'].iloc[-1]),
+    current_price=float(df['c'].iloc[-1]),
+)
+print(f"  HTF bias set from resampled 1h EMA50=${df_1h_local['ema50'].iloc[-1]:.2f}")
+
 qf.initialize(btc_price=float(df['c'].iloc[-1]))
 print("  ✅ Fusion engine ready")
 
@@ -329,12 +323,11 @@ for batch, idx in enumerate(indices):
 
     # ── Update HTF bias every 12 batches (~1h at stride 2) ──
     if batch % 12 == 0:
-        # Find the nearest 1h candle to current time
         curr_ts = df['t'].iloc[idx]
-        idx_1h = (df_1h['t'] - curr_ts).abs().idxmin()
-        if 0 <= idx_1h < len(df_1h):
+        idx_1h = (df_1h_local['t'] - curr_ts).abs().idxmin()
+        if 0 <= idx_1h < len(df_1h_local):
             qf.set_htf_bias(
-                ema50=float(df_1h['ema50'].iloc[idx_1h]),
+                ema50=float(df_1h_local['ema50'].iloc[idx_1h]),
                 current_price=price,
             )
 
