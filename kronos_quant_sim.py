@@ -287,7 +287,7 @@ import os as _os
 selector_model_path = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'quant_models', 'models', 'kronos_selector.xgb')
 if _os.path.exists(selector_model_path):
     try:
-        qf.load_selector(selector_model_path, predictor=predictor, samples=20)
+        qf.load_selector(selector_model_path, predictor=predictor, samples=50)
     except Exception as e:
         print(f"  ⚠ Selector load failed: {e}")
 else:
