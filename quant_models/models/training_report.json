@@ -1,23 +1,23 @@
 {
-  "windows": 1559,
+  "windows": 2000,
   "samples_per_window": 50,
-  "total_samples": 77950,
-  "baseline_accuracy": 0.275,
-  "test_accuracy": 0.824,
+  "total_samples": 100000,
+  "baseline_accuracy": 0.177,
+  "test_accuracy": 0.857,
   "feature_importance": {
-    "is_bullish": 1057.902,
-    "is_bearish": 551.661,
-    "net_change_pct": 176.319,
-    "range_pct": 27.708,
-    "max_drawdown": 25.775,
-    "candle_2": 22.531,
-    "candle_1": 21.541,
-    "candle_0": 21.104,
-    "linearity": 20.814,
-    "volatility": 20.231,
-    "first_candle_pct": 20.07,
-    "acceleration": 5.91
+    "is_bullish": 1226.227,
+    "is_bearish": 624.859,
+    "net_change_pct": 189.774,
+    "candle_0": 24.421,
+    "range_pct": 23.105,
+    "max_drawdown": 22.307,
+    "candle_2": 22.181,
+    "candle_1": 22.041,
+    "volatility": 21.119,
+    "first_candle_pct": 20.671,
+    "linearity": 18.439,
+    "acceleration": 5.741
   },
-  "avg_pred_time": 0.82,
-  "total_time": 1280.3
+  "avg_pred_time": 0.874,
+  "total_time": 1751.3
 }

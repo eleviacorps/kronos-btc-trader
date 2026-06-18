@@ -285,28 +285,25 @@ FEATURE_NAMES = [
 
 
 def label_sample(sample: dict, future_high: float, future_low: float, future_close: float,
-                 entry_price: float, tp_pct: float = 0.3, sl_pct: float = 0.2) -> int:
+                 entry_price: float, tp_pct: float = 0, sl_pct: float = 0) -> int:
     """
-    PROFIT-BASED LABEL: Would this sample's direction have hit TP before SL?
+    DIRECTION-BASED LABEL: Did the market move 0.1% in the sample's predicted direction?
 
-    Simulates a trade based on the sample's direction with configurable TP/SL.
-    1 = trade would have hit TP (profitable)
-    0 = trade would have hit SL or expired (loss/no-trade)
+    This is the proven approach. Kronos samples are ~27% directionally accurate
+    at this threshold, giving the selector a learnable signal (52.9% best-sample
+    accuracy). Profit-based labels (TP/SL) are too sparse at 5m frequency (<1%).
 
-    This is the ground truth for what actually matters — not whether the
-    direction was "correct" in theory, but whether it made money.
+    1 = bullish sample → market went up 0.1%+ (high moved)
+       bearish sample → market went down 0.1%+ (low moved)
+    0 = sample was wrong
     """
     direction = sample['direction']
     if direction == 'BULLISH':
-        tp = entry_price * (1 + tp_pct / 100)
-        sl = entry_price * (1 - sl_pct / 100)
-        return 1 if future_high >= tp else 0
-    elif direction == 'SELL':
-        tp = entry_price * (1 - tp_pct / 100)
-        sl = entry_price * (1 + sl_pct / 100)
-        return 1 if future_low <= tp else 0
+        return 1 if future_high >= entry_price * 1.001 else 0
+    elif direction == 'BEARISH':
+        return 1 if future_low <= entry_price * 0.999 else 0
     else:
-        return 0  # NEUTRAL never profitable
+        return 0  # NEUTRAL — skip
 
 
 def label_sample_strict(sample: dict, future_high: float, future_low: float,
