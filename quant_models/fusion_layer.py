@@ -372,8 +372,9 @@ class QuantFusionEngine:
         if hmm_label == "high_vol":
             result["optimizations"]["high_vol_penalty"] = 0.5
 
-        # Volume confirmation: skip if volume is abnormally low (< 0.5x avg)
-        if vol_ratio_to_avg < 0.5 and result["quant_details"].get("vol_ratio_to_avg", 1.0) > 0:
+        # Volume confirmation: skip if volume is abnormally low (< 0.3x avg)
+        # Use 0.3x instead of 0.5x to avoid skipping entries on fresh candles
+        if vol_ratio_to_avg < 0.3 and result["quant_details"].get("vol_ratio_to_avg", 1.0) > 0:
             skip_reason = f"Volume {vol_ratio_to_avg:.2f}x avg — too low"
             result["decision"] = "HOLD"
             result["confidence"] = 0.0

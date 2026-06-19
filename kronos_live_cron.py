@@ -249,7 +249,12 @@ def main():
             },
         }
         with open(PROJECT_DIR / "fusion_analysis.json", "w") as f:
-            json.dump(analysis, f, indent=2)
+            class FloatEncoder(json.JSONEncoder):
+                def default(self, obj):
+                    if isinstance(obj, (np.floating, np.integer)):
+                        return float(obj) if isinstance(obj, np.floating) else int(obj)
+                    return super().default(obj)
+            json.dump(analysis, f, indent=2, cls=FloatEncoder)
     except Exception as e:
         print(f"  ⚠ Failed to save analysis: {e}")
 
