@@ -285,24 +285,38 @@ FEATURE_NAMES = [
 
 
 def label_sample(sample: dict, df_future: pd.DataFrame, entry_price: float,
-                 tp_pct: float = 0, sl_pct: float = 0) -> int:
+                 tp_pct: float = 0.3, sl_pct: float = 0.2) -> int:
     """
-    DIRECTION-BASED LABEL: Did the market move 0.1% in the predicted direction?
+    PROFIT-BASED LABEL: Would this sample have hit TP before SL?
 
-    Proven approach — 17.7% baseline, 46.5% selector accuracy, +40.8pp improvement.
-    Profit-based labels (TP/SL) are too sparse at 5m frequency (<5% even with
-    proper candle-by-candle checking).
+    Matches the actual TP/SL used in trading (ATR-based, ~0.3%/0.2%).
+    This is essential — direction labels (0.1%) don't match trading
+    targets (0.34%), causing the selector to pick wrong samples.
     """
     direction = sample['direction']
-    f_high = float(df_future['h'].max()) if 'h' in df_future.columns else float(df_future['high'].max())
-    f_low = float(df_future['l'].min()) if 'l' in df_future.columns else float(df_future['low'].min())
-
-    if direction == 'BULLISH':
-        return 1 if f_high >= entry_price * 1.001 else 0
-    elif direction == 'BEARISH':
-        return 1 if f_low <= entry_price * 0.999 else 0
-    else:
+    if direction not in ('BULLISH', 'BEARISH'):
         return 0
+
+    for i in range(len(df_future)):
+        hi = float(df_future.iloc[i]['h']) if 'h' in df_future.columns else float(df_future.iloc[i]['high'])
+        lo = float(df_future.iloc[i]['l']) if 'l' in df_future.columns else float(df_future.iloc[i]['low'])
+
+        if direction == 'BULLISH':
+            tp = entry_price * (1 + tp_pct / 100)
+            sl = entry_price * (1 - sl_pct / 100)
+            if hi >= tp:
+                return 1
+            if lo <= sl:
+                return 0
+        else:
+            tp = entry_price * (1 - tp_pct / 100)
+            sl = entry_price * (1 + sl_pct / 100)
+            if lo <= tp:
+                return 1
+            if hi >= sl:
+                return 0
+
+    return 0
 
 
 def label_sample_strict(sample: dict, future_high: float, future_low: float,

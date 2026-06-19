@@ -189,7 +189,7 @@ y = np.array(all_labels, dtype=np.int32)
 n_correct = int(y.sum())
 n_total = len(y)
 print(f"  Dataset: {n_total} samples ({n_correct} correct, {n_total - n_correct} wrong)")
-print(f"  Baseline profitability: {n_correct / max(n_total, 1) * 100:.1f}% (TP=0.3% SL=0.2%, candle-by-candle)")
+print(f"  Baseline profitability: {n_correct / max(n_total, 1) * 100:.1f}% (TP=0.3% SL=0.2%, matches actual trading)")
 
 for d, counts in correct_by_direction.items():
     wr = counts['correct'] / max(counts['total'], 1) * 100
