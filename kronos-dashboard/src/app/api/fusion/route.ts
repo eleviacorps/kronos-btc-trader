@@ -6,11 +6,11 @@ export async function GET() {
   const filePath = join(process.cwd(), "..", "fusion_analysis.json");
   try {
     if (!existsSync(filePath)) {
-      return NextResponse.json({ status: "pending", message: "No analysis yet" });
+      return NextResponse.json({ status: "pending", message: "No analysis yet. Run kronos_live_cron.py first." });
     }
     const raw = readFileSync(filePath, "utf-8");
     return NextResponse.json(JSON.parse(raw));
-  } catch {
-    return NextResponse.json({ status: "error", message: "Failed to read" });
+  } catch (e: any) {
+    return NextResponse.json({ status: "error", message: e?.message || "Failed to read fusion data" });
   }
 }
