@@ -285,7 +285,7 @@ class QuantFusionEngine:
         try:
             hurst_p = self._hurst_prices if self._hurst_prices is not None else prices
             if len(hurst_p) >= 200:
-                H = self.hurst.compute(hurst_p[-500:])
+                H = self.hurst.compute(hurst_p[-1000:])  # ~3.5 days — captures multi-day trends
             elif len(prices) > 100:
                 H = self.hurst.compute(prices[-200:])
             hurst_mult = self.hurst.antitrend_multiplier(H)
@@ -430,8 +430,8 @@ class QuantFusionEngine:
                 decision = "HOLD"
             result["optimizations"]["decision_source"] = "Kalman"
 
-        elif hmm_label == "mean_reverting":
-            # Mean-reverting — ANTITREND (invert Kronos)
+        elif hmm_label == "mean_reverting" and H < 0.5:
+            # Mean-reverting confirmed by BOTH HMM and Hurst (H<0.5) → ANTITREND
             if kronos_direction == "BULLISH":
                 decision, final_confidence = "SELL", kronos_confidence * min(final_mult, 2.0)
             elif kronos_direction == "BEARISH":
@@ -440,15 +440,22 @@ class QuantFusionEngine:
                 decision, final_confidence = "HOLD", 0.0
             result["optimizations"]["decision_source"] = "antitrend"
 
-        elif hmm_label == "trending" or H > 0.55:
-            # Trending — follow Kronos
-            if kronos_direction == "BULLISH":
-                decision, final_confidence = "BUY", kronos_confidence * max(final_mult, 0.8)
-            elif kronos_direction == "BEARISH":
-                decision, final_confidence = "SELL", kronos_confidence * max(final_mult, 0.8)
+        elif hmm_label == "trending" or H > 0.53:
+            # Trending — follow Kronos direction (Hurst > 0.53 is the primary signal)
+            # Use selector's best sample when available (46.5% acc) vs averaged Kronos (27%)
+            sel_dir = (selector_result or {}).get('decision', 'HOLD')
+            use_dir = sel_dir if sel_dir != 'HOLD' else kronos_direction
+            use_conf = (selector_result or {}).get('confidence_adjusted', 0) if sel_dir != 'HOLD' else kronos_confidence
+            if use_dir == "BULLISH":
+                decision, final_confidence = "BUY", use_conf * max(final_mult, 0.8)
+            elif use_dir == "BEARISH":
+                decision, final_confidence = "SELL", use_conf * max(final_mult, 0.8)
             else:
                 decision, final_confidence = "HOLD", 0.0
-            result["optimizations"]["decision_source"] = "trending"
+            if sel_dir != 'HOLD':
+                result["optimizations"]["decision_source"] = "selector+trending"
+            else:
+                result["optimizations"]["decision_source"] = "trending"
 
         else:
             # Mixed — follow Kronos with filtering

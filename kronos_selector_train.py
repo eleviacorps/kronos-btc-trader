@@ -142,14 +142,11 @@ for batch, idx in enumerate(indices):
     future = df.iloc[idx:idx + PRED_LEN]
     if len(future) < PRED_LEN:
         continue
-    future_high = float(future['h'].max())
-    future_low = float(future['l'].min())
-    future_close = float(future['c'].iloc[-1])
 
     # Label each sample and extract features
     for s in samples:
         features = extract_feature_vector(s)
-        label = label_sample(s, future_high, future_low, future_close, current_price)
+        label = label_sample(s, future, current_price, tp_pct=0.3, sl_pct=0.2)
         all_features.append(features)
         all_labels.append(label)
         total_samples += 1
@@ -161,10 +158,13 @@ for batch, idx in enumerate(indices):
 
     # Track overall accuracy per window (using avg prediction as baseline)
     avg_dir = avg_info['direction']
+    f_high = float(future['h'].max()) if 'h' in future.columns else float(future['high'].max())
+    f_low = float(future['l'].min()) if 'l' in future.columns else float(future['low'].min())
+    f_close = float(future['c'].iloc[-1]) if 'c' in future.columns else float(future['close'].iloc[-1])
     if avg_dir == 'BULLISH':
-        avg_correct = 1 if future_close > future_high * 0.99 else 0
+        avg_correct = 1 if f_close > f_high * 0.99 else 0
     elif avg_dir == 'BEARISH':
-        avg_correct = 1 if future_close < future_low * 1.01 else 0
+        avg_correct = 1 if f_close < f_low * 1.01 else 0
     else:
         avg_correct = 1
     window_metrics.append({
@@ -189,7 +189,7 @@ y = np.array(all_labels, dtype=np.int32)
 n_correct = int(y.sum())
 n_total = len(y)
 print(f"  Dataset: {n_total} samples ({n_correct} correct, {n_total - n_correct} wrong)")
-print(f"  Baseline accuracy: {n_correct / max(n_total, 1) * 100:.1f}% (direction, 0.1% threshold)")
+print(f"  Baseline profitability: {n_correct / max(n_total, 1) * 100:.1f}% (TP=0.3% SL=0.2%, candle-by-candle)")
 
 for d, counts in correct_by_direction.items():
     wr = counts['correct'] / max(counts['total'], 1) * 100

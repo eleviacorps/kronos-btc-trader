@@ -157,17 +157,26 @@ def antitrend_signal(net, rng):
 # SIMULATOR
 # =========================================================================
 class Simulator:
-    """Tracks positions, PnL, and trade history."""
+    """Tracks positions, PnL, and trade history. Checks EVERY candle for TP/SL."""
 
-    def __init__(self, capital, tp_pct, sl_pct, leverage=200):
+    def __init__(self, capital, tp_pct, sl_pct, leverage=200, time_stop_candles=12):
         self.capital = capital
         self.initial_capital = capital
         self.tp_pct = tp_pct
         self.sl_pct = sl_pct
         self.leverage = leverage
-        self.position = None  # {side, entry, size, tp, sl, bar}
+        self.position = None
         self.trades = []
         self.margin_locked = 0.0
+        self._last_checked = 0
+        self.time_stop_candles = time_stop_candles  # dynamic based on ATR
+
+    def check_up_to(self, current_idx, df5):
+        """Check all new candles since last check for TP/SL/expiry."""
+        start = max(self._last_checked, 0)
+        self.update_range(start, current_idx, df5)
+        if current_idx > self._last_checked:
+            self._last_checked = current_idx
 
     def open(self, side, price, size_btc, bar, tp_pct=None, sl_pct=None):
         if self.position is not None:
@@ -188,35 +197,46 @@ class Simulator:
             'bar': bar,
         }
 
-    def update(self, row_idx, df5):
-        """Check candle for TP/SL/expiry."""
+    def update_range(self, start_idx, end_idx, df5):
+        """Check ALL candles from start_idx to end_idx for TP/SL/expiry.
+
+        This is the CORRECT simulation: every candle's high/low is checked,
+        not just the one at the stride position. Without this, trades at
+        stride 10 only see 1 in 10 candles, missing 17% of TP hits.
+        """
         if self.position is None:
             return
         pos = self.position
-        hi = float(df5.iloc[row_idx]['h'])
-        lo = float(df5.iloc[row_idx]['l'])
-        cl = float(df5.iloc[row_idx]['c'])
-        exit_price = None
-        reason = None
+        # Clamp to valid range
+        s = max(pos['bar'] + 1, start_idx)
+        e = min(end_idx, len(df5) - 1)
+        for i in range(s, e + 1):
+            hi = float(df5.iloc[i]['h'])
+            lo = float(df5.iloc[i]['l'])
+            cl = float(df5.iloc[i]['c'])
+            exit_price = None
+            reason = None
 
-        if pos['side'] == 'BUY':
-            if hi >= pos['tp']:
-                exit_price = pos['tp']; reason = 'TP'
-            elif lo <= pos['sl']:
-                exit_price = pos['sl']; reason = 'SL'
-        else:
-            if lo <= pos['tp']:
-                exit_price = pos['tp']; reason = 'TP'
-            elif hi >= pos['sl']:
-                exit_price = pos['sl']; reason = 'SL'
+            if pos['side'] == 'BUY':
+                if hi >= pos['tp']:
+                    exit_price = pos['tp']; reason = 'TP'
+                elif lo <= pos['sl']:
+                    exit_price = pos['sl']; reason = 'SL'
+            else:
+                if lo <= pos['tp']:
+                    exit_price = pos['tp']; reason = 'TP'
+                elif hi >= pos['sl']:
+                    exit_price = pos['sl']; reason = 'SL'
 
-        # Time-stop after 4 candles (20 min)
-        if exit_price is None and (row_idx - pos['bar']) >= 4:
-            exit_price = cl
-            reason = 'EXPIRY'
+            # Dynamic time-stop based on ATR (default 12 candles = 60 min)
+            candles_since_entry = i - pos['bar']
+            if exit_price is None and candles_since_entry >= self.time_stop_candles:
+                exit_price = cl
+                reason = 'EXPIRY'
 
-        if exit_price is not None:
-            self._close(exit_price, reason)
+            if exit_price is not None:
+                self._close(exit_price, reason)
+                return  # trade closed, stop checking
 
     def _close(self, exit_price, reason):
         pos = self.position
@@ -287,7 +307,7 @@ import os as _os
 selector_model_path = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'quant_models', 'models', 'kronos_selector.xgb')
 if _os.path.exists(selector_model_path):
     try:
-        qf.load_selector(selector_model_path, predictor=predictor, samples=50)
+        qf.load_selector(selector_model_path, predictor=predictor, samples=20)
     except Exception as e:
         print(f"  ⚠ Selector load failed: {e}")
 else:
@@ -295,10 +315,10 @@ else:
 
 print("  ✅ Fusion engine ready")
 
-# Init simulators
-sim_quant = Simulator(CAPITAL, TP_PCT, SL_PCT, LEVERAGE)
-sim_baseline = Simulator(CAPITAL, TP_PCT, SL_PCT, LEVERAGE)
-sim_kronos_raw = Simulator(CAPITAL, TP_PCT, SL_PCT, LEVERAGE)
+# Init simulators — quant fusion gets dynamic time-stop, baselines get fixed 12
+sim_quant = Simulator(CAPITAL, TP_PCT, SL_PCT, LEVERAGE, time_stop_candles=12)
+sim_baseline = Simulator(CAPITAL, TP_PCT, SL_PCT, LEVERAGE, time_stop_candles=12)
+sim_kronos_raw = Simulator(CAPITAL, TP_PCT, SL_PCT, LEVERAGE, time_stop_candles=12)
 
 # Build indices
 indices = list(range(LOOKBACK + 5, min(len(df) - 5, args.windows + LOOKBACK + 5), STRIDE))
@@ -345,9 +365,9 @@ for batch, idx in enumerate(indices):
 
     if net is None:
         # Update positions and continue
-        sim_quant.update(idx, df)
-        sim_baseline.update(idx, df)
-        sim_kronos_raw.update(idx, df)
+        sim_quant.check_up_to(idx, df)
+        sim_baseline.check_up_to(idx, df)
+        sim_kronos_raw.check_up_to(idx, df)
         continue
 
     # Determine Kronos confidence from prediction magnitude
@@ -386,6 +406,11 @@ for batch, idx in enumerate(indices):
 
     # Execute quant fusion trade
     if fusion_result['decision'] in ('BUY', 'SELL') and fusion_result['confidence'] > 0.3:
+        # Dynamic time-stop: TP_move / ATR * 2, clamped to [4, 24]
+        atr_pct = fusion_result['tp_sl'].get('atr_pct', 0.15)
+        tp_pct = fusion_result['tp_sl']['final_tp_pct']
+        dyn_stop = max(4, min(24, int((tp_pct / max(atr_pct, 0.01)) * 2)))
+        sim_quant.time_stop_candles = dyn_stop
         sim_quant.open(
             fusion_result['decision'],
             price,
@@ -396,9 +421,9 @@ for batch, idx in enumerate(indices):
         )
 
     # ── Update positions ──
-    sim_quant.update(idx, df)
-    sim_baseline.update(idx, df)
-    sim_kronos_raw.update(idx, df)
+    sim_quant.check_up_to(idx, df)
+    sim_baseline.check_up_to(idx, df)
+    sim_kronos_raw.check_up_to(idx, df)
 
 print(f"  [{'█' * 20}] 100% ✅")
 

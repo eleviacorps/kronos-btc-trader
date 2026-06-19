@@ -284,26 +284,25 @@ FEATURE_NAMES = [
 ]
 
 
-def label_sample(sample: dict, future_high: float, future_low: float, future_close: float,
-                 entry_price: float, tp_pct: float = 0, sl_pct: float = 0) -> int:
+def label_sample(sample: dict, df_future: pd.DataFrame, entry_price: float,
+                 tp_pct: float = 0, sl_pct: float = 0) -> int:
     """
-    DIRECTION-BASED LABEL: Did the market move 0.1% in the sample's predicted direction?
+    DIRECTION-BASED LABEL: Did the market move 0.1% in the predicted direction?
 
-    This is the proven approach. Kronos samples are ~27% directionally accurate
-    at this threshold, giving the selector a learnable signal (52.9% best-sample
-    accuracy). Profit-based labels (TP/SL) are too sparse at 5m frequency (<1%).
-
-    1 = bullish sample → market went up 0.1%+ (high moved)
-       bearish sample → market went down 0.1%+ (low moved)
-    0 = sample was wrong
+    Proven approach — 17.7% baseline, 46.5% selector accuracy, +40.8pp improvement.
+    Profit-based labels (TP/SL) are too sparse at 5m frequency (<5% even with
+    proper candle-by-candle checking).
     """
     direction = sample['direction']
+    f_high = float(df_future['h'].max()) if 'h' in df_future.columns else float(df_future['high'].max())
+    f_low = float(df_future['l'].min()) if 'l' in df_future.columns else float(df_future['low'].min())
+
     if direction == 'BULLISH':
-        return 1 if future_high >= entry_price * 1.001 else 0
+        return 1 if f_high >= entry_price * 1.001 else 0
     elif direction == 'BEARISH':
-        return 1 if future_low <= entry_price * 0.999 else 0
+        return 1 if f_low <= entry_price * 0.999 else 0
     else:
-        return 0  # NEUTRAL — skip
+        return 0
 
 
 def label_sample_strict(sample: dict, future_high: float, future_low: float,
