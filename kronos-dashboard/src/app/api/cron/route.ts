@@ -25,6 +25,11 @@ export async function GET() {
         lastRun: new Date(now - 60000 + (now % 60000)).toISOString(),
         status: 'ok', enabled: true,
       },
+      'kronos-live': {
+        schedule: 'every 10m', nextRun: roundToNext(600000),
+        lastRun: new Date(now - 600000 + (now % 600000)).toISOString(),
+        status: 'ok', enabled: true,
+      },
       'kronos-tpsl-agent': {
         schedule: 'every 1m', nextRun: roundToNext(60000),
         lastRun: new Date(now - 60000 + (now % 60000)).toISOString(),

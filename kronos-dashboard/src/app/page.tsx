@@ -228,12 +228,108 @@ interface CronInfo {
   enabled: boolean;
 }
 
+interface FusionData {
+  timestamp: string; btc_price: number;
+  decision: string; confidence: number; source: string;
+  regime: { hmm_label: string; hurst_H: number; hurst_label: string; final_antitrend_mult: number; vol_ratio: number; };
+  tp_sl: { final_tp_pct: number; final_sl_pct: number; atr_pct: number; r_r: number; };
+  size: { size_btc: number; margin: number; details: any; };
+  indicators: { rsi: number; atr: number; vol_ratio_to_avg: number; };
+  selector: { net_change: number; best_prob: number; avg_prob: number; };
+  kronos: { direction: string; net_pct: number; range_pct: number; confidence: number; };
+}
+
+function FusionCard({ data }: { data: FusionData | null }) {
+  if (!data) return null;
+  return (
+    <div className="bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-gray-800 p-5 shadow-lg mb-5">
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-base font-semibold tracking-tight">Live Fusion Analysis</h2>
+        <span className="text-[10px] text-gray-500 font-mono">{data.timestamp?.slice(11, 19) || '?'}</span>
+      </div>
+
+      <div className="flex items-center gap-3 mb-4">
+        <div>
+          <div className="text-[10px] text-gray-500 uppercase tracking-wider">Decision</div>
+          <div className={`text-xl font-bold ${data.decision === 'BUY' ? 'text-emerald-400' : data.decision === 'SELL' ? 'text-red-400' : 'text-gray-500'}`}>
+            {data.decision || 'HOLD'}
+            <span className="text-sm ml-1 text-gray-500">({data.confidence?.toFixed(2)})</span>
+          </div>
+          <div className="text-[10px] text-gray-600">{data.source}</div>
+        </div>
+        <div className="ml-auto text-right">
+          <div className="text-[10px] text-gray-500">BTC</div>
+          <div className="text-lg font-bold text-gray-200">${data.btc_price?.toLocaleString()}</div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-5 gap-2 mb-3">
+        <div className="bg-gray-800/40 rounded-lg p-2 text-center">
+          <div className="text-[9px] text-gray-500">HMM</div>
+          <div className="text-xs font-semibold">{data.regime?.hmm_label}</div>
+        </div>
+        <div className="bg-gray-800/40 rounded-lg p-2 text-center">
+          <div className="text-[9px] text-gray-500">Hurst</div>
+          <div className="text-xs font-semibold">{data.regime?.hurst_H?.toFixed(3)}</div>
+        </div>
+        <div className="bg-gray-800/40 rounded-lg p-2 text-center">
+          <div className="text-[9px] text-gray-500">Trend</div>
+          <div className="text-xs font-semibold">{data.regime?.hurst_label}</div>
+        </div>
+        <div className="bg-gray-800/40 rounded-lg p-2 text-center">
+          <div className="text-[9px] text-gray-500">RSI</div>
+          <div className="text-xs font-semibold">{data.indicators?.rsi?.toFixed(0)}</div>
+        </div>
+        <div className="bg-gray-800/40 rounded-lg p-2 text-center">
+          <div className="text-[9px] text-gray-500">Vol</div>
+          <div className="text-xs font-semibold">{data.indicators?.vol_ratio_to_avg?.toFixed(1)}x</div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-4 gap-2 mb-3">
+        <div className="bg-gray-800/30 rounded-lg p-2 text-center">
+          <div className="text-[9px] text-gray-600">TP</div>
+          <div className="text-xs font-semibold text-emerald-400">{data.tp_sl?.final_tp_pct?.toFixed(2)}%</div>
+        </div>
+        <div className="bg-gray-800/30 rounded-lg p-2 text-center">
+          <div className="text-[9px] text-gray-600">SL</div>
+          <div className="text-xs font-semibold text-red-400">{data.tp_sl?.final_sl_pct?.toFixed(2)}%</div>
+        </div>
+        <div className="bg-gray-800/30 rounded-lg p-2 text-center">
+          <div className="text-[9px] text-gray-600">R:R</div>
+          <div className="text-xs font-semibold text-amber-400">{data.tp_sl?.r_r?.toFixed(2)}</div>
+        </div>
+        <div className="bg-gray-800/30 rounded-lg p-2 text-center">
+          <div className="text-[9px] text-gray-600">ATR</div>
+          <div className="text-xs font-semibold">{data.tp_sl?.atr_pct?.toFixed(3)}%</div>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between text-xs">
+        <div className="text-gray-500">
+          Size: <span className="text-gray-200 font-semibold">{data.size?.size_btc?.toFixed(3)} BTC</span>
+          {data.size?.details?.equity_growth && (
+            <span className="ml-2">Eq: <span className="text-emerald-400">{((data.size.details.equity_growth - 1) * 100).toFixed(0)}%</span></span>
+          )}
+          {data.size?.details?.drawdown && data.size.details.drawdown > 0 && (
+            <span className="ml-2">DD: <span className="text-red-400">{data.size.details.drawdown.toFixed(0)}%</span></span>
+          )}
+        </div>
+        <div className="text-gray-600">
+          {data.selector?.best_prob && `Selector: ${(data.selector.best_prob * 100).toFixed(0)}%`}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function CronBar({ jobs, now }: { jobs: Record<string, CronInfo>; now: number }) {
   const items = [
     { key: 'kronos-btc-hft-scalper', label: 'Bot Scalper' },
     { key: 'kronos-btc-hft-agent', label: 'Agent Judge' },
     { key: 'kronos-btc-hft-hc', label: 'HC Bot' },
     { key: 'kronos-btc-hft-hc-agent', label: 'HC Agent' },
+    { key: 'kronos-live', label: 'Live Fusion' },
     { key: 'kronos-watchdog-health', label: 'Watchdog' },
   ];
   return (
@@ -263,24 +359,28 @@ function CronBar({ jobs, now }: { jobs: Record<string, CronInfo>; now: number })
 export default function Dashboard() {
   const [data, setData] = useState<LedgerResponse | null>(null);
   const [cron, setCron] = useState<Record<string, CronInfo> | null>(null);
+  const [fusion, setFusion] = useState<FusionData | null>(null);
   const [now, setNow] = useState(Date.now());
   const [key, setKey] = useState(0);
 
   useEffect(() => {
     async function fetchAll() {
       try {
-        const [ledgerRes, cronRes] = await Promise.all([
+        const [ledgerRes, cronRes, fusionRes] = await Promise.all([
           fetch("/api/ledger"),
           fetch("/api/cron"),
+          fetch("/api/fusion"),
         ]);
         const ledgerJson = await ledgerRes.json();
         if (ledgerJson.bot) setData(ledgerJson);
         const cronJson = await cronRes.json();
         if (cronJson.jobs) setCron(cronJson.jobs);
+        const fusionJson = await fusionRes.json();
+        if (fusionJson.decision) setFusion(fusionJson);
       } catch {}
     }
     fetchAll();
-    const interval = setInterval(fetchAll, 1000);
+    const interval = setInterval(fetchAll, 3000);
     const tick = setInterval(() => setNow(Date.now()), 1000);
     return () => { clearInterval(interval); clearInterval(tick); };
   }, [key]);
@@ -299,6 +399,8 @@ export default function Dashboard() {
       </div>
 
       {cron && <CronBar jobs={cron} now={now} />}
+
+      <FusionCard data={fusion} />
 
       <div className="flex gap-2 mb-5">
         <button onClick={async () => {

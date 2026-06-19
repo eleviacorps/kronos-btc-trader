@@ -205,6 +205,54 @@ def main():
     print(f"\n{qf.summary()}")
     print(f"\n═══ DONE ═══")
 
+    # Save fusion analysis for dashboard
+    try:
+        analysis = {
+            "timestamp": datetime.now().isoformat(),
+            "btc_price": current_price,
+            "decision": fusion_result.get("decision"),
+            "confidence": fusion_result.get("confidence"),
+            "source": fusion_result.get("optimizations", {}).get("decision_source", "?"),
+            "regime": {
+                "hmm_label": fusion_result.get("regime", {}).get("hmm_label", "?"),
+                "hurst_H": fusion_result.get("regime", {}).get("hurst_H"),
+                "hurst_label": fusion_result.get("regime", {}).get("hurst_label", "?"),
+                "final_antitrend_mult": fusion_result.get("regime", {}).get("final_antitrend_mult"),
+                "vol_ratio": fusion_result.get("regime", {}).get("vol_ratio"),
+            },
+            "tp_sl": {
+                "final_tp_pct": fusion_result.get("tp_sl", {}).get("final_tp_pct"),
+                "final_sl_pct": fusion_result.get("tp_sl", {}).get("final_sl_pct"),
+                "atr_pct": fusion_result.get("tp_sl", {}).get("atr_pct"),
+                "r_r": round(fusion_result.get("tp_sl", {}).get("final_tp_pct", 0) / max(fusion_result.get("tp_sl", {}).get("final_sl_pct", 0.01), 0.01), 2),
+            },
+            "size": {
+                "size_btc": fusion_result.get("size", {}).get("size_btc"),
+                "margin": fusion_result.get("size", {}).get("margin"),
+                "details": fusion_result.get("size", {}).get("details", {}),
+            },
+            "indicators": {
+                "rsi": fusion_result.get("quant_details", {}).get("rsi"),
+                "atr": fusion_result.get("quant_details", {}).get("atr_pct"),
+                "vol_ratio_to_avg": fusion_result.get("quant_details", {}).get("vol_ratio_to_avg"),
+            },
+            "selector": {
+                "net_change": fusion_result.get("optimizations", {}).get("selector_net"),
+                "best_prob": fusion_result.get("optimizations", {}).get("selector_best_prob"),
+                "avg_prob": fusion_result.get("optimizations", {}).get("selector_avg_prob"),
+            },
+            "kronos": {
+                "direction": direction,
+                "net_pct": net,
+                "range_pct": rng,
+                "confidence": kronos_conf,
+            },
+        }
+        with open(PROJECT_DIR / "fusion_analysis.json", "w") as f:
+            json.dump(analysis, f, indent=2)
+    except Exception as e:
+        print(f"  ⚠ Failed to save analysis: {e}")
+
 
 if __name__ == "__main__":
     main()
