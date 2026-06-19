@@ -52,8 +52,8 @@ class KellyPositionSizer:
         avg_loss: float = 8.5,
         kelly_fraction: float = 0.5,
         max_position_pct: float = 0.50,
-        min_size_btc: float = 0.1,
-        max_size_btc: float = 2.0,
+        min_size_btc: float = 0.5,
+        max_size_btc: float = 1.5,
     ):
         """
         Args:
@@ -65,8 +65,8 @@ class KellyPositionSizer:
             avg_loss: average losing trade loss in USDT (positive)
             kelly_fraction: safety factor (0.5 = half-Kelly)
             max_position_pct: max % of capital to risk per trade
-            min_size_btc: minimum position size in BTC
-            max_size_btc: maximum position size in BTC
+            min_size_btc: minimum position size in BTC (default 0.5)
+            max_size_btc: maximum position size in BTC (default 1.5)
         """
         self.capital = capital
         self.leverage = leverage
@@ -82,6 +82,8 @@ class KellyPositionSizer:
         # Risk of ruin tracker
         self._consecutive_losses = 0
         self._loss_streak_penalty = 1.0
+        self._initial_capital = capital
+        self._peak_capital = capital
 
     def compute_kelly_pct(self) -> float:
         """
@@ -109,14 +111,24 @@ class KellyPositionSizer:
         self,
         confidence: float = 1.0,
         vol_ratio: float = 1.0,
+        risk_factor: float = 1.0,
         use_kelly: bool = True,
     ) -> dict:
         """
-        Compute position size in BTC.
+        Compute position size in BTC. Dynamic range 0.5-1.5 BTC.
+
+        Sizing factors:
+          - Kelly % (based on win rate and avg win/loss)
+          - confidence (signal quality, 0-1)
+          - vol_ratio (>1 = reduce, <1 = increase)
+          - equity growth (account grew → size up, account shrank → size down)
+          - loss streak penalty (consecutive losses reduce size)
+          - risk_factor (1.0 = normal, 0.5 = conservative, 1.5 = aggressive)
 
         Args:
             confidence: signal confidence (0.0-1.0)
             vol_ratio: GARCH vol ratio (>1 = elevated vol)
+            risk_factor: user-specified risk appetite (0.5-1.5)
             use_kelly: if False, uses fixed % of capital instead
 
         Returns:
@@ -124,21 +136,37 @@ class KellyPositionSizer:
         """
         buying_power = self.capital * self.leverage
 
+        # Equity growth multiplier: scale with account performance
+        if self._initial_capital > 0:
+            equity_growth = self.capital / self._initial_capital
+        else:
+            equity_growth = 1.0
+        # Track peak for drawdown protection
+        self._peak_capital = max(self._peak_capital, self.capital)
+        if self._peak_capital > 0:
+            drawdown = max(0.0, 1.0 - self.capital / self._peak_capital)
+        else:
+            drawdown = 0.0
+        # Drawdown penalty: reduce size by 2x the drawdown amount
+        dd_penalty = max(0.3, 1.0 - drawdown * 2.0)
+
         if use_kelly:
             kelly_pct = self.compute_kelly_pct()
             if kelly_pct <= 0:
-                # No edge — minimal position
                 kelly_pct = 0.01
-            # Apply safety fraction + confidence + vol scaling + streak penalty
+            # Apply all scaling factors
             risk_pct = (
                 kelly_pct
                 * self.kelly_fraction
-                * confidence
-                * (1.0 / max(vol_ratio, 0.5))
+                * min(confidence * 1.2, 1.0)  # scale confidence up to 1.0
+                * (1.0 / max(vol_ratio, 0.5))  # vol scaling
                 * self._loss_streak_penalty
+                * min(equity_growth, 1.5)  # cap equity growth at 1.5x
+                * dd_penalty
+                * risk_factor
             )
         else:
-            risk_pct = self.max_position_pct * confidence
+            risk_pct = self.max_position_pct * confidence * risk_factor
 
         # Cap at max allowed risk
         risk_pct = min(risk_pct, self.max_position_pct)
@@ -147,7 +175,7 @@ class KellyPositionSizer:
         notional = buying_power * risk_pct
         margin = self.capital * risk_pct
 
-        # Convert to BTC
+        # Convert to BTC, clamped to [0.5, 1.5]
         size_btc = notional / max(self.btc_price, 1)
         size_btc = max(self.min_size_btc, min(self.max_size_btc, size_btc))
         size_usd = size_btc * self.btc_price
@@ -163,6 +191,10 @@ class KellyPositionSizer:
                 "streak_penalty": self._loss_streak_penalty,
                 "confidence": confidence,
                 "vol_ratio": round(vol_ratio, 2),
+                "equity_growth": round(equity_growth, 3),
+                "drawdown": round(drawdown * 100, 1),
+                "dd_penalty": round(dd_penalty, 2),
+                "risk_factor": risk_factor,
             },
         }
 

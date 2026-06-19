@@ -100,6 +100,9 @@ class QuantFusionEngine:
         self._selector_samples = 50
         self._predictor = None  # KronosPredictor instance for selector inference
 
+        # Risk factor for position sizing (1.0 = normal, 0.5 = conservative, 1.5 = aggressive)
+        self.risk_factor = 1.0
+
         self.latest = {}
 
     def warmup(
@@ -235,6 +238,18 @@ class QuantFusionEngine:
             atr_pct = 0.2
         result["quant_details"]["atr_pct"] = round(atr_pct, 3)
 
+        # Volume confirmation: current vol vs 20-period avg
+        try:
+            vol_col = 'volume' if 'volume' in df.columns else 'v'
+            volumes = df[vol_col].values.astype(float)
+            current_vol = float(volumes[-1])
+            avg_vol = float(np.mean(volumes[-21:-1])) if len(volumes) > 21 else current_vol
+            vol_ratio_to_avg = current_vol / max(avg_vol, 1e-9)
+            result["quant_details"]["vol_ratio_to_avg"] = round(vol_ratio_to_avg, 2)
+        except Exception:
+            vol_ratio_to_avg = 1.0
+            result["quant_details"]["vol_ratio_to_avg"] = 1.0
+
         # ═══════════════════════════════════════════════
         # 1. HMM REGIME
         # ═══════════════════════════════════════════════
@@ -356,6 +371,19 @@ class QuantFusionEngine:
         # --- Penalize high_vol instead of skipping ---
         if hmm_label == "high_vol":
             result["optimizations"]["high_vol_penalty"] = 0.5
+
+        # Volume confirmation: skip if volume is abnormally low (< 0.5x avg)
+        if vol_ratio_to_avg < 0.5 and result["quant_details"].get("vol_ratio_to_avg", 1.0) > 0:
+            skip_reason = f"Volume {vol_ratio_to_avg:.2f}x avg — too low"
+            result["decision"] = "HOLD"
+            result["confidence"] = 0.0
+            result["reason"] = skip_reason
+            result["optimizations"]["vol_skip"] = True
+            result["tp_sl"]["final_tp_pct"] = 0.0
+            result["tp_sl"]["final_sl_pct"] = 0.0
+            result["size"] = {"size_btc": 0.0, "manual": True}
+            self.latest = result
+            return result
 
         # ═══════════════════════════════════════════════
         # OPTIMIZATION 1: HTF BIAS FILTER (1h EMA50) — SOFT PENALTY
@@ -595,7 +623,7 @@ class QuantFusionEngine:
         try:
             if self._kelly_initialized and self.kelly is not None:
                 self.kelly.btc_price = current_price or self.kelly.btc_price
-                size_result = self.kelly.compute_size(confidence=confidence, vol_ratio=vol_ratio)
+                size_result = self.kelly.compute_size(confidence=confidence, vol_ratio=vol_ratio, risk_factor=self.risk_factor)
                 result["size"] = size_result
             else:
                 result["size"] = {"size_btc": round(0.3 + (confidence * 0.4), 4), "manual": True}
