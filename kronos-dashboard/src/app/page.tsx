@@ -72,7 +72,8 @@ function FinBox({ label, value, cls }: { label: string; value: string; cls?: str
   );
 }
 
-function AccountCard({ data, onClose }: { data: AccountData; onClose?: () => void }) {
+function AccountCard({ data, onClose }: { data: AccountData | null; onClose?: () => void }) {
+  if (!data) return null;
   const [showTrades, setShowTrades] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const refresh = useCallback(() => setRefreshKey(k => k + 1), []);
