@@ -25,7 +25,7 @@ interface AccountData {
   largestWin: number; largestLoss: number; timestamp: number;
 }
 
-interface LedgerResponse { bot: AccountData; agent: AccountData; hc: AccountData; hc_agent: AccountData; }
+interface LedgerResponse { bot: AccountData; agent: AccountData; hc: AccountData; hc_agent: AccountData; live: AccountData; }
 
 function fmt(v: number | null | undefined): string {
   if (v == null || isNaN(v as number)) return "0.00";
@@ -174,7 +174,7 @@ function AccountCard({ data, onClose }: { data: AccountData; onClose?: () => voi
         </div>
       )}
 
-      <Controls account={data.label === 'Bot-Only' ? 'bot' : 'agent'} onAction={refresh} />
+      <Controls account={data.label === 'Bot-Only' ? 'bot' : data.label === 'Live Fusion' ? 'live' : 'agent'} onAction={refresh} />
 
       <button onClick={() => setShowTrades(!showTrades)}
         className="w-full mt-3 text-[10px] text-gray-500 hover:text-gray-300 transition text-center py-1 rounded-lg bg-gray-800/20 hover:bg-gray-800/40">
@@ -419,10 +419,11 @@ export default function Dashboard() {
             <AccountCard key={`agent-${key}`} data={data.agent} />
             <AccountCard key={`hc-${key}`} data={data.hc} />
             <AccountCard key={`hc-agent-${key}`} data={data.hc_agent} />
+            <AccountCard key={`live-${key}`} data={data.live} />
           </>
         ) : (
           <>
-            {[...Array(4)].map((_, i) => <SkeletonCard key={i} />)}
+            {[...Array(5)].map((_, i) => <SkeletonCard key={i} />)}
           </>
         )}
       </div>
