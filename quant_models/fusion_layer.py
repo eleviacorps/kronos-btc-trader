@@ -238,12 +238,12 @@ class QuantFusionEngine:
             atr_pct = 0.2
         result["quant_details"]["atr_pct"] = round(atr_pct, 3)
 
-        # Volume confirmation: current vol vs 20-period avg
+        # Volume confirmation: current vol vs 20-period avg (use 2nd-to-last candle to avoid fresh candle)
         try:
             vol_col = 'volume' if 'volume' in df.columns else 'v'
             volumes = df[vol_col].values.astype(float)
-            current_vol = float(volumes[-1])
-            avg_vol = float(np.mean(volumes[-21:-1])) if len(volumes) > 21 else current_vol
+            current_vol = float(volumes[-2]) if len(volumes) > 2 else float(volumes[-1])
+            avg_vol = float(np.mean(volumes[-22:-2])) if len(volumes) > 22 else current_vol
             vol_ratio_to_avg = current_vol / max(avg_vol, 1e-9)
             result["quant_details"]["vol_ratio_to_avg"] = round(vol_ratio_to_avg, 2)
         except Exception:
