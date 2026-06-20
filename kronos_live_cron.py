@@ -131,8 +131,19 @@ def main():
             return
 
     # ── 4. SELECTOR + FUSION ──
-    print(f"\n[4] Making decision...")
-    selector_result = qf.run_selector(ctx) if qf.selector and qf.selector.is_trained else {}
+    # Run sample selector if available (50 samples -> picks best)
+    selector_result = {}
+    if qf.selector and qf.selector.is_trained:
+        try:
+            selector_result = qf.run_selector(ctx)
+            if selector_result and selector_result.get('error'):
+                print(f"  ⚠ Selector error: {selector_result['error']}")
+                selector_result = {}
+            elif selector_result:
+                print(f"  Selector: {selector_result.get('decision','?')} (conf={selector_result.get('confidence_adjusted',0):.3f})")
+        except Exception as e:
+            print(f"  ⚠ Selector crashed: {e}")
+            selector_result = {}
     # BUY-only from selector
     if selector_result and selector_result.get('decision') == 'SELL':
         selector_result['decision'] = 'HOLD'
@@ -174,15 +185,13 @@ def main():
 
         print(f"\n[5] EXECUTING {side.upper()} {size_btc:.4f} BTC  |  TP: {tp_pct:.2f}%  SL: {sl_pct:.2f}%")
 
-        # Execute via kronos_exec.py
+        # Execute via kronos_exec.py (uses --scalp for TP/SL)
         exec_script = PROJECT_DIR / "kronos_exec.py"
         venv_python = PROJECT_DIR / ".venv" / "Scripts" / "python.exe"
         cmd = [
             str(venv_python), str(exec_script),
             "--scalp", "--paper", side,
             "--size", str(size_btc),
-            "--tp", str(tp_pct),
-            "--sl", str(sl_pct),
             "--ledger", str(LEDGER),
         ]
         import subprocess

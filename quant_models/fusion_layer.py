@@ -429,15 +429,17 @@ class QuantFusionEngine:
         trust_kalman = abs(kalman_signal) >= 0.5
 
         # --- DECISION LOGIC ---
+        decision = "HOLD"
+        final_confidence = 0.0
+
         # Priority 0: Sample selector (if available and confident)
         selector_override = False
-        if selector_result and selector_result.get('decision', 'HOLD') != 'HOLD' and selector_result.get('confidence_adjusted', 0) > 0.3:
-            decision = selector_result['decision']
-            final_confidence = selector_result['confidence_adjusted']
+        sel_decision = (selector_result or {}).get('decision', 'HOLD')
+        sel_prob = (selector_result or {}).get('best_prob', 0)
+        if sel_decision != 'HOLD' and sel_prob > 0.15:
+            decision = sel_decision
+            final_confidence = min(sel_prob * 1.5, 1.0)  # boost prob up to 1.0
             result['optimizations']['decision_source'] = 'selector'
-            result['optimizations']['selector_net'] = selector_result.get('net_change', 0)
-            result['optimizations']['selector_best_prob'] = selector_result.get('best_prob', 0)
-            result['optimizations']['selector_avg_prob'] = selector_result.get('avg_prob', 0)
             selector_override = True
 
         # Priority 1: BMA data-driven vote
@@ -489,7 +491,7 @@ class QuantFusionEngine:
 
         else:
             # Mixed — follow Kronos with filtering
-            # Use selector direction when Kronos is NEUTRAL (selector picks best of 20 samples)
+            # Use selector direction when Kronos is NEUTRAL
             sel_dir = (selector_result or {}).get('decision', 'HOLD')
             if sel_dir != 'HOLD' and kronos_direction == 'NEUTRAL':
                 use_dir = sel_dir
@@ -499,11 +501,9 @@ class QuantFusionEngine:
                 use_dir = kronos_direction
                 use_conf = kronos_confidence
             final_confidence = use_conf * final_mult * kalman_boost
-            decision = (
-                "BUY" if use_dir == "BULLISH" and final_confidence > 0.25
-                else "SELL" if use_dir == "BEARISH" and final_confidence > 0.25
-                else "HOLD"
-            )
+            decision = ("BUY" if use_dir == "BULLISH" and final_confidence > 0.25
+                        else "SELL" if use_dir == "BEARISH" and final_confidence > 0.25
+                        else "HOLD")
             if result["optimizations"].get("decision_source") != "selector+mixed":
                 result["optimizations"]["decision_source"] = "mixed"
 
