@@ -372,9 +372,8 @@ class QuantFusionEngine:
         if hmm_label == "high_vol":
             result["optimizations"]["high_vol_penalty"] = 0.5
 
-        # Volume confirmation: skip if volume is abnormally low (< 0.3x avg)
-        # Use 0.3x instead of 0.5x to avoid skipping entries on fresh candles
-        if vol_ratio_to_avg < 0.3 and result["quant_details"].get("vol_ratio_to_avg", 1.0) > 0:
+        # Volume confirmation: skip if volume is abnormally low (< 0.15x avg)
+        if vol_ratio_to_avg < 0.15 and result["quant_details"].get("vol_ratio_to_avg", 1.0) > 0:
             skip_reason = f"Volume {vol_ratio_to_avg:.2f}x avg — too low"
             result["decision"] = "HOLD"
             result["confidence"] = 0.0
@@ -463,11 +462,13 @@ class QuantFusionEngine:
             # Mean-reverting confirmed by BOTH HMM and Hurst (H<0.5) → ANTITREND
             if kronos_direction == "BULLISH":
                 decision, final_confidence = "SELL", kronos_confidence * min(final_mult, 2.0)
+                result["optimizations"]["decision_source"] = "antitrend"
             elif kronos_direction == "BEARISH":
                 decision, final_confidence = "BUY", kronos_confidence * min(final_mult, 2.0)
+                result["optimizations"]["decision_source"] = "antitrend"
             else:
-                decision, final_confidence = "HOLD", 0.0
-            result["optimizations"]["decision_source"] = "antitrend"
+                # Kronos NEUTRAL — fall through to mixed/selector logic
+                pass
 
         elif hmm_label == "trending" or H > 0.53:
             # Trending — follow Kronos direction (Hurst > 0.53 is the primary signal)

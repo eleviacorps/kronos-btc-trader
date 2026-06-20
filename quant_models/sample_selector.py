@@ -285,37 +285,14 @@ FEATURE_NAMES = [
 
 
 def label_sample(sample: dict, df_future: pd.DataFrame, entry_price: float,
-                 tp_pct: float = 0.3, sl_pct: float = 0.2) -> int:
-    """
-    PROFIT-BASED LABEL: Would this sample have hit TP before SL?
-
-    Matches the actual TP/SL used in trading (ATR-based, ~0.3%/0.2%).
-    This is essential — direction labels (0.1%) don't match trading
-    targets (0.34%), causing the selector to pick wrong samples.
-    """
+                 tp_pct: float = 0, sl_pct: float = 0) -> int:
     direction = sample['direction']
-    if direction not in ('BULLISH', 'BEARISH'):
-        return 0
-
-    for i in range(len(df_future)):
-        hi = float(df_future.iloc[i]['h']) if 'h' in df_future.columns else float(df_future.iloc[i]['high'])
-        lo = float(df_future.iloc[i]['l']) if 'l' in df_future.columns else float(df_future.iloc[i]['low'])
-
-        if direction == 'BULLISH':
-            tp = entry_price * (1 + tp_pct / 100)
-            sl = entry_price * (1 - sl_pct / 100)
-            if hi >= tp:
-                return 1
-            if lo <= sl:
-                return 0
-        else:
-            tp = entry_price * (1 - tp_pct / 100)
-            sl = entry_price * (1 + sl_pct / 100)
-            if lo <= tp:
-                return 1
-            if hi >= sl:
-                return 0
-
+    if direction == 'BULLISH':
+        hi = float(df_future['h'].max()) if 'h' in df_future.columns else float(df_future['high'].max())
+        return 1 if hi >= entry_price * 1.001 else 0
+    elif direction == 'BEARISH':
+        lo = float(df_future['l'].min()) if 'l' in df_future.columns else float(df_future['low'].min())
+        return 1 if lo <= entry_price * 0.999 else 0
     return 0
 
 
