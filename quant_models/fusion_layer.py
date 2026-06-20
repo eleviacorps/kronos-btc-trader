@@ -432,7 +432,7 @@ class QuantFusionEngine:
         # --- DECISION LOGIC ---
         # Priority 0: Sample selector (if available and confident)
         selector_override = False
-        if selector_result and selector_result.get('decision', 'HOLD') != 'HOLD' and selector_result.get('confidence_adjusted', 0) > 0.4:
+        if selector_result and selector_result.get('decision', 'HOLD') != 'HOLD' and selector_result.get('confidence_adjusted', 0) > 0.3:
             decision = selector_result['decision']
             final_confidence = selector_result['confidence_adjusted']
             result['optimizations']['decision_source'] = 'selector'
@@ -488,13 +488,23 @@ class QuantFusionEngine:
 
         else:
             # Mixed — follow Kronos with filtering
-            final_confidence = kronos_confidence * final_mult * kalman_boost
+            # Use selector direction when Kronos is NEUTRAL (selector picks best of 20 samples)
+            sel_dir = (selector_result or {}).get('decision', 'HOLD')
+            if sel_dir != 'HOLD' and kronos_direction == 'NEUTRAL':
+                use_dir = sel_dir
+                use_conf = max((selector_result or {}).get('confidence_adjusted', 0), kronos_confidence)
+                result["optimizations"]["decision_source"] = "selector+mixed"
+            else:
+                use_dir = kronos_direction
+                use_conf = kronos_confidence
+            final_confidence = use_conf * final_mult * kalman_boost
             decision = (
-                "BUY" if kronos_direction == "BULLISH" and final_confidence > 0.35
-                else "SELL" if kronos_direction == "BEARISH" and final_confidence > 0.35
+                "BUY" if use_dir == "BULLISH" and final_confidence > 0.25
+                else "SELL" if use_dir == "BEARISH" and final_confidence > 0.25
                 else "HOLD"
             )
-            result["optimizations"]["decision_source"] = "mixed"
+            if result["optimizations"].get("decision_source") != "selector+mixed":
+                result["optimizations"]["decision_source"] = "mixed"
 
         # ═══════════════════════════════════════════════
         # OPTIMIZATION 2: MULTI-CONDITION CONFIRMATION GATE
