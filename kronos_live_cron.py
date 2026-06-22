@@ -186,8 +186,17 @@ def main():
     print(f"  Confidence: {fusion_result['confidence']:.3f}")
     print(f"  Source: {fusion_result.get('optimizations', {}).get('decision_source', '?')}")
 
-    # ── 5. EXECUTE ──
-    if fusion_result['decision'] in ('BUY', 'SELL') and fusion_result['confidence'] > 0.3:
+    # ── 5. EXECUTE (position guard — one trade at a time) ──
+    try:
+        with open(LEDGER) as f:
+            current_ledger = json.load(f)
+        open_positions = len(current_ledger.get("positions", []))
+    except Exception:
+        open_positions = 0
+
+    if open_positions > 0:
+        print(f"\n[5] SKIP — {open_positions} position(s) already open. Letting them run to TP/SL.")
+    elif fusion_result['decision'] in ('BUY', 'SELL') and fusion_result['confidence'] > 0.3:
         side = fusion_result['decision'].lower()
         size_btc = fusion_result['size']['size_btc']
         tp_pct = fusion_result['tp_sl']['final_tp_pct']
