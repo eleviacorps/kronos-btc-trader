@@ -44,10 +44,10 @@ POSITION_PCT = 0.10  # 10% of buying power per trade
 SCALP_TP_PCT = 0.003        # 0.3% take profit (was 0.2)
 SCALP_SL_PCT = 0.002        # 0.2% stop loss (was 0.12 — tighter stops were getting eaten by noise)
 SCALP_POSITION_PCT = 0.24   # 24% of buying power (~0.75 BTC at $63k/$1k)
-SCALP_TIMESTOP_MIN = 20     # Auto-close after 20 min (was 10 — gives TP room to hit)
+SCALP_TIMESTOP_MIN = 60     # Auto-close after 60 min (was 20 — gave only 4 candles, ATR TP needs more time)
 SCALP_COOLDOWN_MIN = 3      # Skip if last same-direction trade was < N min ago (was 2)
-SCALP_TRAIL_ACTIVATE = 0.10 # Activate trailing at +0.10% profit
-SCALP_TRAIL_LOCK = 0.05     # Lock in 0.05% profit as new breakeven
+SCALP_TRAIL_ACTIVATE = 2.0  # Effectively disable — fusion engine sets its own ATR-based TP/SL
+SCALP_TRAIL_LOCK = 1.0      # Lock at 1% (never reached before TP, so effectively disabled)
 
 
 def get_btc_price() -> float:
