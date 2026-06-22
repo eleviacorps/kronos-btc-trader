@@ -1,0 +1,30 @@
+{
+  "config": {
+    "symbol": "BTC/USDT",
+    "windows": 50,
+    "capital": 5000.0
+  },
+  "hybrid": {
+    "total_trades": 10,
+    "wins": 2,
+    "losses": 8,
+    "win_rate": 20.0,
+    "total_pnl": -133.87,
+    "final_capital": 4866.12,
+    "return_pct": -2.68,
+    "avg_win": 13.47,
+    "avg_loss": 20.1
+  },
+  "baseline": {
+    "total_trades": 12,
+    "wins": 2,
+    "losses": 10,
+    "win_rate": 16.7,
+    "total_pnl": -423.82,
+    "final_capital": 4576.18,
+    "return_pct": -8.48,
+    "avg_win": 87.52,
+    "avg_loss": 59.89
+  },
+  "improvement": 289.94
+}

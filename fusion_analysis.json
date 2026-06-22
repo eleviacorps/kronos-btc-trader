@@ -1,0 +1,50 @@
+{
+  "timestamp": "2026-06-22T08:36:33.395024",
+  "btc_price": 64116.0,
+  "decision": "BUY",
+  "confidence": 0.851,
+  "source": "?",
+  "regime": {
+    "hmm_label": "mean_reverting",
+    "hurst_H": 0.3941,
+    "hurst_label": "mean_reverting",
+    "final_antitrend_mult": null,
+    "vol_ratio": null
+  },
+  "tp_sl": {
+    "final_tp_pct": 0.262,
+    "final_sl_pct": 0.122,
+    "atr_pct": 0.175,
+    "r_r": 2.15
+  },
+  "size": {
+    "size_btc": 0.5,
+    "margin": 3.65,
+    "details": {
+      "consecutive_losses": 0,
+      "streak_penalty": 1.0,
+      "confidence": 0.16378598295797203,
+      "vol_ratio": 1.02,
+      "equity_growth": 1.0,
+      "drawdown": 0.0,
+      "dd_penalty": 1.0,
+      "risk_factor": 1.0
+    }
+  },
+  "indicators": {
+    "rsi": 17.2,
+    "atr": 0.175,
+    "vol_ratio_to_avg": 1.96
+  },
+  "selector": {
+    "net_change": null,
+    "best_prob": null,
+    "avg_prob": null
+  },
+  "kronos": {
+    "direction": "NEUTRAL",
+    "net_pct": 0.04913579488739161,
+    "range_pct": 0.22732843458652496,
+    "confidence": 0.16378598295797203
+  }
+}

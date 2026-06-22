@@ -1,0 +1,8 @@
+{
+  "trades": [
+    {
+      "entry": 72749.15,
+      "side": "sell",
+      "pnl": 974.37,
+      "outcome": "EXPIRY",
+      "conf": 

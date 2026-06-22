@@ -1,0 +1,69 @@
+{
+  "config": {
+    "months": 30,
+    "windows": 129550,
+    "interval_min": 10
+  },
+  "strategies": {
+    "vwap": {
+      "total_pnl_pct": 179.26,
+      "trades": 107222,
+      "win_rate": 48.0
+    },
+    "ema_cross": {
+      "total_pnl_pct": 171.38,
+      "trades": 129550,
+      "win_rate": 48.3
+    },
+    "ict_fvg": {
+      "total_pnl_pct": -197.1,
+      "trades": 128894,
+      "win_rate": 49.3
+    },
+    "combo_vwap_ict": {
+      "total_pnl_pct": -3.85,
+      "trades": 78535,
+      "win_rate": 47.8
+    },
+    "ict_disp": {
+      "total_pnl_pct": -32.5,
+      "trades": 18911,
+      "win_rate": 47.6
+    },
+    "combo_smc_vote": {
+      "total_pnl_pct": -162.95,
+      "trades": 54029,
+      "win_rate": 48.8
+    },
+    "ict_ob": {
+      "total_pnl_pct": -69.3,
+      "trades": 80276,
+      "win_rate": 49.6
+    },
+    "ict_sweep": {
+      "total_pnl_pct": -23.16,
+      "trades": 11155,
+      "win_rate": 51.1
+    },
+    "combo_vwap_ema": {
+      "total_pnl_pct": 195.11,
+      "trades": 90012,
+      "win_rate": 47.6
+    },
+    "combo_ta_vote": {
+      "total_pnl_pct": 202.43,
+      "trades": 92135,
+      "win_rate": 47.7
+    },
+    "combo_all_vote": {
+      "total_pnl_pct": -38.72,
+      "trades": 25717,
+      "win_rate": 47.4
+    },
+    "rsi": {
+      "total_pnl_pct": 113.47,
+      "trades": 26988,
+      "win_rate": 54.1
+    }
+  }
+}

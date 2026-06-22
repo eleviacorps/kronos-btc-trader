@@ -1,0 +1,1173 @@
+{
+  "Kronos Only": {
+    "final": 4911.289999999998,
+    "pnl": -88.71000000000186,
+    "return_pct": -1.7742000000000369,
+    "trade_count": 36,
+    "win_rate": 22.22222222222222,
+    "profit_factor": 0.4531500431512761,
+    "tp": 7,
+    "sl": 22,
+    "exp": 7,
+    "avg_win": 9.19,
+    "avg_loss": -5.79,
+    "_trades_sample": [
+      {
+        "entry": 4596.81,
+        "side": "SELL",
+        "pnl": -6.9,
+        "outcome": "SL",
+        "bal": 4933.71
+      },
+      {
+        "entry": 4594.92,
+        "side": "SELL",
+        "pnl": -6.89,
+        "outcome": "SL",
+        "bal": 4926.82
+      },
+      {
+        "entry": 4587.69,
+        "side": "SELL",
+        "pnl": -6.88,
+        "outcome": "SL",
+        "bal": 4919.94
+      },
+      {
+        "entry": 4587.59,
+        "side": "SELL",
+        "pnl": -6.88,
+        "outcome": "SL",
+        "bal": 4913.06
+      },
+      {
+        "entry": 4601.63,
+        "side": "SELL",
+        "pnl": -1.77,
+        "outcome": "EXPIRY",
+        "bal": 4911.29
+      }
+    ]
+  },
+  "Krono AntiTr": {
+    "final": 5094.800000000002,
+    "pnl": 94.800000000002,
+    "return_pct": 1.896000000000031,
+    "trade_count": 24,
+    "win_rate": 70.83333333333334,
+    "profit_factor": 2.966397013067828,
+    "tp": 11,
+    "sl": 7,
+    "exp": 6,
+    "avg_win": 8.41,
+    "avg_loss": -6.89,
+    "_trades_sample": [
+      {
+        "entry": 4597.08,
+        "side": "BUY",
+        "pnl": 1.49,
+        "outcome": "EXPIRY",
+        "bal": 5063.22
+      },
+      {
+        "entry": 4601.24,
+        "side": "BUY",
+        "pnl": 0.58,
+        "outcome": "EXPIRY",
+        "bal": 5063.8
+      },
+      {
+        "entry": 4596.81,
+        "side": "BUY",
+        "pnl": 10.34,
+        "outcome": "TP",
+        "bal": 5074.14
+      },
+      {
+        "entry": 4594.92,
+        "side": "BUY",
+        "pnl": 10.34,
+        "outcome": "TP",
+        "bal": 5084.48
+      },
+      {
+        "entry": 4587.59,
+        "side": "BUY",
+        "pnl": 10.32,
+        "outcome": "TP",
+        "bal": 5094.8
+      }
+    ]
+  },
+  "Kronos+ADX": {
+    "final": 4937.949999999997,
+    "pnl": -62.05000000000291,
+    "return_pct": -1.2410000000000587,
+    "trade_count": 18,
+    "win_rate": 16.666666666666664,
+    "profit_factor": 0.3330825451418745,
+    "tp": 3,
+    "sl": 13,
+    "exp": 2,
+    "avg_win": 10.33,
+    "avg_loss": -6.2,
+    "_trades_sample": [
+      {
+        "entry": 4596.52,
+        "side": "SELL",
+        "pnl": 10.34,
+        "outcome": "TP",
+        "bal": 4960.37
+      },
+      {
+        "entry": 4594.92,
+        "side": "SELL",
+        "pnl": -6.89,
+        "outcome": "SL",
+        "bal": 4953.48
+      },
+      {
+        "entry": 4587.69,
+        "side": "SELL",
+        "pnl": -6.88,
+        "outcome": "SL",
+        "bal": 4946.6
+      },
+      {
+        "entry": 4587.59,
+        "side": "SELL",
+        "pnl": -6.88,
+        "outcome": "SL",
+        "bal": 4939.72
+      },
+      {
+        "entry": 4601.63,
+        "side": "SELL",
+        "pnl": -1.77,
+        "outcome": "EXPIRY",
+        "bal": 4937.95
+      }
+    ]
+  },
+  "Kronos+VWAP": {
+    "final": 4935.089999999999,
+    "pnl": -64.91000000000076,
+    "return_pct": -1.298200000000016,
+    "trade_count": 20,
+    "win_rate": 15.0,
+    "profit_factor": 0.2510672666435906,
+    "tp": 2,
+    "sl": 11,
+    "exp": 7,
+    "avg_win": 7.25,
+    "avg_loss": -5.1,
+    "_trades_sample": [
+      {
+        "entry": 4601.79,
+        "side": "SELL",
+        "pnl": 1.21,
+        "outcome": "EXPIRY",
+        "bal": 4952.19
+      },
+      {
+        "entry": 4599.43,
+        "side": "SELL",
+        "pnl": -1.54,
+        "outcome": "EXPIRY",
+        "bal": 4950.65
+      },
+      {
+        "entry": 4596.81,
+        "side": "SELL",
+        "pnl": -6.9,
+        "outcome": "SL",
+        "bal": 4943.75
+      },
+      {
+        "entry": 4594.92,
+        "side": "SELL",
+        "pnl": -6.89,
+        "outcome": "SL",
+        "bal": 4936.86
+      },
+      {
+        "entry": 4601.63,
+        "side": "SELL",
+        "pnl": -1.77,
+        "outcome": "EXPIRY",
+        "bal": 4935.09
+      }
+    ]
+  },
+  "Kronos+MACD": {
+    "final": 4955.039999999999,
+    "pnl": -44.960000000000946,
+    "return_pct": -0.8992000000000222,
+    "trade_count": 11,
+    "win_rate": 18.181818181818183,
+    "profit_factor": 0.20523245536503446,
+    "tp": 1,
+    "sl": 8,
+    "exp": 2,
+    "avg_win": 5.8,
+    "avg_loss": -6.29,
+    "_trades_sample": [
+      {
+        "entry": 4599.43,
+        "side": "SELL",
+        "pnl": -1.54,
+        "outcome": "EXPIRY",
+        "bal": 4982.59
+      },
+      {
+        "entry": 4596.81,
+        "side": "SELL",
+        "pnl": -6.9,
+        "outcome": "SL",
+        "bal": 4975.69
+      },
+      {
+        "entry": 4594.92,
+        "side": "SELL",
+        "pnl": -6.89,
+        "outcome": "SL",
+        "bal": 4968.8
+      },
+      {
+        "entry": 4587.69,
+        "side": "SELL",
+        "pnl": -6.88,
+        "outcome": "SL",
+        "bal": 4961.92
+      },
+      {
+        "entry": 4587.59,
+        "side": "SELL",
+        "pnl": -6.88,
+        "outcome": "SL",
+        "bal": 4955.04
+      }
+    ]
+  },
+  "Kronos+RSI": {
+    "final": 4911.289999999998,
+    "pnl": -88.71000000000186,
+    "return_pct": -1.7742000000000369,
+    "trade_count": 36,
+    "win_rate": 22.22222222222222,
+    "profit_factor": 0.4531500431512761,
+    "tp": 7,
+    "sl": 22,
+    "exp": 7,
+    "avg_win": 9.19,
+    "avg_loss": -5.79,
+    "_trades_sample": [
+      {
+        "entry": 4596.81,
+        "side": "SELL",
+        "pnl": -6.9,
+        "outcome": "SL",
+        "bal": 4933.71
+      },
+      {
+        "entry": 4594.92,
+        "side": "SELL",
+        "pnl": -6.89,
+        "outcome": "SL",
+        "bal": 4926.82
+      },
+      {
+        "entry": 4587.69,
+        "side": "SELL",
+        "pnl": -6.88,
+        "outcome": "SL",
+        "bal": 4919.94
+      },
+      {
+        "entry": 4587.59,
+        "side": "SELL",
+        "pnl": -6.88,
+        "outcome": "SL",
+        "bal": 4913.06
+      },
+      {
+        "entry": 4601.63,
+        "side": "SELL",
+        "pnl": -1.77,
+        "outcome": "EXPIRY",
+        "bal": 4911.29
+      }
+    ]
+  },
+  "Krono Adapt": {
+    "final": 4990.689999999999,
+    "pnl": -9.31000000000131,
+    "return_pct": -0.18620000000002523,
+    "trade_count": 36,
+    "win_rate": 19.444444444444446,
+    "profit_factor": 0.8471766250820747,
+    "tp": 6,
+    "sl": 27,
+    "exp": 3,
+    "avg_win": 7.37,
+    "avg_loss": -2.1,
+    "_trades_sample": [
+      {
+        "entry": 4596.81,
+        "side": "SELL",
+        "pnl": -2.02,
+        "outcome": "SL",
+        "bal": 4997.93
+      },
+      {
+        "entry": 4594.92,
+        "side": "SELL",
+        "pnl": -1.9,
+        "outcome": "SL",
+        "bal": 4996.03
+      },
+      {
+        "entry": 4587.69,
+        "side": "SELL",
+        "pnl": -1.64,
+        "outcome": "SL",
+        "bal": 4994.39
+      },
+      {
+        "entry": 4587.59,
+        "side": "SELL",
+        "pnl": -2.09,
+        "outcome": "SL",
+        "bal": 4992.3
+      },
+      {
+        "entry": 4601.63,
+        "side": "SELL",
+        "pnl": -1.61,
+        "outcome": "SL",
+        "bal": 4990.69
+      }
+    ]
+  },
+  "Kron AntiAda": {
+    "final": 5018.469999999998,
+    "pnl": 18.469999999998436,
+    "return_pct": 0.3693999999999642,
+    "trade_count": 24,
+    "win_rate": 41.66666666666667,
+    "profit_factor": 1.4532515337423313,
+    "tp": 7,
+    "sl": 14,
+    "exp": 3,
+    "avg_win": 5.92,
+    "avg_loss": -2.91,
+    "_trades_sample": [
+      {
+        "entry": 4597.08,
+        "side": "BUY",
+        "pnl": 1.49,
+        "outcome": "EXPIRY",
+        "bal": 5019.46
+      },
+      {
+        "entry": 4601.24,
+        "side": "BUY",
+        "pnl": -3.33,
+        "outcome": "SL",
+        "bal": 5016.13
+      },
+      {
+        "entry": 4596.81,
+        "side": "BUY",
+        "pnl": -2.02,
+        "outcome": "SL",
+        "bal": 5014.11
+      },
+      {
+        "entry": 4594.92,
+        "side": "BUY",
+        "pnl": -1.9,
+        "outcome": "SL",
+        "bal": 5012.21
+      },
+      {
+        "entry": 4587.59,
+        "side": "BUY",
+        "pnl": 6.26,
+        "outcome": "TP",
+        "bal": 5018.47
+      }
+    ]
+  },
+  "ADX Wilder": {
+    "final": 5224.059999999999,
+    "pnl": 224.05999999999858,
+    "return_pct": 4.481199999999963,
+    "trade_count": 80,
+    "win_rate": 61.25000000000001,
+    "profit_factor": 2.1148372972435068,
+    "tp": 34,
+    "sl": 28,
+    "exp": 18,
+    "avg_win": 8.67,
+    "avg_loss": -6.48,
+    "_trades_sample": [
+      {
+        "entry": 4587.43,
+        "side": "SELL",
+        "pnl": -6.88,
+        "outcome": "SL",
+        "bal": 5227.37
+      },
+      {
+        "entry": 4587.59,
+        "side": "SELL",
+        "pnl": -6.88,
+        "outcome": "SL",
+        "bal": 5220.49
+      },
+      {
+        "entry": 4601.63,
+        "side": "BUY",
+        "pnl": 1.77,
+        "outcome": "EXPIRY",
+        "bal": 5222.26
+      },
+      {
+        "entry": 4603.6,
+        "side": "BUY",
+        "pnl": -1.37,
+        "outcome": "EXPIRY",
+        "bal": 5220.89
+      },
+      {
+        "entry": 4601.78,
+        "side": "BUY",
+        "pnl": 3.17,
+        "outcome": "EXPIRY",
+        "bal": 5224.06
+      }
+    ]
+  },
+  "VWAP Trend": {
+    "final": 5210.629999999997,
+    "pnl": 210.62999999999738,
+    "return_pct": 4.212599999999944,
+    "trade_count": 164,
+    "win_rate": 53.65853658536586,
+    "profit_factor": 1.4804626017929239,
+    "tp": 50,
+    "sl": 54,
+    "exp": 60,
+    "avg_win": 7.38,
+    "avg_loss": -5.77,
+    "_trades_sample": [
+      {
+        "entry": 4605.91,
+        "side": "BUY",
+        "pnl": -6.91,
+        "outcome": "SL",
+        "bal": 5238.27
+      },
+      {
+        "entry": 4607.63,
+        "side": "BUY",
+        "pnl": -6.91,
+        "outcome": "SL",
+        "bal": 5231.36
+      },
+      {
+        "entry": 4608.05,
+        "side": "BUY",
+        "pnl": -6.91,
+        "outcome": "SL",
+        "bal": 5224.45
+      },
+      {
+        "entry": 4605.6,
+        "side": "BUY",
+        "pnl": -6.91,
+        "outcome": "SL",
+        "bal": 5217.54
+      },
+      {
+        "entry": 4604.0,
+        "side": "BUY",
+        "pnl": -6.91,
+        "outcome": "SL",
+        "bal": 5210.63
+      }
+    ]
+  },
+  "VWAP MeanRev": {
+    "final": 4923.05,
+    "pnl": -76.94999999999982,
+    "return_pct": -1.5390000000000015,
+    "trade_count": 164,
+    "win_rate": 39.02439024390244,
+    "profit_factor": 0.8649241679539392,
+    "tp": 39,
+    "sl": 74,
+    "exp": 51,
+    "avg_win": 7.7,
+    "avg_loss": -5.7,
+    "_trades_sample": [
+      {
+        "entry": 4605.91,
+        "side": "SELL",
+        "pnl": 10.36,
+        "outcome": "TP",
+        "bal": 4881.59
+      },
+      {
+        "entry": 4607.63,
+        "side": "SELL",
+        "pnl": 10.37,
+        "outcome": "TP",
+        "bal": 4891.96
+      },
+      {
+        "entry": 4608.05,
+        "side": "SELL",
+        "pnl": 10.37,
+        "outcome": "TP",
+        "bal": 4902.33
+      },
+      {
+        "entry": 4605.6,
+        "side": "SELL",
+        "pnl": 10.36,
+        "outcome": "TP",
+        "bal": 4912.69
+      },
+      {
+        "entry": 4604.0,
+        "side": "SELL",
+        "pnl": 10.36,
+        "outcome": "TP",
+        "bal": 4923.05
+      }
+    ]
+  },
+  "RSI Extreme": {
+    "final": 5003.399999999999,
+    "pnl": 3.3999999999987267,
+    "return_pct": 0.06799999999997919,
+    "trade_count": 2,
+    "win_rate": 50.0,
+    "profit_factor": 1.4956268221574343,
+    "tp": 1,
+    "sl": 1,
+    "exp": 0,
+    "avg_win": 10.26,
+    "avg_loss": -6.86,
+    "_trades_sample": [
+      {
+        "entry": 4572.48,
+        "side": "BUY",
+        "pnl": -6.86,
+        "outcome": "SL",
+        "bal": 4993.14
+      },
+      {
+        "entry": 4561.43,
+        "side": "BUY",
+        "pnl": 10.26,
+        "outcome": "TP",
+        "bal": 5003.4
+      }
+    ]
+  },
+  "MACD Cross": {
+    "final": 5009.410000000002,
+    "pnl": 9.410000000001673,
+    "return_pct": 0.18820000000003834,
+    "trade_count": 11,
+    "win_rate": 45.45454545454545,
+    "profit_factor": 1.2616796440489433,
+    "tp": 4,
+    "sl": 5,
+    "exp": 2,
+    "avg_win": 9.07,
+    "avg_loss": -5.99,
+    "_trades_sample": [
+      {
+        "entry": 4598.67,
+        "side": "SELL",
+        "pnl": -6.9,
+        "outcome": "SL",
+        "bal": 5002.49
+      },
+      {
+        "entry": 4597.88,
+        "side": "BUY",
+        "pnl": -6.9,
+        "outcome": "SL",
+        "bal": 4995.59
+      },
+      {
+        "entry": 4602.71,
+        "side": "SELL",
+        "pnl": 10.36,
+        "outcome": "TP",
+        "bal": 5005.95
+      },
+      {
+        "entry": 4597.61,
+        "side": "SELL",
+        "pnl": -6.9,
+        "outcome": "SL",
+        "bal": 4999.05
+      },
+      {
+        "entry": 4604.0,
+        "side": "SELL",
+        "pnl": 10.36,
+        "outcome": "TP",
+        "bal": 5009.41
+      }
+    ]
+  },
+  "Bollinger %B": {
+    "final": 4990.129999999999,
+    "pnl": -9.8700000000008,
+    "return_pct": -0.19740000000001423,
+    "trade_count": 28,
+    "win_rate": 35.714285714285715,
+    "profit_factor": 0.9082201971359495,
+    "tp": 9,
+    "sl": 13,
+    "exp": 6,
+    "avg_win": 9.77,
+    "avg_loss": -5.97,
+    "_trades_sample": [
+      {
+        "entry": 4596.81,
+        "side": "BUY",
+        "pnl": 10.34,
+        "outcome": "TP",
+        "bal": 4948.78
+      },
+      {
+        "entry": 4592.93,
+        "side": "BUY",
+        "pnl": 10.33,
+        "outcome": "TP",
+        "bal": 4959.11
+      },
+      {
+        "entry": 4590.35,
+        "side": "BUY",
+        "pnl": 10.33,
+        "outcome": "TP",
+        "bal": 4969.44
+      },
+      {
+        "entry": 4611.23,
+        "side": "SELL",
+        "pnl": 10.38,
+        "outcome": "TP",
+        "bal": 4979.82
+      },
+      {
+        "entry": 4583.67,
+        "side": "BUY",
+        "pnl": 10.31,
+        "outcome": "TP",
+        "bal": 4990.13
+      }
+    ]
+  },
+  "Stoch Extreme": {
+    "final": 4973.839999999999,
+    "pnl": -26.160000000000764,
+    "return_pct": -0.5232000000000125,
+    "trade_count": 4,
+    "win_rate": 0.0,
+    "profit_factor": 0.0,
+    "tp": 0,
+    "sl": 3,
+    "exp": 1,
+    "avg_win": 0,
+    "avg_loss": -6.54,
+    "_trades_sample": [
+      {
+        "entry": 4686.51,
+        "side": "SELL",
+        "pnl": -5.33,
+        "outcome": "EXPIRY",
+        "bal": 4994.67
+      },
+      {
+        "entry": 4687.9,
+        "side": "SELL",
+        "pnl": -7.03,
+        "outcome": "SL",
+        "bal": 4987.64
+      },
+      {
+        "entry": 4613.68,
+        "side": "BUY",
+        "pnl": -6.92,
+        "outcome": "SL",
+        "bal": 4980.72
+      },
+      {
+        "entry": 4588.48,
+        "side": "SELL",
+        "pnl": -6.88,
+        "outcome": "SL",
+        "bal": 4973.84
+      }
+    ]
+  },
+  "MACD+RSI Combo": {
+    "final": 5007.030000000002,
+    "pnl": 7.030000000001564,
+    "return_pct": 0.14060000000002404,
+    "trade_count": 17,
+    "win_rate": 47.05882352941176,
+    "profit_factor": 1.1236587510993845,
+    "tp": 5,
+    "sl": 8,
+    "exp": 4,
+    "avg_win": 7.98,
+    "avg_loss": -6.32,
+    "_trades_sample": [
+      {
+        "entry": 4597.88,
+        "side": "BUY",
+        "pnl": -6.9,
+        "outcome": "SL",
+        "bal": 4991.44
+      },
+      {
+        "entry": 4602.71,
+        "side": "SELL",
+        "pnl": 10.36,
+        "outcome": "TP",
+        "bal": 5001.8
+      },
+      {
+        "entry": 4601.63,
+        "side": "BUY",
+        "pnl": 1.77,
+        "outcome": "EXPIRY",
+        "bal": 5003.57
+      },
+      {
+        "entry": 4597.61,
+        "side": "SELL",
+        "pnl": -6.9,
+        "outcome": "SL",
+        "bal": 4996.67
+      },
+      {
+        "entry": 4604.0,
+        "side": "SELL",
+        "pnl": 10.36,
+        "outcome": "TP",
+        "bal": 5007.03
+      }
+    ]
+  },
+  "Ichimoku TK": {
+    "final": 5000.0,
+    "pnl": 0.0,
+    "return_pct": 0.0,
+    "trade_count": 0,
+    "win_rate": 0,
+    "profit_factor": Infinity,
+    "tp": 0,
+    "sl": 0,
+    "exp": 0,
+    "avg_win": 0,
+    "avg_loss": 0,
+    "_trades_sample": []
+  },
+  "ORB Breakout": {
+    "final": 5204.579999999995,
+    "pnl": 204.57999999999538,
+    "return_pct": 4.091599999999906,
+    "trade_count": 171,
+    "win_rate": 49.707602339181285,
+    "profit_factor": 1.418449580691349,
+    "tp": 55,
+    "sl": 59,
+    "exp": 57,
+    "avg_win": 8.16,
+    "avg_loss": -5.68,
+    "_trades_sample": [
+      {
+        "entry": 4587.69,
+        "side": "SELL",
+        "pnl": -6.88,
+        "outcome": "SL",
+        "bal": 5232.12
+      },
+      {
+        "entry": 4587.43,
+        "side": "SELL",
+        "pnl": -6.88,
+        "outcome": "SL",
+        "bal": 5225.24
+      },
+      {
+        "entry": 4587.59,
+        "side": "SELL",
+        "pnl": -6.88,
+        "outcome": "SL",
+        "bal": 5218.36
+      },
+      {
+        "entry": 4595.9,
+        "side": "SELL",
+        "pnl": -6.89,
+        "outcome": "SL",
+        "bal": 5211.47
+      },
+      {
+        "entry": 4595.63,
+        "side": "SELL",
+        "pnl": -6.89,
+        "outcome": "SL",
+        "bal": 5204.58
+      }
+    ]
+  },
+  "ICT FVG": {
+    "final": 5000.0,
+    "pnl": 0.0,
+    "return_pct": 0.0,
+    "trade_count": 0,
+    "win_rate": 0,
+    "profit_factor": Infinity,
+    "tp": 0,
+    "sl": 0,
+    "exp": 0,
+    "avg_win": 0,
+    "avg_loss": 0,
+    "_trades_sample": []
+  },
+  "ICT OrderBlock": {
+    "final": 4952.4600000000055,
+    "pnl": -47.53999999999451,
+    "return_pct": -0.9507999999998851,
+    "trade_count": 125,
+    "win_rate": 42.4,
+    "profit_factor": 0.8762913424757353,
+    "tp": 22,
+    "sl": 44,
+    "exp": 59,
+    "avg_win": 6.35,
+    "avg_loss": -5.34,
+    "_trades_sample": [
+      {
+        "entry": 4603.99,
+        "side": "SELL",
+        "pnl": 10.36,
+        "outcome": "TP",
+        "bal": 4945.56
+      },
+      {
+        "entry": 4605.91,
+        "side": "BUY",
+        "pnl": -6.91,
+        "outcome": "SL",
+        "bal": 4938.65
+      },
+      {
+        "entry": 4607.63,
+        "side": "BUY",
+        "pnl": -6.91,
+        "outcome": "SL",
+        "bal": 4931.74
+      },
+      {
+        "entry": 4605.6,
+        "side": "SELL",
+        "pnl": 10.36,
+        "outcome": "TP",
+        "bal": 4942.1
+      },
+      {
+        "entry": 4604.0,
+        "side": "SELL",
+        "pnl": 10.36,
+        "outcome": "TP",
+        "bal": 4952.46
+      }
+    ]
+  },
+  "ICT LiqSweep": {
+    "final": 4982.4299999999985,
+    "pnl": -17.570000000001528,
+    "return_pct": -0.351400000000035,
+    "trade_count": 5,
+    "win_rate": 20.0,
+    "profit_factor": 0.3704765317090648,
+    "tp": 1,
+    "sl": 4,
+    "exp": 0,
+    "avg_win": 10.34,
+    "avg_loss": -6.98,
+    "_trades_sample": [
+      {
+        "entry": 4687.9,
+        "side": "SELL",
+        "pnl": -7.03,
+        "outcome": "SL",
+        "bal": 4992.97
+      },
+      {
+        "entry": 4669.64,
+        "side": "BUY",
+        "pnl": -7.0,
+        "outcome": "SL",
+        "bal": 4985.97
+      },
+      {
+        "entry": 4625.43,
+        "side": "BUY",
+        "pnl": -6.94,
+        "outcome": "SL",
+        "bal": 4979.03
+      },
+      {
+        "entry": 4625.7,
+        "side": "BUY",
+        "pnl": -6.94,
+        "outcome": "SL",
+        "bal": 4972.09
+      },
+      {
+        "entry": 4594.49,
+        "side": "BUY",
+        "pnl": 10.34,
+        "outcome": "TP",
+        "bal": 4982.43
+      }
+    ]
+  },
+  "ICT BOS": {
+    "final": 5016.910000000001,
+    "pnl": 16.910000000000764,
+    "return_pct": 0.3382000000000218,
+    "trade_count": 2,
+    "win_rate": 100.0,
+    "profit_factor": Infinity,
+    "tp": 1,
+    "sl": 0,
+    "exp": 1,
+    "avg_win": 8.46,
+    "avg_loss": 0,
+    "_trades_sample": [
+      {
+        "entry": 4691.18,
+        "side": "BUY",
+        "pnl": 6.55,
+        "outcome": "EXPIRY",
+        "bal": 5006.55
+      },
+      {
+        "entry": 4604.89,
+        "side": "SELL",
+        "pnl": 10.36,
+        "outcome": "TP",
+        "bal": 5016.91
+      }
+    ]
+  },
+  "Kronos+ORB": {
+    "final": 4949.449999999998,
+    "pnl": -50.550000000002,
+    "return_pct": -1.0110000000000396,
+    "trade_count": 24,
+    "win_rate": 25.0,
+    "profit_factor": 0.5116413873055743,
+    "tp": 5,
+    "sl": 14,
+    "exp": 5,
+    "avg_win": 8.83,
+    "avg_loss": -5.75,
+    "_trades_sample": [
+      {
+        "entry": 4599.43,
+        "side": "SELL",
+        "pnl": -1.54,
+        "outcome": "EXPIRY",
+        "bal": 4977.0
+      },
+      {
+        "entry": 4596.81,
+        "side": "SELL",
+        "pnl": -6.9,
+        "outcome": "SL",
+        "bal": 4970.1
+      },
+      {
+        "entry": 4594.92,
+        "side": "SELL",
+        "pnl": -6.89,
+        "outcome": "SL",
+        "bal": 4963.21
+      },
+      {
+        "entry": 4587.69,
+        "side": "SELL",
+        "pnl": -6.88,
+        "outcome": "SL",
+        "bal": 4956.33
+      },
+      {
+        "entry": 4587.59,
+        "side": "SELL",
+        "pnl": -6.88,
+        "outcome": "SL",
+        "bal": 4949.45
+      }
+    ]
+  },
+  "Kronos+FVG": {
+    "final": 5000.0,
+    "pnl": 0.0,
+    "return_pct": 0.0,
+    "trade_count": 0,
+    "win_rate": 0,
+    "profit_factor": Infinity,
+    "tp": 0,
+    "sl": 0,
+    "exp": 0,
+    "avg_win": 0,
+    "avg_loss": 0,
+    "_trades_sample": []
+  },
+  "Kronos+OB": {
+    "final": 4995.89,
+    "pnl": -4.109999999999673,
+    "return_pct": -0.08219999999999894,
+    "trade_count": 6,
+    "win_rate": 16.666666666666664,
+    "profit_factor": 0.7145833333333332,
+    "tp": 1,
+    "sl": 1,
+    "exp": 4,
+    "avg_win": 10.29,
+    "avg_loss": -2.88,
+    "_trades_sample": [
+      {
+        "entry": 4589.2,
+        "side": "SELL",
+        "pnl": -6.88,
+        "outcome": "SL",
+        "bal": 5003.41
+      },
+      {
+        "entry": 4593.87,
+        "side": "SELL",
+        "pnl": -3.68,
+        "outcome": "EXPIRY",
+        "bal": 4999.73
+      },
+      {
+        "entry": 4597.08,
+        "side": "SELL",
+        "pnl": -1.49,
+        "outcome": "EXPIRY",
+        "bal": 4998.24
+      },
+      {
+        "entry": 4601.24,
+        "side": "SELL",
+        "pnl": -0.58,
+        "outcome": "EXPIRY",
+        "bal": 4997.66
+      },
+      {
+        "entry": 4601.63,
+        "side": "SELL",
+        "pnl": -1.77,
+        "outcome": "EXPIRY",
+        "bal": 4995.89
+      }
+    ]
+  },
+  "Kronos+LiqSwp": {
+    "final": 5000.0,
+    "pnl": 0.0,
+    "return_pct": 0.0,
+    "trade_count": 0,
+    "win_rate": 0,
+    "profit_factor": Infinity,
+    "tp": 0,
+    "sl": 0,
+    "exp": 0,
+    "avg_win": 0,
+    "avg_loss": 0,
+    "_trades_sample": []
+  },
+  "Kronos+BOS": {
+    "final": 5000.0,
+    "pnl": 0.0,
+    "return_pct": 0.0,
+    "trade_count": 0,
+    "win_rate": 0,
+    "profit_factor": Infinity,
+    "tp": 0,
+    "sl": 0,
+    "exp": 0,
+    "avg_win": 0,
+    "avg_loss": 0,
+    "_trades_sample": []
+  },
+  "ADX+Kronos": {
+    "final": 4937.949999999997,
+    "pnl": -62.05000000000291,
+    "return_pct": -1.2410000000000587,
+    "trade_count": 18,
+    "win_rate": 16.666666666666664,
+    "profit_factor": 0.3330825451418745,
+    "tp": 3,
+    "sl": 13,
+    "exp": 2,
+    "avg_win": 10.33,
+    "avg_loss": -6.2,
+    "_trades_sample": [
+      {
+        "entry": 4596.52,
+        "side": "SELL",
+        "pnl": 10.34,
+        "outcome": "TP",
+        "bal": 4960.37
+      },
+      {
+        "entry": 4594.92,
+        "side": "SELL",
+        "pnl": -6.89,
+        "outcome": "SL",
+        "bal": 4953.48
+      },
+      {
+        "entry": 4587.69,
+        "side": "SELL",
+        "pnl": -6.88,
+        "outcome": "SL",
+        "bal": 4946.6
+      },
+      {
+        "entry": 4587.59,
+        "side": "SELL",
+        "pnl": -6.88,
+        "outcome": "SL",
+        "bal": 4939.72
+      },
+      {
+        "entry": 4601.63,
+        "side": "SELL",
+        "pnl": -1.77,
+        "outcome": "EXPIRY",
+        "bal": 4937.95
+      }
+    ]
+  }
+}

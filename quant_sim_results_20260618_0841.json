@@ -1,0 +1,58 @@
+{
+  "config": {
+    "windows": 720,
+    "capital": 5000,
+    "baseline_size": 0.5,
+    "leverage": 200,
+    "tp_pct": 0.3,
+    "sl_pct": 0.2
+  },
+  "quant_fusion": {
+    "total_trades": 142,
+    "wins": 45,
+    "losses": 97,
+    "win_rate": 31.7,
+    "total_pnl": -289.5,
+    "final_capital": 4710.49,
+    "return_pct": -5.79,
+    "avg_win": 58.14,
+    "avg_loss": 29.96,
+    "avg_win_pct": 0.38,
+    "avg_loss_pct": 0.2,
+    "tp_count": 29,
+    "sl_count": 87,
+    "expiry_count": 26
+  },
+  "antitrend_baseline": {
+    "total_trades": 229,
+    "wins": 93,
+    "losses": 136,
+    "win_rate": 40.6,
+    "total_pnl": -356.87,
+    "final_capital": 4643.2,
+    "return_pct": -7.14,
+    "avg_win": 88.6,
+    "avg_loss": 63.21,
+    "avg_win_pct": 0.27,
+    "avg_loss_pct": 0.19,
+    "tp_count": 79,
+    "sl_count": 128,
+    "expiry_count": 22
+  },
+  "kronos_raw": {
+    "total_trades": 332,
+    "wins": 153,
+    "losses": 179,
+    "win_rate": 46.1,
+    "total_pnl": 2679.06,
+    "final_capital": 7679.05,
+    "return_pct": 53.58,
+    "avg_win": 87.98,
+    "avg_loss": 60.24,
+    "avg_win_pct": 0.27,
+    "avg_loss_pct": 0.18,
+    "tp_count": 129,
+    "sl_count": 155,
+    "expiry_count": 48
+  }
+}

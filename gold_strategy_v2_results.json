@@ -1,0 +1,894 @@
+{
+  "VWAP Mean Rev": {
+    "final": 4767.350000000001,
+    "pnl": -232.64999999999873,
+    "return_pct": -4.652999999999974,
+    "trade_count": 129,
+    "win_rate": 31.007751937984494,
+    "profit_factor": 0.550243581812558,
+    "tp": 22,
+    "sl": 68,
+    "exp": 39,
+    "avg_win": 7.12,
+    "avg_loss": -5.81,
+    "_trades_sample": [
+      {
+        "entry": 4600.99,
+        "side": "SELL",
+        "pnl": 1.66,
+        "outcome": "EXPIRY",
+        "bal": 4767.56
+      },
+      {
+        "entry": 4601.79,
+        "side": "SELL",
+        "pnl": 1.21,
+        "outcome": "EXPIRY",
+        "bal": 4768.77
+      },
+      {
+        "entry": 4599.43,
+        "side": "SELL",
+        "pnl": -1.54,
+        "outcome": "EXPIRY",
+        "bal": 4767.23
+      },
+      {
+        "entry": 4601.7,
+        "side": "SELL",
+        "pnl": 1.31,
+        "outcome": "EXPIRY",
+        "bal": 4768.54
+      },
+      {
+        "entry": 4598.08,
+        "side": "SELL",
+        "pnl": -1.19,
+        "outcome": "EXPIRY",
+        "bal": 4767.35
+      }
+    ]
+  },
+  "VWAP Trend Fol": {
+    "final": 5324.589999999999,
+    "pnl": 324.58999999999924,
+    "return_pct": 6.491799999999981,
+    "trade_count": 129,
+    "win_rate": 61.240310077519375,
+    "profit_factor": 2.188364941055868,
+    "tp": 47,
+    "sl": 32,
+    "exp": 50,
+    "avg_win": 7.57,
+    "avg_loss": -5.46,
+    "_trades_sample": [
+      {
+        "entry": 4600.99,
+        "side": "BUY",
+        "pnl": -1.66,
+        "outcome": "EXPIRY",
+        "bal": 5324.38
+      },
+      {
+        "entry": 4601.79,
+        "side": "BUY",
+        "pnl": -1.21,
+        "outcome": "EXPIRY",
+        "bal": 5323.17
+      },
+      {
+        "entry": 4599.43,
+        "side": "BUY",
+        "pnl": 1.54,
+        "outcome": "EXPIRY",
+        "bal": 5324.71
+      },
+      {
+        "entry": 4601.7,
+        "side": "BUY",
+        "pnl": -1.31,
+        "outcome": "EXPIRY",
+        "bal": 5323.4
+      },
+      {
+        "entry": 4598.08,
+        "side": "BUY",
+        "pnl": 1.19,
+        "outcome": "EXPIRY",
+        "bal": 5324.59
+      }
+    ]
+  },
+  "Bollinger": {
+    "final": 4979.359999999999,
+    "pnl": -20.640000000001237,
+    "return_pct": -0.41280000000002426,
+    "trade_count": 18,
+    "win_rate": 33.33333333333333,
+    "profit_factor": 0.7084745762711864,
+    "tp": 4,
+    "sl": 9,
+    "exp": 5,
+    "avg_win": 8.36,
+    "avg_loss": -5.9,
+    "_trades_sample": [
+      {
+        "entry": 4604.89,
+        "side": "BUY",
+        "pnl": -6.91,
+        "outcome": "SL",
+        "bal": 4972.59
+      },
+      {
+        "entry": 4599.9,
+        "side": "BUY",
+        "pnl": -6.9,
+        "outcome": "SL",
+        "bal": 4965.69
+      },
+      {
+        "entry": 4572.48,
+        "side": "BUY",
+        "pnl": -6.86,
+        "outcome": "SL",
+        "bal": 4958.83
+      },
+      {
+        "entry": 4561.43,
+        "side": "BUY",
+        "pnl": 10.26,
+        "outcome": "TP",
+        "bal": 4969.09
+      },
+      {
+        "entry": 4565.11,
+        "side": "BUY",
+        "pnl": 10.27,
+        "outcome": "TP",
+        "bal": 4979.36
+      }
+    ]
+  },
+  "RSI(14,30/70)": {
+    "final": 4997.839999999998,
+    "pnl": -2.1600000000016735,
+    "return_pct": -0.0432000000000321,
+    "trade_count": 15,
+    "win_rate": 33.33333333333333,
+    "profit_factor": 0.9601402472780957,
+    "tp": 5,
+    "sl": 6,
+    "exp": 4,
+    "avg_win": 10.41,
+    "avg_loss": -5.42,
+    "_trades_sample": [
+      {
+        "entry": 4635.85,
+        "side": "BUY",
+        "pnl": -6.95,
+        "outcome": "SL",
+        "bal": 4973.82
+      },
+      {
+        "entry": 4572.48,
+        "side": "BUY",
+        "pnl": -6.86,
+        "outcome": "SL",
+        "bal": 4966.96
+      },
+      {
+        "entry": 4561.43,
+        "side": "BUY",
+        "pnl": 10.26,
+        "outcome": "TP",
+        "bal": 4977.22
+      },
+      {
+        "entry": 4566.73,
+        "side": "BUY",
+        "pnl": 10.28,
+        "outcome": "TP",
+        "bal": 4987.5
+      },
+      {
+        "entry": 4596.52,
+        "side": "SELL",
+        "pnl": 10.34,
+        "outcome": "TP",
+        "bal": 4997.84
+      }
+    ]
+  },
+  "RSI-2 Connors": {
+    "final": 4888.759999999998,
+    "pnl": -111.2400000000016,
+    "return_pct": -2.2248000000000268,
+    "trade_count": 39,
+    "win_rate": 30.76923076923077,
+    "profit_factor": 0.34406509817795855,
+    "tp": 3,
+    "sl": 23,
+    "exp": 13,
+    "avg_win": 4.86,
+    "avg_loss": -6.28,
+    "_trades_sample": [
+      {
+        "entry": 4590.06,
+        "side": "SELL",
+        "pnl": -6.89,
+        "outcome": "SL",
+        "bal": 4881.36
+      },
+      {
+        "entry": 4597.61,
+        "side": "BUY",
+        "pnl": 2.3,
+        "outcome": "EXPIRY",
+        "bal": 4883.66
+      },
+      {
+        "entry": 4597.11,
+        "side": "BUY",
+        "pnl": 1.69,
+        "outcome": "EXPIRY",
+        "bal": 4885.35
+      },
+      {
+        "entry": 4597.81,
+        "side": "BUY",
+        "pnl": 2.22,
+        "outcome": "EXPIRY",
+        "bal": 4887.57
+      },
+      {
+        "entry": 4598.08,
+        "side": "BUY",
+        "pnl": 1.19,
+        "outcome": "EXPIRY",
+        "bal": 4888.76
+      }
+    ]
+  },
+  "EMA 9/21 Crs": {
+    "final": 5000.0,
+    "pnl": 0.0,
+    "return_pct": 0.0,
+    "trade_count": 0,
+    "win_rate": 0,
+    "profit_factor": Infinity,
+    "tp": 0,
+    "sl": 0,
+    "exp": 0,
+    "avg_win": 0,
+    "avg_loss": 0,
+    "_trades_sample": []
+  },
+  "MACD Cross": {
+    "final": 5016.29,
+    "pnl": 16.289999999999964,
+    "return_pct": 0.3257999999999983,
+    "trade_count": 5,
+    "win_rate": 60.0,
+    "profit_factor": 2.9485645933014357,
+    "tp": 2,
+    "sl": 1,
+    "exp": 2,
+    "avg_win": 8.22,
+    "avg_loss": -4.18,
+    "_trades_sample": [
+      {
+        "entry": 4686.32,
+        "side": "BUY",
+        "pnl": 3.87,
+        "outcome": "EXPIRY",
+        "bal": 5003.87
+      },
+      {
+        "entry": 4689.33,
+        "side": "SELL",
+        "pnl": -7.03,
+        "outcome": "SL",
+        "bal": 4996.84
+      },
+      {
+        "entry": 4693.52,
+        "side": "BUY",
+        "pnl": -1.33,
+        "outcome": "EXPIRY",
+        "bal": 4995.51
+      },
+      {
+        "entry": 4656.5,
+        "side": "SELL",
+        "pnl": 10.48,
+        "outcome": "TP",
+        "bal": 5005.99
+      },
+      {
+        "entry": 4578.17,
+        "side": "BUY",
+        "pnl": 10.3,
+        "outcome": "TP",
+        "bal": 5016.29
+      }
+    ]
+  },
+  "Ichimoku": {
+    "final": 5000.0,
+    "pnl": 0.0,
+    "return_pct": 0.0,
+    "trade_count": 0,
+    "win_rate": 0,
+    "profit_factor": Infinity,
+    "tp": 0,
+    "sl": 0,
+    "exp": 0,
+    "avg_win": 0,
+    "avg_loss": 0,
+    "_trades_sample": []
+  },
+  "ADX+DI Trend": {
+    "final": 5291.730000000003,
+    "pnl": 291.7300000000032,
+    "return_pct": 5.8346000000000675,
+    "trade_count": 83,
+    "win_rate": 68.67469879518072,
+    "profit_factor": 3.0105444521019984,
+    "tp": 30,
+    "sl": 18,
+    "exp": 35,
+    "avg_win": 7.66,
+    "avg_loss": -5.58,
+    "_trades_sample": [
+      {
+        "entry": 4601.24,
+        "side": "BUY",
+        "pnl": 0.58,
+        "outcome": "EXPIRY",
+        "bal": 5297.13
+      },
+      {
+        "entry": 4600.7,
+        "side": "BUY",
+        "pnl": -1.57,
+        "outcome": "EXPIRY",
+        "bal": 5295.56
+      },
+      {
+        "entry": 4597.61,
+        "side": "BUY",
+        "pnl": 2.3,
+        "outcome": "EXPIRY",
+        "bal": 5297.86
+      },
+      {
+        "entry": 4600.44,
+        "side": "BUY",
+        "pnl": -3.55,
+        "outcome": "EXPIRY",
+        "bal": 5294.31
+      },
+      {
+        "entry": 4601.56,
+        "side": "BUY",
+        "pnl": -2.58,
+        "outcome": "EXPIRY",
+        "bal": 5291.73
+      }
+    ]
+  },
+  "Stochastic": {
+    "final": 4966.87,
+    "pnl": -33.13000000000011,
+    "return_pct": -0.6626000000000021,
+    "trade_count": 6,
+    "win_rate": 16.666666666666664,
+    "profit_factor": 0.04524495677233429,
+    "tp": 0,
+    "sl": 5,
+    "exp": 1,
+    "avg_win": 1.57,
+    "avg_loss": -6.94,
+    "_trades_sample": [
+      {
+        "entry": 4635.85,
+        "side": "BUY",
+        "pnl": -6.95,
+        "outcome": "SL",
+        "bal": 4986.02
+      },
+      {
+        "entry": 4613.71,
+        "side": "BUY",
+        "pnl": -6.92,
+        "outcome": "SL",
+        "bal": 4979.1
+      },
+      {
+        "entry": 4613.68,
+        "side": "BUY",
+        "pnl": -6.92,
+        "outcome": "SL",
+        "bal": 4972.18
+      },
+      {
+        "entry": 4583.52,
+        "side": "SELL",
+        "pnl": -6.88,
+        "outcome": "SL",
+        "bal": 4965.3
+      },
+      {
+        "entry": 4600.7,
+        "side": "SELL",
+        "pnl": 1.57,
+        "outcome": "EXPIRY",
+        "bal": 4966.87
+      }
+    ]
+  },
+  "Keltner Brk": {
+    "final": 5018.740000000001,
+    "pnl": 18.74000000000069,
+    "return_pct": 0.37480000000000846,
+    "trade_count": 2,
+    "win_rate": 100.0,
+    "profit_factor": Infinity,
+    "tp": 1,
+    "sl": 0,
+    "exp": 1,
+    "avg_win": 9.37,
+    "avg_loss": 0,
+    "_trades_sample": [
+      {
+        "entry": 4636.44,
+        "side": "SELL",
+        "pnl": 8.37,
+        "outcome": "EXPIRY",
+        "bal": 5008.37
+      },
+      {
+        "entry": 4608.77,
+        "side": "SELL",
+        "pnl": 10.37,
+        "outcome": "TP",
+        "bal": 5018.74
+      }
+    ]
+  },
+  "VWAP Mean Rev+Kronos": {
+    "final": 4716.100000000001,
+    "pnl": -283.8999999999987,
+    "return_pct": -5.677999999999972,
+    "trade_count": 114,
+    "win_rate": 27.192982456140353,
+    "profit_factor": 0.40330818218121456,
+    "tp": 13,
+    "sl": 62,
+    "exp": 39,
+    "avg_win": 6.19,
+    "avg_loss": -5.73,
+    "_trades_sample": [
+      {
+        "entry": 4600.99,
+        "side": "SELL",
+        "pnl": 1.66,
+        "outcome": "EXPIRY",
+        "bal": 4716.31
+      },
+      {
+        "entry": 4601.79,
+        "side": "SELL",
+        "pnl": 1.21,
+        "outcome": "EXPIRY",
+        "bal": 4717.52
+      },
+      {
+        "entry": 4599.43,
+        "side": "SELL",
+        "pnl": -1.54,
+        "outcome": "EXPIRY",
+        "bal": 4715.98
+      },
+      {
+        "entry": 4601.7,
+        "side": "SELL",
+        "pnl": 1.31,
+        "outcome": "EXPIRY",
+        "bal": 4717.29
+      },
+      {
+        "entry": 4598.08,
+        "side": "SELL",
+        "pnl": -1.19,
+        "outcome": "EXPIRY",
+        "bal": 4716.1
+      }
+    ]
+  },
+  "VWAP Trend Fol+Kronos": {
+    "final": 5194.639999999997,
+    "pnl": 194.6399999999967,
+    "return_pct": 3.8927999999999408,
+    "trade_count": 94,
+    "win_rate": 59.57446808510638,
+    "profit_factor": 1.894074414331648,
+    "tp": 33,
+    "sl": 25,
+    "exp": 36,
+    "avg_win": 7.36,
+    "avg_loss": -5.73,
+    "_trades_sample": [
+      {
+        "entry": 4597.11,
+        "side": "BUY",
+        "pnl": 1.69,
+        "outcome": "EXPIRY",
+        "bal": 5192.25
+      },
+      {
+        "entry": 4599.46,
+        "side": "BUY",
+        "pnl": 0.64,
+        "outcome": "EXPIRY",
+        "bal": 5192.89
+      },
+      {
+        "entry": 4597.81,
+        "side": "BUY",
+        "pnl": 2.22,
+        "outcome": "EXPIRY",
+        "bal": 5195.11
+      },
+      {
+        "entry": 4600.99,
+        "side": "BUY",
+        "pnl": -1.66,
+        "outcome": "EXPIRY",
+        "bal": 5193.45
+      },
+      {
+        "entry": 4598.08,
+        "side": "BUY",
+        "pnl": 1.19,
+        "outcome": "EXPIRY",
+        "bal": 5194.64
+      }
+    ]
+  },
+  "Bollinger+Kronos": {
+    "final": 4979.359999999999,
+    "pnl": -20.640000000001237,
+    "return_pct": -0.41280000000002426,
+    "trade_count": 18,
+    "win_rate": 33.33333333333333,
+    "profit_factor": 0.7084745762711864,
+    "tp": 4,
+    "sl": 9,
+    "exp": 5,
+    "avg_win": 8.36,
+    "avg_loss": -5.9,
+    "_trades_sample": [
+      {
+        "entry": 4604.89,
+        "side": "BUY",
+        "pnl": -6.91,
+        "outcome": "SL",
+        "bal": 4972.59
+      },
+      {
+        "entry": 4599.9,
+        "side": "BUY",
+        "pnl": -6.9,
+        "outcome": "SL",
+        "bal": 4965.69
+      },
+      {
+        "entry": 4572.48,
+        "side": "BUY",
+        "pnl": -6.86,
+        "outcome": "SL",
+        "bal": 4958.83
+      },
+      {
+        "entry": 4561.43,
+        "side": "BUY",
+        "pnl": 10.26,
+        "outcome": "TP",
+        "bal": 4969.09
+      },
+      {
+        "entry": 4565.11,
+        "side": "BUY",
+        "pnl": 10.27,
+        "outcome": "TP",
+        "bal": 4979.36
+      }
+    ]
+  },
+  "RSI(14,30/70)+Kronos": {
+    "final": 4987.559999999999,
+    "pnl": -12.440000000001419,
+    "return_pct": -0.24880000000002678,
+    "trade_count": 14,
+    "win_rate": 28.57142857142857,
+    "profit_factor": 0.7704373500645876,
+    "tp": 4,
+    "sl": 6,
+    "exp": 4,
+    "avg_win": 10.44,
+    "avg_loss": -5.42,
+    "_trades_sample": [
+      {
+        "entry": 4632.06,
+        "side": "BUY",
+        "pnl": -1.47,
+        "outcome": "EXPIRY",
+        "bal": 4980.77
+      },
+      {
+        "entry": 4635.85,
+        "side": "BUY",
+        "pnl": -6.95,
+        "outcome": "SL",
+        "bal": 4973.82
+      },
+      {
+        "entry": 4572.48,
+        "side": "BUY",
+        "pnl": -6.86,
+        "outcome": "SL",
+        "bal": 4966.96
+      },
+      {
+        "entry": 4561.43,
+        "side": "BUY",
+        "pnl": 10.26,
+        "outcome": "TP",
+        "bal": 4977.22
+      },
+      {
+        "entry": 4596.52,
+        "side": "SELL",
+        "pnl": 10.34,
+        "outcome": "TP",
+        "bal": 4987.56
+      }
+    ]
+  },
+  "RSI-2 Connors+Kronos": {
+    "final": 4883.039999999998,
+    "pnl": -116.96000000000186,
+    "return_pct": -2.3392000000000412,
+    "trade_count": 36,
+    "win_rate": 27.77777777777778,
+    "profit_factor": 0.2811309157959434,
+    "tp": 2,
+    "sl": 22,
+    "exp": 12,
+    "avg_win": 4.57,
+    "avg_loss": -6.26,
+    "_trades_sample": [
+      {
+        "entry": 4565.11,
+        "side": "BUY",
+        "pnl": 10.27,
+        "outcome": "TP",
+        "bal": 4884.83
+      },
+      {
+        "entry": 4590.06,
+        "side": "SELL",
+        "pnl": -6.89,
+        "outcome": "SL",
+        "bal": 4877.94
+      },
+      {
+        "entry": 4597.11,
+        "side": "BUY",
+        "pnl": 1.69,
+        "outcome": "EXPIRY",
+        "bal": 4879.63
+      },
+      {
+        "entry": 4597.81,
+        "side": "BUY",
+        "pnl": 2.22,
+        "outcome": "EXPIRY",
+        "bal": 4881.85
+      },
+      {
+        "entry": 4598.08,
+        "side": "BUY",
+        "pnl": 1.19,
+        "outcome": "EXPIRY",
+        "bal": 4883.04
+      }
+    ]
+  },
+  "EMA 9/21 Crs+Kronos": {
+    "final": 5000.0,
+    "pnl": 0.0,
+    "return_pct": 0.0,
+    "trade_count": 0,
+    "win_rate": 0,
+    "profit_factor": Infinity,
+    "tp": 0,
+    "sl": 0,
+    "exp": 0,
+    "avg_win": 0,
+    "avg_loss": 0,
+    "_trades_sample": []
+  },
+  "MACD Cross+Kronos": {
+    "final": 5005.8099999999995,
+    "pnl": 5.809999999999491,
+    "return_pct": 0.11619999999998853,
+    "trade_count": 4,
+    "win_rate": 50.0,
+    "profit_factor": 1.6949760765550241,
+    "tp": 1,
+    "sl": 1,
+    "exp": 2,
+    "avg_win": 7.09,
+    "avg_loss": -4.18,
+    "_trades_sample": [
+      {
+        "entry": 4686.32,
+        "side": "BUY",
+        "pnl": 3.87,
+        "outcome": "EXPIRY",
+        "bal": 5003.87
+      },
+      {
+        "entry": 4689.33,
+        "side": "SELL",
+        "pnl": -7.03,
+        "outcome": "SL",
+        "bal": 4996.84
+      },
+      {
+        "entry": 4693.52,
+        "side": "BUY",
+        "pnl": -1.33,
+        "outcome": "EXPIRY",
+        "bal": 4995.51
+      },
+      {
+        "entry": 4578.17,
+        "side": "BUY",
+        "pnl": 10.3,
+        "outcome": "TP",
+        "bal": 5005.81
+      }
+    ]
+  },
+  "Ichimoku+Kronos": {
+    "final": 5000.0,
+    "pnl": 0.0,
+    "return_pct": 0.0,
+    "trade_count": 0,
+    "win_rate": 0,
+    "profit_factor": Infinity,
+    "tp": 0,
+    "sl": 0,
+    "exp": 0,
+    "avg_win": 0,
+    "avg_loss": 0,
+    "_trades_sample": []
+  },
+  "ADX+DI Trend+Kronos": {
+    "final": 5188.470000000001,
+    "pnl": 188.47000000000116,
+    "return_pct": 3.769400000000034,
+    "trade_count": 57,
+    "win_rate": 68.42105263157895,
+    "profit_factor": 2.89207910852324,
+    "tp": 20,
+    "sl": 12,
+    "exp": 25,
+    "avg_win": 7.39,
+    "avg_loss": -5.53,
+    "_trades_sample": [
+      {
+        "entry": 4585.88,
+        "side": "BUY",
+        "pnl": 10.32,
+        "outcome": "TP",
+        "bal": 5178.07
+      },
+      {
+        "entry": 4587.89,
+        "side": "BUY",
+        "pnl": 10.32,
+        "outcome": "TP",
+        "bal": 5188.39
+      },
+      {
+        "entry": 4595.18,
+        "side": "BUY",
+        "pnl": 2.14,
+        "outcome": "EXPIRY",
+        "bal": 5190.53
+      },
+      {
+        "entry": 4597.08,
+        "side": "BUY",
+        "pnl": 1.49,
+        "outcome": "EXPIRY",
+        "bal": 5192.02
+      },
+      {
+        "entry": 4600.44,
+        "side": "BUY",
+        "pnl": -3.55,
+        "outcome": "EXPIRY",
+        "bal": 5188.47
+      }
+    ]
+  },
+  "Stochastic+Kronos": {
+    "final": 4973.79,
+    "pnl": -26.210000000000036,
+    "return_pct": -0.5241999999999969,
+    "trade_count": 5,
+    "win_rate": 20.0,
+    "profit_factor": 0.05651547876169907,
+    "tp": 0,
+    "sl": 4,
+    "exp": 1,
+    "avg_win": 1.57,
+    "avg_loss": -6.94,
+    "_trades_sample": [
+      {
+        "entry": 4687.9,
+        "side": "SELL",
+        "pnl": -7.03,
+        "outcome": "SL",
+        "bal": 4992.97
+      },
+      {
+        "entry": 4635.85,
+        "side": "BUY",
+        "pnl": -6.95,
+        "outcome": "SL",
+        "bal": 4986.02
+      },
+      {
+        "entry": 4613.68,
+        "side": "BUY",
+        "pnl": -6.92,
+        "outcome": "SL",
+        "bal": 4979.1
+      },
+      {
+        "entry": 4583.52,
+        "side": "SELL",
+        "pnl": -6.88,
+        "outcome": "SL",
+        "bal": 4972.22
+      },
+      {
+        "entry": 4600.7,
+        "side": "SELL",
+        "pnl": 1.57,
+        "outcome": "EXPIRY",
+        "bal": 4973.79
+      }
+    ]
+  },
+  "Keltner Brk+Kronos": {
+    "final": 5000.0,
+    "pnl": 0.0,
+    "return_pct": 0.0,
+    "trade_count": 0,
+    "win_rate": 0,
+    "profit_factor": Infinity,
+    "tp": 0,
+    "sl": 0,
+    "exp": 0,
+    "avg_win": 0,
+    "avg_loss": 0,
+    "_trades_sample": []
+  }
+}

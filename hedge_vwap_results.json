@@ -1,0 +1,484 @@
+{
+  "trades": [
+    {
+      "entry": 73626.1,
+      "side": "SELL",
+      "exit": 73793.05,
+      "pnl_pct": -0.23,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73702.0,
+      "side": "SELL",
+      "exit": 73908.0,
+      "pnl_pct": -0.28,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73660.13,
+      "side": "SELL",
+      "exit": 73908.0,
+      "pnl_pct": -0.34,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73694.32,
+      "side": "SELL",
+      "exit": 73908.0,
+      "pnl_pct": -0.29,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73745.34,
+      "side": "SELL",
+      "exit": 73908.0,
+      "pnl_pct": -0.22,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73735.45,
+      "side": "SELL",
+      "exit": 73908.0,
+      "pnl_pct": -0.23,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73908.0,
+      "side": "SELL",
+      "exit": 73686.28,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73696.49,
+      "side": "SELL",
+      "exit": 73475.4,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73569.55,
+      "side": "BUY",
+      "exit": 73790.26,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73500.73,
+      "side": "BUY",
+      "exit": 73721.23,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73510.86,
+      "side": "BUY",
+      "exit": 73731.39,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73542.74,
+      "side": "SELL",
+      "exit": 73694.32,
+      "pnl_pct": -0.21,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73666.03,
+      "side": "SELL",
+      "exit": 73837.09,
+      "pnl_pct": -0.23,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73745.47,
+      "side": "SELL",
+      "exit": 73524.23,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73849.45,
+      "side": "SELL",
+      "exit": 73627.9,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73710.26,
+      "side": "SELL",
+      "exit": 73860.0,
+      "pnl_pct": -0.2,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73786.0,
+      "side": "SELL",
+      "exit": 73564.64,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73583.14,
+      "side": "SELL",
+      "exit": 73362.39,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73600.0,
+      "side": "SELL",
+      "exit": 73379.2,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73604.4,
+      "side": "SELL",
+      "exit": 73383.59,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73623.19,
+      "side": "SELL",
+      "exit": 73402.32,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73470.09,
+      "side": "SELL",
+      "exit": 73249.68,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73340.09,
+      "side": "BUY",
+      "exit": 73340.09,
+      "pnl_pct": 0.0,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73290.5,
+      "side": "SELL",
+      "exit": 73446.97,
+      "pnl_pct": -0.21,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73446.97,
+      "side": "SELL",
+      "exit": 73606.89,
+      "pnl_pct": -0.22,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73409.11,
+      "side": "SELL",
+      "exit": 73579.0,
+      "pnl_pct": -0.23,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73427.75,
+      "side": "SELL",
+      "exit": 73579.0,
+      "pnl_pct": -0.21,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73365.51,
+      "side": "SELL",
+      "exit": 73579.0,
+      "pnl_pct": -0.29,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73315.42,
+      "side": "SELL",
+      "exit": 73463.01,
+      "pnl_pct": -0.2,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73370.0,
+      "side": "SELL",
+      "exit": 73579.0,
+      "pnl_pct": -0.28,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73313.0,
+      "side": "SELL",
+      "exit": 73463.01,
+      "pnl_pct": -0.2,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73390.45,
+      "side": "SELL",
+      "exit": 73579.0,
+      "pnl_pct": -0.26,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73418.01,
+      "side": "SELL",
+      "exit": 73579.0,
+      "pnl_pct": -0.22,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73463.01,
+      "side": "SELL",
+      "exit": 73620.0,
+      "pnl_pct": -0.21,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73579.0,
+      "side": "SELL",
+      "exit": 73776.0,
+      "pnl_pct": -0.27,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73512.0,
+      "side": "SELL",
+      "exit": 73667.3,
+      "pnl_pct": -0.21,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73836.32,
+      "side": "BUY",
+      "exit": 73534.68,
+      "pnl_pct": -0.41,
+      "outcome": "HEDGED_SL",
+      "hedged": true
+    },
+    {
+      "entry": 73711.21,
+      "side": "SELL",
+      "exit": 73490.08,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73780.01,
+      "side": "SELL",
+      "exit": 73558.67,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73802.62,
+      "side": "BUY",
+      "exit": 73491.19,
+      "pnl_pct": -0.42,
+      "outcome": "HEDGED_SL",
+      "hedged": true
+    },
+    {
+      "entry": 73407.79,
+      "side": "SELL",
+      "exit": 73667.11,
+      "pnl_pct": -0.35,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73394.23,
+      "side": "SELL",
+      "exit": 73667.11,
+      "pnl_pct": -0.37,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73808.36,
+      "side": "SELL",
+      "exit": 73808.36,
+      "pnl_pct": -0.0,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73818.37,
+      "side": "SELL",
+      "exit": 73818.37,
+      "pnl_pct": -0.0,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73659.8,
+      "side": "SELL",
+      "exit": 73816.7,
+      "pnl_pct": -0.21,
+      "outcome": "SL",
+      "hedged": false
+    },
+    {
+      "entry": 73876.24,
+      "side": "SELL",
+      "exit": 73654.61,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73848.0,
+      "side": "SELL",
+      "exit": 73626.46,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73748.21,
+      "side": "SELL",
+      "exit": 73526.97,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73703.86,
+      "side": "SELL",
+      "exit": 73482.75,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73651.9,
+      "side": "SELL",
+      "exit": 73430.94,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73624.03,
+      "side": "SELL",
+      "exit": 73403.16,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73618.21,
+      "side": "SELL",
+      "exit": 73397.36,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73652.81,
+      "side": "SELL",
+      "exit": 73431.85,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73686.0,
+      "side": "SELL",
+      "exit": 73464.94,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73592.64,
+      "side": "SELL",
+      "exit": 73371.86,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73491.64,
+      "side": "SELL",
+      "exit": 73271.17,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73424.88,
+      "side": "SELL",
+      "exit": 73204.61,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false
+    },
+    {
+      "entry": 73322.63,
+      "side": "BUY",
+      "exit": 72926.0,
+      "pnl_pct": -0.54,
+      "outcome": "HEDGED_SL",
+      "hedged": true
+    },
+    {
+      "entry": 73325.14,
+      "side": "BUY",
+      "exit": 73030.98,
+      "pnl_pct": -0.4,
+      "outcome": "HEDGED_SL",
+      "hedged": true
+    }
+  ],
+  "summary": {
+    "total": 59,
+    "pnl": 0.16,
+    "wr": 45.8,
+    "hedges": 4,
+    "without": 1.93,
+    "improvement": -1.77
+  }
+}

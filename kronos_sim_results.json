@@ -1,0 +1,755 @@
+{
+  "trades": [
+    {
+      "entry": 73831.11,
+      "side": "SELL",
+      "pnl": 110.75,
+      "outcome": "TP",
+      "bal": 5110.75
+    },
+    {
+      "entry": 73760.02,
+      "side": "SELL",
+      "pnl": 110.64,
+      "outcome": "TP",
+      "bal": 5221.39
+    },
+    {
+      "entry": 73680.01,
+      "side": "SELL",
+      "pnl": -73.68,
+      "outcome": "SL",
+      "bal": 5147.71
+    },
+    {
+      "entry": 73614.01,
+      "side": "SELL",
+      "pnl": -73.61,
+      "outcome": "SL",
+      "bal": 5074.1
+    },
+    {
+      "entry": 73568.3,
+      "side": "SELL",
+      "pnl": -73.57,
+      "outcome": "SL",
+      "bal": 5000.53
+    },
+    {
+      "entry": 73464.8,
+      "side": "BUY",
+      "pnl": 110.2,
+      "outcome": "TP",
+      "bal": 5110.73
+    },
+    {
+      "entry": 73684.18,
+      "side": "SELL",
+      "pnl": -73.68,
+      "outcome": "SL",
+      "bal": 5037.05
+    },
+    {
+      "entry": 73694.32,
+      "side": "SELL",
+      "pnl": -73.69,
+      "outcome": "SL",
+      "bal": 4963.36
+    },
+    {
+      "entry": 73780.72,
+      "side": "SELL",
+      "pnl": 110.67,
+      "outcome": "TP",
+      "bal": 5074.03
+    },
+    {
+      "entry": 73758.01,
+      "side": "BUY",
+      "pnl": -73.76,
+      "outcome": "SL",
+      "bal": 5000.27
+    },
+    {
+      "entry": 73716.37,
+      "side": "SELL",
+      "pnl": 110.57,
+      "outcome": "TP",
+      "bal": 5110.84
+    },
+    {
+      "entry": 73860.0,
+      "side": "SELL",
+      "pnl": 110.79,
+      "outcome": "TP",
+      "bal": 5221.63
+    },
+    {
+      "entry": 73702.0,
+      "side": "BUY",
+      "pnl": -73.7,
+      "outcome": "SL",
+      "bal": 5147.93
+    },
+    {
+      "entry": 73586.83,
+      "side": "BUY",
+      "pnl": -73.59,
+      "outcome": "SL",
+      "bal": 5074.34
+    },
+    {
+      "entry": 73388.22,
+      "side": "BUY",
+      "pnl": -73.39,
+      "outcome": "SL",
+      "bal": 5000.95
+    },
+    {
+      "entry": 73459.0,
+      "side": "SELL",
+      "pnl": 110.19,
+      "outcome": "TP",
+      "bal": 5111.14
+    },
+    {
+      "entry": 73447.7,
+      "side": "SELL",
+      "pnl": -73.45,
+      "outcome": "SL",
+      "bal": 5037.69
+    },
+    {
+      "entry": 73430.38,
+      "side": "SELL",
+      "pnl": -73.43,
+      "outcome": "SL",
+      "bal": 4964.26
+    },
+    {
+      "entry": 73394.25,
+      "side": "SELL",
+      "pnl": -73.39,
+      "outcome": "SL",
+      "bal": 4890.87
+    },
+    {
+      "entry": 73346.84,
+      "side": "SELL",
+      "pnl": -73.35,
+      "outcome": "SL",
+      "bal": 4817.52
+    },
+    {
+      "entry": 73257.63,
+      "side": "SELL",
+      "pnl": -73.26,
+      "outcome": "SL",
+      "bal": 4744.26
+    },
+    {
+      "entry": 73373.85,
+      "side": "SELL",
+      "pnl": -73.37,
+      "outcome": "SL",
+      "bal": 4670.89
+    },
+    {
+      "entry": 73412.01,
+      "side": "SELL",
+      "pnl": -73.41,
+      "outcome": "SL",
+      "bal": 4597.48
+    },
+    {
+      "entry": 73444.89,
+      "side": "SELL",
+      "pnl": -73.44,
+      "outcome": "SL",
+      "bal": 4524.04
+    },
+    {
+      "entry": 73620.0,
+      "side": "SELL",
+      "pnl": -73.62,
+      "outcome": "SL",
+      "bal": 4450.42
+    },
+    {
+      "entry": 73582.92,
+      "side": "BUY",
+      "pnl": 110.37,
+      "outcome": "TP",
+      "bal": 4560.79
+    },
+    {
+      "entry": 73683.46,
+      "side": "BUY",
+      "pnl": -73.68,
+      "outcome": "SL",
+      "bal": 4487.11
+    },
+    {
+      "entry": 73786.32,
+      "side": "SELL",
+      "pnl": 110.68,
+      "outcome": "TP",
+      "bal": 4597.79
+    },
+    {
+      "entry": 73830.01,
+      "side": "SELL",
+      "pnl": 110.75,
+      "outcome": "TP",
+      "bal": 4708.54
+    },
+    {
+      "entry": 73491.19,
+      "side": "SELL",
+      "pnl": -73.49,
+      "outcome": "SL",
+      "bal": 4635.05
+    },
+    {
+      "entry": 73528.56,
+      "side": "BUY",
+      "pnl": 110.29,
+      "outcome": "TP",
+      "bal": 4745.34
+    },
+    {
+      "entry": 73704.06,
+      "side": "BUY",
+      "pnl": -26.08,
+      "outcome": "EXPIRY",
+      "bal": 4719.26
+    },
+    {
+      "entry": 73722.15,
+      "side": "SELL",
+      "pnl": -73.72,
+      "outcome": "SL",
+      "bal": 4645.54
+    },
+    {
+      "entry": 73653.4,
+      "side": "SELL",
+      "pnl": -73.65,
+      "outcome": "SL",
+      "bal": 4571.89
+    },
+    {
+      "entry": 73755.99,
+      "side": "SELL",
+      "pnl": 51.59,
+      "outcome": "EXPIRY",
+      "bal": 4623.48
+    },
+    {
+      "entry": 73866.51,
+      "side": "SELL",
+      "pnl": 110.8,
+      "outcome": "TP",
+      "bal": 4734.28
+    },
+    {
+      "entry": 73856.62,
+      "side": "SELL",
+      "pnl": 110.78,
+      "outcome": "TP",
+      "bal": 4845.06
+    },
+    {
+      "entry": 73754.56,
+      "side": "SELL",
+      "pnl": 110.63,
+      "outcome": "TP",
+      "bal": 4955.69
+    },
+    {
+      "entry": 73744.96,
+      "side": "SELL",
+      "pnl": 110.62,
+      "outcome": "TP",
+      "bal": 5066.31
+    },
+    {
+      "entry": 73676.9,
+      "side": "SELL",
+      "pnl": 110.52,
+      "outcome": "TP",
+      "bal": 5176.83
+    },
+    {
+      "entry": 73658.15,
+      "side": "SELL",
+      "pnl": 110.49,
+      "outcome": "TP",
+      "bal": 5287.32
+    },
+    {
+      "entry": 73624.03,
+      "side": "SELL",
+      "pnl": 110.44,
+      "outcome": "TP",
+      "bal": 5397.76
+    },
+    {
+      "entry": 73651.47,
+      "side": "SELL",
+      "pnl": 110.48,
+      "outcome": "TP",
+      "bal": 5508.24
+    },
+    {
+      "entry": 73634.64,
+      "side": "SELL",
+      "pnl": 110.45,
+      "outcome": "TP",
+      "bal": 5618.69
+    },
+    {
+      "entry": 73666.01,
+      "side": "SELL",
+      "pnl": 110.5,
+      "outcome": "TP",
+      "bal": 5729.19
+    },
+    {
+      "entry": 73392.01,
+      "side": "SELL",
+      "pnl": 110.09,
+      "outcome": "TP",
+      "bal": 5839.28
+    },
+    {
+      "entry": 73295.73,
+      "side": "BUY",
+      "pnl": -73.3,
+      "outcome": "SL",
+      "bal": 5765.98
+    },
+    {
+      "entry": 73212.58,
+      "side": "BUY",
+      "pnl": -73.21,
+      "outcome": "SL",
+      "bal": 5692.77
+    },
+    {
+      "entry": 73111.92,
+      "side": "BUY",
+      "pnl": -73.11,
+      "outcome": "SL",
+      "bal": 5619.66
+    },
+    {
+      "entry": 73135.7,
+      "side": "SELL",
+      "pnl": 109.7,
+      "outcome": "TP",
+      "bal": 5729.36
+    },
+    {
+      "entry": 72958.99,
+      "side": "BUY",
+      "pnl": -72.96,
+      "outcome": "SL",
+      "bal": 5656.4
+    },
+    {
+      "entry": 72796.0,
+      "side": "BUY",
+      "pnl": -72.8,
+      "outcome": "SL",
+      "bal": 5583.6
+    },
+    {
+      "entry": 72722.64,
+      "side": "BUY",
+      "pnl": 109.08,
+      "outcome": "TP",
+      "bal": 5692.68
+    },
+    {
+      "entry": 72696.66,
+      "side": "BUY",
+      "pnl": 109.04,
+      "outcome": "TP",
+      "bal": 5801.72
+    },
+    {
+      "entry": 72749.15,
+      "side": "BUY",
+      "pnl": 109.12,
+      "outcome": "TP",
+      "bal": 5910.84
+    },
+    {
+      "entry": 73096.85,
+      "side": "SELL",
+      "pnl": -73.1,
+      "outcome": "SL",
+      "bal": 5837.74
+    },
+    {
+      "entry": 73663.04,
+      "side": "SELL",
+      "pnl": -73.66,
+      "outcome": "SL",
+      "bal": 5764.08
+    },
+    {
+      "entry": 74110.93,
+      "side": "BUY",
+      "pnl": -74.11,
+      "outcome": "SL",
+      "bal": 5689.97
+    },
+    {
+      "entry": 73868.57,
+      "side": "BUY",
+      "pnl": -73.87,
+      "outcome": "SL",
+      "bal": 5616.1
+    },
+    {
+      "entry": 73808.26,
+      "side": "BUY",
+      "pnl": -73.81,
+      "outcome": "SL",
+      "bal": 5542.29
+    },
+    {
+      "entry": 73742.0,
+      "side": "SELL",
+      "pnl": -73.74,
+      "outcome": "SL",
+      "bal": 5468.55
+    },
+    {
+      "entry": 74040.01,
+      "side": "SELL",
+      "pnl": -74.04,
+      "outcome": "SL",
+      "bal": 5394.51
+    },
+    {
+      "entry": 74056.5,
+      "side": "SELL",
+      "pnl": -74.06,
+      "outcome": "SL",
+      "bal": 5320.45
+    },
+    {
+      "entry": 74227.58,
+      "side": "BUY",
+      "pnl": -74.23,
+      "outcome": "SL",
+      "bal": 5246.22
+    },
+    {
+      "entry": 74303.71,
+      "side": "SELL",
+      "pnl": 111.46,
+      "outcome": "TP",
+      "bal": 5357.68
+    },
+    {
+      "entry": 74044.92,
+      "side": "BUY",
+      "pnl": -74.04,
+      "outcome": "SL",
+      "bal": 5283.64
+    },
+    {
+      "entry": 73980.94,
+      "side": "SELL",
+      "pnl": 110.97,
+      "outcome": "TP",
+      "bal": 5394.61
+    },
+    {
+      "entry": 74043.03,
+      "side": "SELL",
+      "pnl": 111.06,
+      "outcome": "TP",
+      "bal": 5505.67
+    },
+    {
+      "entry": 73566.78,
+      "side": "BUY",
+      "pnl": -73.57,
+      "outcome": "SL",
+      "bal": 5432.1
+    },
+    {
+      "entry": 73374.52,
+      "side": "BUY",
+      "pnl": 110.06,
+      "outcome": "TP",
+      "bal": 5542.16
+    },
+    {
+      "entry": 73470.46,
+      "side": "SELL",
+      "pnl": -73.47,
+      "outcome": "SL",
+      "bal": 5468.69
+    },
+    {
+      "entry": 73695.59,
+      "side": "SELL",
+      "pnl": 47.79,
+      "outcome": "EXPIRY",
+      "bal": 5516.48
+    },
+    {
+      "entry": 73666.49,
+      "side": "SELL",
+      "pnl": 110.5,
+      "outcome": "TP",
+      "bal": 5626.98
+    },
+    {
+      "entry": 73520.28,
+      "side": "SELL",
+      "pnl": -73.52,
+      "outcome": "SL",
+      "bal": 5553.46
+    },
+    {
+      "entry": 73648.33,
+      "side": "SELL",
+      "pnl": -73.65,
+      "outcome": "SL",
+      "bal": 5479.81
+    },
+    {
+      "entry": 73708.26,
+      "side": "SELL",
+      "pnl": 110.56,
+      "outcome": "TP",
+      "bal": 5590.37
+    },
+    {
+      "entry": 73705.25,
+      "side": "SELL",
+      "pnl": 110.56,
+      "outcome": "TP",
+      "bal": 5700.93
+    },
+    {
+      "entry": 73673.61,
+      "side": "SELL",
+      "pnl": 110.51,
+      "outcome": "TP",
+      "bal": 5811.44
+    },
+    {
+      "entry": 73538.86,
+      "side": "BUY",
+      "pnl": -73.54,
+      "outcome": "SL",
+      "bal": 5737.9
+    },
+    {
+      "entry": 73595.0,
+      "side": "SELL",
+      "pnl": 110.39,
+      "outcome": "TP",
+      "bal": 5848.29
+    },
+    {
+      "entry": 73409.27,
+      "side": "SELL",
+      "pnl": -20.41,
+      "outcome": "EXPIRY",
+      "bal": 5827.88
+    },
+    {
+      "entry": 73523.84,
+      "side": "SELL",
+      "pnl": 45.68,
+      "outcome": "EXPIRY",
+      "bal": 5873.56
+    },
+    {
+      "entry": 73457.57,
+      "side": "SELL",
+      "pnl": -29.98,
+      "outcome": "EXPIRY",
+      "bal": 5843.58
+    },
+    {
+      "entry": 73464.83,
+      "side": "SELL",
+      "pnl": -22.58,
+      "outcome": "EXPIRY",
+      "bal": 5821.0
+    },
+    {
+      "entry": 73483.52,
+      "side": "SELL",
+      "pnl": -25.11,
+      "outcome": "EXPIRY",
+      "bal": 5795.89
+    },
+    {
+      "entry": 73361.12,
+      "side": "SELL",
+      "pnl": -73.36,
+      "outcome": "SL",
+      "bal": 5722.53
+    },
+    {
+      "entry": 73437.66,
+      "side": "SELL",
+      "pnl": -73.44,
+      "outcome": "SL",
+      "bal": 5649.09
+    },
+    {
+      "entry": 73467.93,
+      "side": "BUY",
+      "pnl": 110.2,
+      "outcome": "TP",
+      "bal": 5759.29
+    },
+    {
+      "entry": 73498.8,
+      "side": "SELL",
+      "pnl": -73.5,
+      "outcome": "SL",
+      "bal": 5685.79
+    },
+    {
+      "entry": 73602.0,
+      "side": "SELL",
+      "pnl": -73.6,
+      "outcome": "SL",
+      "bal": 5612.19
+    },
+    {
+      "entry": 73583.23,
+      "side": "SELL",
+      "pnl": 110.37,
+      "outcome": "TP",
+      "bal": 5722.56
+    },
+    {
+      "entry": 73524.01,
+      "side": "SELL",
+      "pnl": 110.29,
+      "outcome": "TP",
+      "bal": 5832.85
+    },
+    {
+      "entry": 73347.29,
+      "side": "SELL",
+      "pnl": -73.35,
+      "outcome": "SL",
+      "bal": 5759.5
+    },
+    {
+      "entry": 73520.01,
+      "side": "SELL",
+      "pnl": -73.52,
+      "outcome": "SL",
+      "bal": 5685.98
+    },
+    {
+      "entry": 73669.11,
+      "side": "SELL",
+      "pnl": 74.1,
+      "outcome": "EXPIRY",
+      "bal": 5760.08
+    },
+    {
+      "entry": 73496.0,
+      "side": "SELL",
+      "pnl": -38.0,
+      "outcome": "EXPIRY",
+      "bal": 5722.08
+    },
+    {
+      "entry": 73562.17,
+      "side": "BUY",
+      "pnl": 37.61,
+      "outcome": "EXPIRY",
+      "bal": 5759.69
+    },
+    {
+      "entry": 73520.0,
+      "side": "SELL",
+      "pnl": -73.52,
+      "outcome": "SL",
+      "bal": 5686.17
+    },
+    {
+      "entry": 73655.85,
+      "side": "SELL",
+      "pnl": -32.92,
+      "outcome": "EXPIRY",
+      "bal": 5653.25
+    },
+    {
+      "entry": 73638.68,
+      "side": "SELL",
+      "pnl": -73.64,
+      "outcome": "SL",
+      "bal": 5579.61
+    },
+    {
+      "entry": 73671.02,
+      "side": "SELL",
+      "pnl": -73.67,
+      "outcome": "SL",
+      "bal": 5505.94
+    },
+    {
+      "entry": 73829.31,
+      "side": "SELL",
+      "pnl": -73.83,
+      "outcome": "SL",
+      "bal": 5432.11
+    },
+    {
+      "entry": 73946.67,
+      "side": "SELL",
+      "pnl": -10.68,
+      "outcome": "EXPIRY",
+      "bal": 5421.43
+    },
+    {
+      "entry": 74002.0,
+      "side": "SELL",
+      "pnl": 41.93,
+      "outcome": "EXPIRY",
+      "bal": 5463.36
+    },
+    {
+      "entry": 74048.27,
+      "side": "SELL",
+      "pnl": 48.94,
+      "outcome": "EXPIRY",
+      "bal": 5512.3
+    },
+    {
+      "entry": 74034.83,
+      "side": "SELL",
+      "pnl": 38.65,
+      "outcome": "EXPIRY",
+      "bal": 5550.95
+    },
+    {
+      "entry": 73899.61,
+      "side": "SELL",
+      "pnl": -3.95,
+      "outcome": "EXPIRY",
+      "bal": 5547.0
+    }
+  ],
+  "final": 5546.999999999998,
+  "total_pnl": 547.0
+}

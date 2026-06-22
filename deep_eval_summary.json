@@ -1,0 +1,32 @@
+{
+  "model_evaluation": {
+    "windows": 599,
+    "date_range": "2026-05-27 to 2026-06-10",
+    "direction_accuracy_pct": 48.8,
+    "prediction_strength_accuracy": {
+      "strong_bearish": {"count": 123, "accuracy_pct": 56.1, "note": "Most reliable prediction"},
+      "bearish": {"count": 128, "accuracy_pct": 49.7},
+      "neutral": {"count": 167, "accuracy_pct": 44.0, "note": "Worst — coin flip territory"},
+      "bullish": {"count": 70, "accuracy_pct": 48.8},
+      "strong_bullish": {"count": 111, "accuracy_pct": 46.1}
+    }
+  },
+  "strategy_performance": {
+    "range_extension": {"total_pnl_pct": 7.91, "trades": 243, "win_rate_pct": 50.4, "rank": 1},
+    "trend_momentum": {"total_pnl_pct": 8.67, "trades": 232, "win_rate_pct": 50.9, "rank": 2},
+    "momentum_slope": {"total_pnl_pct": 8.31, "trades": 308, "win_rate_pct": 50.9, "rank": 3},
+    "candle_progression": {"total_pnl_pct": 0.37, "trades": 93, "win_rate_pct": 47.7, "rank": 4},
+    "antitrend_aggressive": {"total_pnl_pct": -4.38, "trades": 466, "win_rate_pct": 50.4, "rank": 5},
+    "antitrend_conservative": {"total_pnl_pct": -7.80, "trades": 183, "win_rate_pct": 50.2, "rank": 6},
+    "antitrend_standard": {"total_pnl_pct": -8.47, "trades": 300, "win_rate_pct": 49.9, "rank": 7}
+  },
+  "key_insights": [
+    "Kronos model is 48.8% directionally accurate — slightly below random (50%)",
+    "Strong bearish predictions are the most reliable at 56.1% accuracy",
+    "Bullish and neutral predictions are unreliable (44-49%)",
+    "Antitrend (all 3 variants) is a LOSING strategy over 599 windows — contradicts earlier small-sample backtest",
+    "Trend-following strategies (trend_momentum, momentum_slope, range_extension) are consistently profitable at +7-9% over 2 weeks",
+    "Range extension has the best risk-adjusted profile: good PnL with fewer trades",
+    "The current system's antitrend focus is wrong — should pivot to trend-following / range-extension"
+  ]
+}

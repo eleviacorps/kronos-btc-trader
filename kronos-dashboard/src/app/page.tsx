@@ -25,7 +25,7 @@ interface AccountData {
   largestWin: number; largestLoss: number; timestamp: number;
 }
 
-interface LedgerResponse { bot: AccountData; agent: AccountData; hc: AccountData; hc_agent: AccountData; live: AccountData; }
+interface LedgerResponse { live: AccountData; }
 
 function fmt(v: number | null | undefined): string {
   if (v == null || isNaN(v as number)) return "0.00";
@@ -166,7 +166,7 @@ function AccountCard({ data, onClose }: { data: AccountData | null; onClose?: ()
               </div>
             ))}
             <div className="flex gap-1.5 mt-1.5">
-              <button onClick={() => { fetch('/api/ledger/close', { method: 'POST', body: JSON.stringify({ account: data.label === 'Bot-Only' ? 'bot' : 'agent' }) }) }}
+              <button onClick={() => { fetch('/api/ledger/close', { method: 'POST', body: JSON.stringify({ account: 'live' }) }) }}
                 className="text-[10px] px-2.5 py-1 rounded-lg bg-red-900/30 border border-red-800/40 text-red-300 hover:bg-red-800/40 transition">
                 Close All
               </button>
@@ -175,7 +175,7 @@ function AccountCard({ data, onClose }: { data: AccountData | null; onClose?: ()
         </div>
       )}
 
-      <Controls account={data.label === 'Bot-Only' ? 'bot' : data.label === 'Live Fusion' ? 'live' : 'agent'} onAction={refresh} />
+      <Controls account="live" onAction={refresh} />
 
       <button onClick={() => setShowTrades(!showTrades)}
         className="w-full mt-3 text-[10px] text-gray-500 hover:text-gray-300 transition text-center py-1 rounded-lg bg-gray-800/20 hover:bg-gray-800/40">
@@ -326,12 +326,9 @@ function FusionCard({ data }: { data: FusionData | null }) {
 
 function CronBar({ jobs, now }: { jobs: Record<string, CronInfo>; now: number }) {
   const items = [
-    { key: 'kronos-btc-hft-scalper', label: 'Bot Scalper' },
-    { key: 'kronos-btc-hft-agent', label: 'Agent Judge' },
-    { key: 'kronos-btc-hft-hc', label: 'HC Bot' },
-    { key: 'kronos-btc-hft-hc-agent', label: 'HC Agent' },
     { key: 'kronos-live', label: 'Live Fusion' },
     { key: 'kronos-watchdog-health', label: 'Watchdog' },
+    { key: 'kronos-tpsl-live', label: 'TPSL Live' },
   ];
   return (
     <div className="flex gap-2 mb-5 flex-wrap">
@@ -403,25 +400,11 @@ export default function Dashboard() {
 
       <FusionCard data={fusion} />
 
-      <div className="flex gap-2 mb-5">
-        <button onClick={async () => {
-          await fetch('/api/ledger/reset', { method: 'POST', body: JSON.stringify({ account: 'all' }) });
-          setKey(k => k + 1);
-        }}
-          className="text-[11px] px-3 py-1.5 rounded-lg bg-red-900/30 border border-red-800/40 text-red-300 hover:bg-red-800/40 transition">
-          Reset Both Accounts
-        </button>
-      </div>
-
       <div className="grid grid-cols-2 gap-5">
         {data ? (
-          <>
-            <AccountCard key={`bot-${key}`} data={data.bot} />
-            <AccountCard key={`agent-${key}`} data={data.agent} />
-            <AccountCard key={`hc-${key}`} data={data.hc} />
-            <AccountCard key={`hc-agent-${key}`} data={data.hc_agent} />
-            <AccountCard key={`live-${key}`} data={data.live} />
-          </>
+         <>
+           <AccountCard key={`live-${key}`} data={data.live} />
+         </>
         ) : (
           <>
             {[...Array(5)].map((_, i) => <SkeletonCard key={i} />)}

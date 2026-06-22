@@ -10,11 +10,16 @@ function freshLedger() {
 
 export async function POST(req: Request) {
   const { account } = await req.json();
-  if (account === 'bot') writeFileSync(join(PROJECT_DIR, 'paper_trades.json'), JSON.stringify(freshLedger(), null, 2));
-  else if (account === 'agent') writeFileSync(join(PROJECT_DIR, 'paper_trades_agent.json'), JSON.stringify(freshLedger(), null, 2));
-  else if (account === 'all') {
-    writeFileSync(join(PROJECT_DIR, 'paper_trades.json'), JSON.stringify(freshLedger(), null, 2));
-    writeFileSync(join(PROJECT_DIR, 'paper_trades_agent.json'), JSON.stringify(freshLedger(), null, 2));
-  } else return NextResponse.json({ error: 'unknown account' }, { status: 400 });
+  const allLedgers: Record<string, string> = {
+    live: 'paper_trades_live.json',
+  };
+  if (account === 'all') {
+    for (const file of Object.values(allLedgers))
+      writeFileSync(join(PROJECT_DIR, file), JSON.stringify(freshLedger(), null, 2));
+  } else {
+    const ledgerFile = allLedgers[account as string];
+    if (!ledgerFile) return NextResponse.json({ error: 'unknown account' }, { status: 400 });
+    writeFileSync(join(PROJECT_DIR, ledgerFile), JSON.stringify(freshLedger(), null, 2));
+  }
   return NextResponse.json({ success: true });
 }

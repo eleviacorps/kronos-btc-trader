@@ -1,0 +1,102 @@
+{
+  "trades": [
+    {
+      "entry": 71057.29,
+      "side": "SELL",
+      "exit": 71321.85,
+      "pnl_pct": -0.37,
+      "outcome": "SL",
+      "hedged": false,
+      "time": "2026-04-12 20:25:00"
+    },
+    {
+      "entry": 71303.73,
+      "side": "BUY",
+      "exit": 70752.6,
+      "pnl_pct": -0.77,
+      "outcome": "SL",
+      "hedged": false,
+      "time": "2026-04-12 21:15:00"
+    },
+    {
+      "entry": 71327.58,
+      "side": "SELL",
+      "exit": 71113.6,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false,
+      "time": "2026-04-12 21:35:00"
+    },
+    {
+      "entry": 71364.02,
+      "side": "SELL",
+      "exit": 71149.93,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false,
+      "time": "2026-04-12 21:55:00"
+    },
+    {
+      "entry": 70927.12,
+      "side": "BUY",
+      "exit": 70723.36,
+      "pnl_pct": -0.29,
+      "outcome": "SL",
+      "hedged": false,
+      "time": "2026-04-12 22:05:00"
+    },
+    {
+      "entry": 70723.36,
+      "side": "BUY",
+      "exit": 70723.36,
+      "pnl_pct": 0.0,
+      "outcome": "SL",
+      "hedged": false,
+      "time": "2026-04-12 22:15:00"
+    },
+    {
+      "entry": 70667.02,
+      "side": "BUY",
+      "exit": 70879.02,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false,
+      "time": "2026-04-12 22:25:00"
+    },
+    {
+      "entry": 70594.68,
+      "side": "BUY",
+      "exit": 70806.46,
+      "pnl_pct": 0.3,
+      "outcome": "TP",
+      "hedged": false,
+      "time": "2026-04-12 23:45:00"
+    },
+    {
+      "entry": 70892.02,
+      "side": "SELL",
+      "exit": 71084.77,
+      "pnl_pct": -0.27,
+      "outcome": "SL",
+      "hedged": false,
+      "time": "2026-04-13 00:05:00"
+    },
+    {
+      "entry": 70982.39,
+      "side": "SELL",
+      "exit": 71133.92,
+      "pnl_pct": -0.21,
+      "outcome": "SL",
+      "hedged": false,
+      "time": "2026-04-13 00:25:00"
+    }
+  ],
+  "summary": {
+    "total_trades": 10,
+    "total_pnl": -0.71,
+    "win_rate": 40.0,
+    "hedges_activated": 0,
+    "pnl_without_hedge": -0.71,
+    "hedge_improvement": 0.0
+  }
+}

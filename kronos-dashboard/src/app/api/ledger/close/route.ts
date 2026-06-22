@@ -8,7 +8,11 @@ const EXEC = join(PROJECT_DIR, 'kronos_exec.py');
 
 export async function POST(req: Request) {
   const { account, index } = await req.json();
-  const ledger = account === 'agent' ? 'paper_trades_agent.json' : 'paper_trades.json';
+  const ledgers: Record<string, string> = {
+    live: 'paper_trades_live.json',
+  };
+  const ledger = ledgers[account as string];
+  if (!ledger) return NextResponse.json({ error: 'unknown account' }, { status: 400 });
   try {
     if (index !== undefined) {
       execSync(`"${VENV_PY}" "${EXEC}" --scalp --close-trade ${index} --ledger ${ledger}`, { timeout: 20000, windowsHide: true });

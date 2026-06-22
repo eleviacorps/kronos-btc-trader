@@ -41,8 +41,7 @@ HEARTBEAT_INTERVAL_S = 300  # log a heartbeat every 5 min
 LEDGERS = [
     {"file": "paper_trades.json",         "name": "BOT"},
     {"file": "paper_trades_agent.json",   "name": "AGENT"},
-    {"file": "paper_trades_hc.json",      "name": "HC"},
-    {"file": "paper_trades_hc_agent.json","name": "HC_AGENT"},
+    {"file": "paper_trades_live.json",    "name": "LIVE"},
 ]
 
 LOG_FILE = PROJECT_DIR / "kronos_watchdog.log"
