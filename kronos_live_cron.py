@@ -49,6 +49,16 @@ SL_PCT = 0.2
 
 LEDGER = PROJECT_DIR / "paper_trades_live.json"
 
+# ── ProxyMan hermes3 (for Binance API only, not HF model hub) ──
+PROXY_HTTP = "http://127.0.0.1:8091"
+PROXY_HTTPS = "http://127.0.0.1:8091"
+os.environ["HTTP_PROXY"] = PROXY_HTTP
+os.environ["HTTPS_PROXY"] = PROXY_HTTPS
+os.environ["http_proxy"] = PROXY_HTTP
+os.environ["https_proxy"] = PROXY_HTTPS
+os.environ["NO_PROXY"] = "localhost,127.0.0.1,huggingface.co,huggingface.com,.hf.co"
+os.environ["no_proxy"] = "localhost,127.0.0.1,huggingface.co,huggingface.com,.hf.co"
+
 # =========================================================================
 # MAIN
 # =========================================================================
