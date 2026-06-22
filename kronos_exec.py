@@ -348,6 +348,20 @@ def close_all():
         else:
             pnl_usdt = (pos["entry_price"] - price) * pos["size"]
         
+        # Record the closed trade
+        ledger.setdefault("trades", []).append({
+            "timestamp": datetime.now().isoformat(),
+            "side": pos["side"],
+            "close_reason": "MANUAL",
+            "entry_price": pos["entry_price"],
+            "exit_price": price,
+            "size_btc": pos["size"],
+            "leverage": LEVERAGE,
+            "pnl_usdt": round(pnl_usdt, 2),
+            "pnl_pct": round(pnl_usdt / max(margin, 0.01) * 100, 2),
+            "balance_after": round(ledger["balance"] + margin + pnl_usdt, 2),
+        })
+        
         ledger["balance"] += margin + pnl_usdt
         print(f"  🔴 CLOSED {pos['side'].upper()} {pos['size']:.6f} BTC @ ${price:,.2f} — PnL: ${pnl_usdt:+.2f}")
     
