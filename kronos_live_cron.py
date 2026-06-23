@@ -86,6 +86,25 @@ def main():
     predictor = KronosPredictor(model, tok, max_context=512, device=device)
     print(f"  ✅ Kronos on {device}")
 
+    # TimesFM — Google's time series foundation model
+    try:
+        import timesfm as _timesfm
+        _torch = __import__('torch')
+        _torch.set_float32_matmul_precision('high')
+        _timesfm_model = _timesfm.TimesFM_2p5_200M_torch.from_pretrained(
+            'google/timesfm-2.5-200m-pytorch'
+        )
+        _timesfm_model.compile(_timesfm.ForecastConfig(
+            max_context=512, max_horizon=64, normalize_inputs=True,
+            use_continuous_quantile_head=True, force_flip_invariance=True,
+            infer_is_positive=True, fix_quantile_crossing=True,
+        ))
+        HAS_TIMESFM = True
+        print(f"  ✅ TimesFM 2.5 200M loaded")
+    except Exception as e:
+        HAS_TIMESFM = False
+        print(f"  ⚠ TimesFM not available: {e}")
+
     # Fusion engine
     qf = QuantFusionEngine(capital=CAPITAL, leverage=LEVERAGE, base_tp_pct=TP_PCT, base_sl_pct=SL_PCT)
     qf.warmup(df_eng)
@@ -140,6 +159,31 @@ def main():
             print(f"  ❌ Kronos failed: {e}")
             return
 
+    # ── 3b. TIMESFM FORECAST (ensemble signal) ──
+    timesfm_dir, timesfm_conf = "NEUTRAL", 0.0
+    if HAS_TIMESFM:
+        try:
+            import numpy as _np
+            _prices = _np.array(ctx['c'].values, dtype=_np.float64)
+            _point, _q = _timesfm_model.forecast(horizon=12, inputs=[_prices])
+            _fcast_end = float(_point[0, -1])
+            _change = (_fcast_end - current_price) / current_price * 100
+            _uncertainty = (_q[0, -1, 9] - _q[0, -1, 1]) / _fcast_end * 100
+
+            if _uncertainty > 1.5:
+                timesfm_dir, timesfm_conf = "NEUTRAL", 0.0
+                print(f"  TimesFM: ? (CI {_uncertainty:.1f}% too wide)")
+            elif _change > 0.05:
+                timesfm_dir, timesfm_conf = "BULLISH", min(abs(_change) / 0.3, 1.0)
+                print(f"  TimesFM: BULLISH ({_change:+.3f}%, CI {_uncertainty:.1f}%)")
+            elif _change < -0.05:
+                timesfm_dir, timesfm_conf = "BEARISH", min(abs(_change) / 0.3, 1.0)
+                print(f"  TimesFM: BEARISH ({_change:+.3f}%, CI {_uncertainty:.1f}%)")
+            else:
+                print(f"  TimesFM: NEUTRAL ({_change:+.3f}%, CI {_uncertainty:.1f}%)")
+        except Exception as e:
+            print(f"  ⚠ TimesFM inference failed: {e}")
+
     # ── 4. SELECTOR + FUSION ──
     # Run sample selector if available (50 samples -> picks best)
     selector_result = {}
@@ -178,6 +222,7 @@ def main():
         strategy_signals={
             'antitrend': (1 if base_dir == 'BUY' else -1 if base_dir == 'SELL' else 0, base_conf),
             'kronos_raw': (1 if net > 0.04 else -1 if net < -0.04 else 0, kronos_conf),
+            'timesfm': (1 if timesfm_dir == 'BULLISH' else -1 if timesfm_dir == 'BEARISH' else 0, timesfm_conf),
         },
         selector_result=selector_result,
     )
@@ -274,6 +319,10 @@ def main():
                 "net_pct": net,
                 "range_pct": rng,
                 "confidence": kronos_conf,
+            },
+            "timesfm": {
+                "direction": timesfm_dir,
+                "confidence": timesfm_conf,
             },
         }
         with open(PROJECT_DIR / "fusion_analysis.json", "w") as f:
