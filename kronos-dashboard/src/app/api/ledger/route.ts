@@ -83,5 +83,9 @@ export async function GET() {
   } catch {}
 
   const live = enrich(readLedger('paper_trades_live.json'), 'Live Fusion', btcPrice);
-  return NextResponse.json({ live });
+  const ev_tuned = enrich(readLedger('paper_trades_ev_tuned.json'), 'EV Tuned', btcPrice);
+  const ev_hermes = enrich(readLedger('paper_trades_ev_hermes.json'), 'EV+Hermes', btcPrice);
+  return NextResponse.json({ live, ev_tuned, ev_hermes }, {
+    headers: { "Cache-Control": "no-cache, no-store, must-revalidate" },
+  });
 }

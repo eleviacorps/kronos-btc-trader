@@ -9,7 +9,10 @@ export async function GET() {
       return NextResponse.json({ status: "pending", message: "No analysis yet. Run kronos_live_cron.py first." });
     }
     const raw = readFileSync(filePath, "utf-8");
-    return NextResponse.json(JSON.parse(raw));
+    const data = JSON.parse(raw);
+    return NextResponse.json(data, {
+      headers: { "Cache-Control": "no-cache, no-store, must-revalidate" },
+    });
   } catch (e: any) {
     return NextResponse.json({ status: "error", message: e?.message || "Failed to read fusion data" });
   }

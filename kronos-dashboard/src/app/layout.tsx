@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Kronos Trading Dashboard",
-  description: "BTC/USDT dual-account paper trading dashboard",
+  description: "BTC/USDT Live Fusion paper trading dashboard",
 };
 
 export default function RootLayout({

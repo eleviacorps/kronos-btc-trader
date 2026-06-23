@@ -25,7 +25,7 @@ interface AccountData {
   largestWin: number; largestLoss: number; timestamp: number;
 }
 
-interface LedgerResponse { live: AccountData; }
+interface LedgerResponse { live: AccountData; ev_tuned: AccountData; ev_hermes: AccountData; }
 
 function fmt(v: number | null | undefined): string {
   if (v == null || isNaN(v as number)) return "0.00";
@@ -327,8 +327,11 @@ function FusionCard({ data }: { data: FusionData | null }) {
 function CronBar({ jobs, now }: { jobs: Record<string, CronInfo>; now: number }) {
   const items = [
     { key: 'kronos-live', label: 'Live Fusion' },
+    { key: 'ev-fusion-tuned', label: 'EV Tuned' },
+    { key: 'ev-hermes-collector', label: 'EV Coll' },
+    { key: 'ev-hermes-agent', label: 'EV Agent' },
     { key: 'kronos-watchdog-health', label: 'Watchdog' },
-    { key: 'kronos-tpsl-live', label: 'TPSL Live' },
+    { key: 'kronos-tpsl-live', label: 'TPSL' },
   ];
   return (
     <div className="flex gap-2 mb-5 flex-wrap">
@@ -365,12 +368,12 @@ export default function Dashboard() {
     async function fetchAll() {
       try {
         const [ledgerRes, cronRes, fusionRes] = await Promise.all([
-          fetch("/api/ledger"),
-          fetch("/api/cron"),
-          fetch("/api/fusion"),
+          fetch(`/api/ledger?_=${Date.now()}`),
+          fetch(`/api/cron?_=${Date.now()}`),
+          fetch(`/api/fusion?_=${Date.now()}`),
         ]);
         const ledgerJson = await ledgerRes.json();
-        if (ledgerJson.bot) setData(ledgerJson);
+        if (ledgerJson.live) setData(ledgerJson);
         const cronJson = await cronRes.json();
         if (cronJson.jobs) setCron(cronJson.jobs);
         const fusionJson = await fusionRes.json();
@@ -388,7 +391,7 @@ export default function Dashboard() {
       <div className="flex items-center justify-between mb-4">
         <div>
           <h1 className="text-xl font-bold tracking-tight">Kronos Dashboard</h1>
-          <p className="text-gray-500 text-xs mt-0.5">BTC/USDT Dual-Account Paper Trading</p>
+          <p className="text-gray-500 text-xs mt-0.5">BTC/USDT Live Fusion Paper Trading</p>
         </div>
         <div className="text-right text-[10px] text-gray-500">
           <div className="font-mono">{new Date(now).toLocaleTimeString()}</div>
@@ -404,6 +407,8 @@ export default function Dashboard() {
         {data ? (
          <>
            <AccountCard key={`live-${key}`} data={data.live} />
+         <AccountCard key={`ev-tuned-${key}`} data={data.ev_tuned} />
+         <AccountCard key={`ev-hermes-${key}`} data={data.ev_hermes} />
          </>
         ) : (
           <>
