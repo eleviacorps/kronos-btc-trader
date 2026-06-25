@@ -1,17 +1,7 @@
 {
-  "balance": 1044.7450849999937,
+  "balance": 1206.2252649999864,
   "initial_capital": 1000.0,
-  "positions": [
-    {
-      "side": "sell",
-      "size": 0.5,
-      "entry_price": 63985.62,
-      "timestamp": "2026-06-23T09:10:00.579640",
-      "tp_pct": 0.3,
-      "sl_pct": 0.2,
-      "scalp": true
-    }
-  ],
+  "positions": [],
   "trades": [
     {
       "timestamp": "2026-06-22T10:49:35.893962",
@@ -384,11 +374,95 @@
       "pnl_usdt": 96.36,
       "pnl_pct": 0.3,
       "balance_after": 1204.71
+    },
+    {
+      "timestamp": "2026-06-23T10:10:11.193025",
+      "side": "sell",
+      "close_reason": "TIMESTOP",
+      "entry_price": 63985.62,
+      "exit_price": 63852.0,
+      "size_btc": 0.5,
+      "leverage": 200,
+      "pnl_usdt": 66.81,
+      "pnl_pct": 41.77,
+      "balance_after": 1271.52
+    },
+    {
+      "timestamp": "2026-06-23T10:45:10.311799",
+      "side": "buy",
+      "close_reason": "SL",
+      "entry_price": 63728.35,
+      "exit_price": 63600.89,
+      "size_btc": 0.5,
+      "leverage": 200,
+      "pnl_usdt": -63.73,
+      "pnl_pct": -0.2,
+      "balance_after": 1207.79
+    },
+    {
+      "timestamp": "2026-06-23T11:36:46.909770",
+      "side": "buy",
+      "close_reason": "SL",
+      "entry_price": 63461.99,
+      "exit_price": 63335.07,
+      "size_btc": 0.5,
+      "leverage": 200,
+      "pnl_usdt": -63.46,
+      "pnl_pct": -0.2,
+      "balance_after": 1144.33
+    },
+    {
+      "timestamp": "2026-06-23T11:50:46.216370",
+      "side": "buy",
+      "close_reason": "SL",
+      "entry_price": 63026.02,
+      "exit_price": 62899.97,
+      "size_btc": 0.5,
+      "leverage": 200,
+      "pnl_usdt": -63.03,
+      "pnl_pct": -0.2,
+      "balance_after": 1081.3
+    },
+    {
+      "timestamp": "2026-06-23T12:03:31.472528",
+      "side": "buy",
+      "close_reason": "TP",
+      "entry_price": 62706.88,
+      "exit_price": 62895.0,
+      "size_btc": 0.5,
+      "leverage": 200,
+      "pnl_usdt": 94.06,
+      "pnl_pct": 0.3,
+      "balance_after": 1175.36
+    },
+    {
+      "timestamp": "2026-06-23T13:54:28.485304",
+      "side": "buy",
+      "close_reason": "SL",
+      "entry_price": 62469.99,
+      "exit_price": 62345.05,
+      "size_btc": 0.5,
+      "leverage": 200,
+      "pnl_usdt": -62.47,
+      "pnl_pct": -0.2,
+      "balance_after": 1112.89
+    },
+    {
+      "timestamp": "2026-06-23T14:10:49.272459",
+      "side": "buy",
+      "close_reason": "TP",
+      "entry_price": 62221.44,
+      "exit_price": 62408.1,
+      "size_btc": 0.5,
+      "leverage": 200,
+      "pnl_usdt": 93.33,
+      "pnl_pct": 0.3,
+      "balance_after": 1206.23
     }
   ],
-  "total_pnl": 204.71,
+  "total_pnl": 206.23,
   "cooldown": {
-    "buy": "2026-06-22T22:09:54.090516",
+    "buy": "2026-06-23T14:02:09.048292",
     "sell": "2026-06-23T09:10:02.847495"
   }
 }

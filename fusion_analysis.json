@@ -1,30 +1,30 @@
 {
-  "timestamp": "2026-06-23T09:10:02.904403",
-  "btc_price": 63985.61,
-  "decision": "SELL",
-  "confidence": 0.443,
-  "source": "trending",
+  "timestamp": "2026-06-23T15:58:24.164994",
+  "btc_price": 62352.49,
+  "decision": "HOLD",
+  "confidence": 0.0,
+  "source": "?",
   "regime": {
     "hmm_label": "mean_reverting",
-    "hurst_H": 0.6733,
-    "hurst_label": "trending",
-    "final_antitrend_mult": 1.192,
-    "vol_ratio": 0.919
+    "hurst_H": 0.4568,
+    "hurst_label": "random_walk",
+    "final_antitrend_mult": 2.0,
+    "vol_ratio": 0.952
   },
   "tp_sl": {
-    "final_tp_pct": 0.219,
+    "final_tp_pct": 0.17,
     "final_sl_pct": 0.1,
-    "atr_pct": 0.11,
-    "r_r": 2.19
+    "atr_pct": 0.113,
+    "r_r": 1.7
   },
   "size": {
     "size_btc": 0.5,
-    "margin": 10.99,
+    "margin": 0.0,
     "details": {
       "consecutive_losses": 0,
       "streak_penalty": 1.0,
-      "confidence": 0.44317345239092076,
-      "vol_ratio": 0.92,
+      "confidence": 0.0,
+      "vol_ratio": 0.95,
       "equity_growth": 1.0,
       "drawdown": 0.0,
       "dd_penalty": 1.0,
@@ -32,9 +32,9 @@
     }
   },
   "indicators": {
-    "rsi": 36.4,
-    "atr": 0.11,
-    "vol_ratio_to_avg": 0.24
+    "rsi": 41.9,
+    "atr": 0.113,
+    "vol_ratio_to_avg": 0.25
   },
   "selector": {
     "net_change": null,
@@ -42,10 +42,10 @@
     "avg_prob": null
   },
   "kronos": {
-    "direction": "BEARISH",
-    "net_pct": -0.11151286593970204,
-    "range_pct": 0.1765899956226349,
-    "confidence": 0.37170955313234016
+    "direction": "NEUTRAL",
+    "net_pct": 0.058898760498581594,
+    "range_pct": 0.24826720356941223,
+    "confidence": 0.19632920166193865
   },
   "timesfm": {
     "direction": "NEUTRAL",

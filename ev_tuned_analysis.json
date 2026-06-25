@@ -1,26 +1,26 @@
 {
-  "timestamp": "2026-06-23T09:09:04.419044",
-  "btc_price": 63976.0,
-  "decision": "HOLD",
-  "confidence": 0.0,
-  "source": "selector+trending",
+  "timestamp": "2026-06-23T15:58:37.302291",
+  "btc_price": 62358.0,
+  "decision": "SELL",
+  "confidence": 0.894,
+  "source": "selector",
   "conf_thresholds": {
     "buy": 0.4,
     "sell": 0.2
   },
   "regime": {
     "hmm_label": "mean_reverting",
-    "hurst_H": 0.6733,
-    "hurst_label": "trending"
+    "hurst_H": 0.4568,
+    "hurst_label": "random_walk"
   },
   "tp_sl": {
-    "final_tp_pct": 0.219,
+    "final_tp_pct": 0.17,
     "final_sl_pct": 0.1,
-    "atr_pct": 0.11
+    "atr_pct": 0.113
   },
   "indicators": {
-    "rsi": 35.9,
-    "atr": 0.11
+    "rsi": 42.2,
+    "atr": 0.113
   },
   "timesfm": {
     "direction": "NEUTRAL",
